@@ -25,27 +25,28 @@ namespace Connect4.Network
         {
             IPEndPoint IPep = new IPEndPoint(IPAddress.Parse(IP), 9050);
             newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            
+
             newSocket.Bind(IPep);
             newSocket.Listen(1);
             // Will not continue from this point until a client connects
             remoteClient = newSocket.Accept();
             remoteClientIPep = (IPEndPoint)remoteClient.RemoteEndPoint;
 
-            return String.Format("Now connected to {0} on port {1}.", remoteClientIPep.Address, remoteClientIPep.Port);
+            return string.Format("Now connected to {0} on port {1}.", remoteClientIPep.Address, remoteClientIPep.Port);
         }
 
+        // TODO: Implement UPnP
         public void StartUPnP()
         {
             throw new NotImplementedException();
         }
 
         public string Stop()
-        {            
+        {
             remoteClient.Close();
             newSocket.Close();
 
-            return String.Format("Disconnected from {0}." + remoteClientIPep.Address);
+            return string.Format("Disconnected from {0} on port {1}." + remoteClientIPep.Address, remoteClientIPep.Port);
         }
 
         public void Send(string message)

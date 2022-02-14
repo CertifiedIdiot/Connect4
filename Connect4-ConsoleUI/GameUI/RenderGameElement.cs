@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Connect4_ConsoleUI.GameUI
 {
-    public class PrintGameElement
+    public class RenderGameElement
     {
 
     }

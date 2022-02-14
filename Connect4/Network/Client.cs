@@ -1,8 +1,12 @@
 ﻿using System;
 
-public class Client
+namespace Connect4.Network
 {
-	public Client()
+	public class Client
 	{
+		public Client()
+		{
+		}
 	}
+
 }

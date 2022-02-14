@@ -1,8 +1,12 @@
 ﻿using System;
 
-public class Game
+namespace Connect4.Game
 {
-	public Game()
+	public class Game
 	{
+		public Game()
+		{
+		}
 	}
 }
+

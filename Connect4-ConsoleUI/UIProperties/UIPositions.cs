@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Connect4_ConsoleUI.UIProperties
 {
-    public class UIPositions
+    public static class UIPositions
     {
         internal static int GameBoardXPos { get; set; } = 33;
         internal static int GameBoardYPos { get; set; } = 10;

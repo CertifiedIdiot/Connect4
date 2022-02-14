@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Connect4_ConsoleUI.UIProperties
 {
-    public class UIColours
+    public static class UIColours
     {
         internal static Color PlayerOneColour { get; set; } = Color.DodgerBlue;
         internal static Color PlayerTwoColour { get; set; } = Color.OrangeRed;

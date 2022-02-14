@@ -11,7 +11,7 @@
 
     internal class QuickTest:IDisposable
     {
-        Game game;
+        readonly Game game;
         public QuickTest()
         {
             game = Connect4Factory.GetGame();
@@ -19,24 +19,20 @@
             PrintBoard();
         }
 
-        public void Dispose()
-        {
-            game.BoardChangedEvent -= Game_BoardChangedEvent;
-        }
+        public void Dispose() => game.BoardChangedEvent -= Game_BoardChangedEvent;
 
         public void Run()
         {
+            var counter = 1;
             do
             {
-                Console.Write($"{game.ActivePlayer.Name}, enter a column: ");
+                Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: ");
                 _=int.TryParse(Console.ReadLine(), out int num);
-                game.MakeMove(num-1);
-            } while (true);
+                bool validMove = game.MakeMove(num - 1);
+                if (validMove) counter++;
+            } while (counter<43);
         }
-        private void Game_BoardChangedEvent(object? sender, string e) 
-        {
-            PrintBoard();
-        }
+        private void Game_BoardChangedEvent(object? sender, string e) => PrintBoard();
 
         private void PrintBoard()
         {

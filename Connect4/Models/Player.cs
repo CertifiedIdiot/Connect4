@@ -21,6 +21,6 @@
         /// <value>
         /// The color of the player.
         /// </value>
-        public Colors Color { get; set; }
+        public Color Color { get; set; }
     }
 }

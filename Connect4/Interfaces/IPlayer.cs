@@ -4,6 +4,6 @@ using Connect4.Enums;
 
 public interface IPlayer
 {
-    Colors Color { get; set; }
+    Color Color { get; set; }
     string Name { get; set; }
 }

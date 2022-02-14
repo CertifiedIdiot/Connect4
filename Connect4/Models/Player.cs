@@ -4,7 +4,7 @@
     /// <summary>
     /// Cless representing one of the two players in a Connect 4 game
     /// </summary>
-    public class Player
+    public class Player : IPlayer
     {
         /// <summary>
         /// Gets or sets the players name.

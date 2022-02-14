@@ -13,6 +13,6 @@
         /// <value>
         /// The state can be either none for unoccupied or yellow or red depending on wich player has placed a token in the slot.
         /// </value>
-        public Colors State { get; set; }
+        public Color State { get; set; }
     }
 }

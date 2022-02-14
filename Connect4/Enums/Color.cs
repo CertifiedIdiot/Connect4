@@ -1,6 +1,6 @@
 ﻿namespace Connect4.Enums
 {
-    public enum Colors
+    public enum Color
     {
         None,
         Red,

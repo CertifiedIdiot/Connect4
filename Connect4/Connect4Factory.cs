@@ -1,17 +1,18 @@
-﻿// -----------------------------------------------------------------------------------------------
-//  Connect4Factory.cs by Thomas Thorin, Copyright (C) 2022.
-//  Published under GNU General Public License v3 (GPL-3)
-// -----------------------------------------------------------------------------------------------
-
-namespace Connect4
+﻿namespace Connect4
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using Connect4.Interfaces;
+    using Connect4.Models;
 
-    internal class Connect4Factory
+    /// <summary>
+    /// Factory class for managing class dependencies.
+    /// </summary>
+    public static class Connect4Factory
     {
+        /// <summary>
+        /// Gets an instance of the Connect4 game class with concrete implementations of its dependencies.
+        /// </summary>
+        /// <returns>A Connect4 Game object.</returns>
+        public static Game.Game GetGame() => new(GetPlayer(), GetPlayer());
+        private static IPlayer GetPlayer() => new Player();
     }
 }

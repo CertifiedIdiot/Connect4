@@ -14,9 +14,9 @@ namespace Connect4.Network
         private Socket remoteServer;
         private IPEndPoint remoteServerPpep;
 
-        public Client(string Ip)
+        public Client(string IP)
         {
-            this.IP = Ip;
+            this.IP = IP;
         }
 
         public string Start()

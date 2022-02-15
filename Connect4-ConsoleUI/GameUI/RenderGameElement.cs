@@ -3,7 +3,7 @@ using Connect4.Structs;
 using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
-using Connect4.Game;
+using Figgle;
 using System.Drawing;
 
 namespace Connect4_ConsoleUI.GameUI
@@ -74,6 +74,21 @@ namespace Connect4_ConsoleUI.GameUI
                 yIncrease += 4; // Move 4 spaces down in y
                 xIncrease = 0; // Reset x position to 0
             }
+        }
+
+        internal static void WinnerSplashscreen(string winnerName)
+        {
+            Console.CursorVisible = false;
+            //Print.GradientAtPosition(FiggleFonts.Colossal.Render(winnerName), 15, Color.Crimson, Color.Fuchsia);
+            for (int i = 0; i < 5; i++)
+            {
+                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+                System.Threading.Thread.Sleep(500);
+                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerTwoColour, UIColours.PlayerOneColour);
+                //Print.GradientAtPosition(FiggleFonts.Colossal.Render(winnerName), 15, Color.Crimson, Color.Fuchsia);
+                System.Threading.Thread.Sleep(500);
+            }
+            Console.CursorVisible = true;
         }
     }
 }

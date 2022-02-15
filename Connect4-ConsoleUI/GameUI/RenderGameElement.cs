@@ -76,17 +76,24 @@ namespace Connect4_ConsoleUI.GameUI
             }
         }
 
-        internal static void WinnerSplashscreen(string winnerName)
+        internal static void SplashscreenWinner(string winnerName)
         {
             Console.CursorVisible = false;
-            //Print.GradientAtPosition(FiggleFonts.Colossal.Render(winnerName), 15, Color.Crimson, Color.Fuchsia);
+            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     "+winnerName), 12, Color.Black, Color.Red);
+            Console.ReadKey();
+            Console.CursorVisible = true;
+        }
+        internal static void SplashscreenBackground()
+        {
+            Console.CursorVisible = false;
+
             for (int i = 0; i < 5; i++)
             {
                 Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(50);
                 Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerTwoColour, UIColours.PlayerOneColour);
                 //Print.GradientAtPosition(FiggleFonts.Colossal.Render(winnerName), 15, Color.Crimson, Color.Fuchsia);
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(50);
             }
             Console.CursorVisible = true;
         }

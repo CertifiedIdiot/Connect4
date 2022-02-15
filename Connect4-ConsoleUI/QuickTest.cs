@@ -24,7 +24,7 @@
             gameWon = true;
             Console.Clear();
             //Console.WriteLine(e); // Add victory splashscreen + active player name in ascii font - JE will add it
-            RenderGameElement.WinnerSplashscreen($"{game.ActivePlayer.Name} won!");
+            RenderGame.RenderSplashscreen($"{game.ActivePlayer.Name} won!");
            
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }

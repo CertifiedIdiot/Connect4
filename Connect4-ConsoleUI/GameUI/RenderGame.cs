@@ -26,5 +26,11 @@ namespace Connect4_ConsoleUI.GameUI
             Console.BackgroundColor = UIColours.BackgroundColour;
             Console.Clear();
         }
+
+        internal static void RenderSplashscreen(string winner)
+        {
+            RenderGameElement.SplashscreenBackground();
+            RenderGameElement.SplashscreenWinner(winner);
+        }
     }
 }

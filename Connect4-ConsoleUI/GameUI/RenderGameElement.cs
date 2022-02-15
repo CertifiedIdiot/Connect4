@@ -1,4 +1,6 @@
-﻿using Connect4_ConsoleUI.Resources;
+﻿using Connect4.Enums;
+using Connect4.Structs;
+using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
 using System.Drawing;

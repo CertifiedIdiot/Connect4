@@ -15,10 +15,10 @@ namespace Connect4.Game
         {
             PlayerOne = player1;
             PlayerOne.Name = "Player One";
-            PlayerOne.Color = Color.Red;
+            PlayerOne.Color = Owner.PlayerOne;
             PlayerTwo = player2;
             PlayerTwo.Name = "Player Two";
-            PlayerTwo.Color = Color.Yellow;
+            PlayerTwo.Color = Owner.PlayerTwo;
             ActivePlayer = PlayerOne;
         }
 
@@ -42,7 +42,7 @@ namespace Connect4.Game
         {
             for (int i = Board.GetUpperBound(1); i >= 0; i--)
             {
-                if (Board[column, i].State == Color.None) return i;
+                if (Board[column, i].State == Owner.None) return i;
             }
             return -1;
         }

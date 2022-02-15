@@ -23,7 +23,7 @@
         {
             gameWon = true;
             Console.Clear();
-            Console.WriteLine(e); // Add victory splashscreen + active name in ascii font
+            Console.WriteLine(e); // Add victory splashscreen + active player name in ascii font - JE will add it
         }
 
         ~QuickTest()
@@ -37,7 +37,7 @@
             var counter = 1;
             do
             {
-                Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position.
+                Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position. - JE will add it
                 _ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;

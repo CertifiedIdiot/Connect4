@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Connect4_ConsoleUI.GameUI;
+
+// Temp entry point for the UI
+RenderGame.Start();

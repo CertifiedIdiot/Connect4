@@ -6,7 +6,19 @@ namespace Connect4_ConsoleUI.GameUI
     internal static class RenderGame
     {
 
-        // Start => Display stuff
+        
+        internal static void Start()
+        {
+            // TODO graphical elements as separate classes instead?
+            SetConsoleSettings();
+            RenderGameElement.BackgroundTable(UIPositions.BackgroundTableXpos, UIPositions.BackgroundTableYpos, UIColours.TableColour);
+            RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
+            UIUpdatePlayerPositions();
+
+
+            //Move console exit messages further down, for testing purposes.
+            Console.SetCursorPosition(0, Console.WindowHeight - 1);
+        }
 
 
         internal static char[,] GetCharBoardArrayTest() => new char[,]
@@ -27,6 +39,14 @@ namespace Connect4_ConsoleUI.GameUI
             Console.WindowHeight += 10;
             Console.BackgroundColor = UIColours.BackgroundColour;
             Console.Clear();
+        }
+
+        /// <summary>
+        /// UI method to update the player positions on the gameboard. Temp solution.
+        /// </summary>
+        internal static void UIUpdatePlayerPositions()
+        {
+            RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
         }
     }
 }

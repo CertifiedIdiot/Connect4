@@ -5,6 +5,55 @@ namespace Connect4_ConsoleUI.UIHelpers
 {
     public static class Print
     {
+        /// <summary>
+        /// Prints a string at the chosen console row position, in colour.
+        /// </summary>
+        /// <param name="graphicsObject">The string to be printed.</param>
+        /// <param name="posY">The y position.</param>
+        /// <param name="colour">The colour.</param>
+        public static void StringAtPosition(string graphicsObject, int posY, Color colour)
+        {
+            Console.CursorTop = posY;
+            Console.WriteLine(graphicsObject, colour);
+        }
+        /// <summary>
+        /// Prints a string at the chosen console column and row position, in colour.
+        /// </summary>
+        /// <param name="graphicsObject">The string to be printed.</param>
+        /// <param name="posX">The x position.</param>
+        /// <param name="posY">The y position.</param>
+        /// <param name="colour">The colour.</param>
+        public static void StringAtPosition(string graphicsObject, int posX, int posY, Color colour)
+        {
+            Console.SetCursorPosition(posX, posY);
+            Console.WriteLine(graphicsObject, colour);
+        }
+
+        public static void StringAtPosition(string graphicsObject, int posY)
+        {
+            Console.CursorTop = posY;
+            Console.WriteLine(graphicsObject);
+        }
+
+        public static void StringAtPosition(string graphicsObject, int posX, int posY)
+        {
+            Console.SetCursorPosition(posX, posY);
+            Console.WriteLine(graphicsObject);
+        }
+
+        /// <summary>
+        /// Prints a colour gradiented string at chosen y position.
+        /// </summary>
+        /// <param name="graphicsObject">The graphics object.</param>
+        /// <param name="posY">The position y.</param>
+        /// <param name="colorA">The color a.</param>
+        /// <param name="colorB">The color b.</param>
+        public static void GradientAtPosition(string graphicsObject, int posY, Color colorA, Color colorB)
+        {
+            var charArrayed = graphicsObject.ToCharArray();
+            Console.CursorTop = posY;
+            Console.WriteWithGradient(charArrayed, colorA, colorB, 5);
+        }
         #region Print at position + overloads
         /// <summary>
         /// Prints a string array at a chosen console position. Prints each row in the array on a separate console-row.

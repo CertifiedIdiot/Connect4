@@ -1,6 +1,8 @@
-﻿using Connect4_ConsoleUI.Resources;
+﻿using Connect4.Game;
+using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
+using Connect4.Game;
 using System.Drawing;
 
 namespace Connect4_ConsoleUI.GameUI
@@ -74,5 +76,31 @@ namespace Connect4_ConsoleUI.GameUI
                 xIncrease = 0; // Reset x position to 0
             }
         }
+
+        //public static void TestPlayerPositions(char[,] boardPositions, Color playerOneColour, Color playerTwoColour)
+        //{
+        //    const int rows = 6;
+        //    const int columns = 7;
+        //    var xOffsetPosition = UIPositions.GameBoardXPos + 3;
+        //    var yOffsetPosition = UIPositions.GameBoardYPos + 1;
+        //    var xIncrease = 0; // Spaces between each icon in X
+        //    var yIncrease = 0; // Spaces between each icon in Y
+
+        //    for (int row = 0; row <= game.Board.GetUpperBound(1); row++)
+        //    {
+        //        for (int ii = 0; ii < columns; ii++)
+        //        {
+        //            if (boardPositions[i, ii] == 'x' || boardPositions[i, ii] == 'X')
+        //                Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerTwoColour);
+        //            if (boardPositions[i, ii] == 'o' || boardPositions[i, ii] == 'O')
+        //                Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
+        //            else
+        //                Print.AtPosition("", xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
+        //            xIncrease += columns;
+        //        }
+        //        yIncrease += 4; // Move 4 spaces down in y
+        //        xIncrease = 0; // Reset x position to 0
+        //    }
+        //}
     }
 }

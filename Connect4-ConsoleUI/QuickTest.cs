@@ -1,23 +1,35 @@
 ﻿namespace Connect4_ConsoleUI
 {
     using Connect4;
-    using Connect4.Enums;
     using Connect4.Game;
     using Connect4_ConsoleUI.GameUI;
-    using System;
     using Connect4_ConsoleUI.UIProperties;
+    using System;
 
     internal class QuickTest
     {
         readonly Game game;
+        bool gameWon = false;
         public QuickTest()
         {
             game = Connect4Factory.GetGame();
             game.BoardChangedEvent += Game_BoardChangedEvent;
+            game.GameWonEvent += Game_GameWonEvent;
             PrintBoard();
         }
-        ~QuickTest() => game.BoardChangedEvent -= Game_BoardChangedEvent;
 
+        private void Game_GameWonEvent(object? sender, string e)
+        {
+            gameWon = true;
+            Console.Clear();
+            Console.WriteLine(e);
+        }
+
+        ~QuickTest()
+        {
+            game.BoardChangedEvent -= Game_BoardChangedEvent;
+            game.GameWonEvent -= Game_GameWonEvent;
+        }
 
         public void Run()
         {
@@ -28,7 +40,7 @@
                 _ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;
-            } while (counter < 43);
+            } while (counter < 43 && !gameWon);
         }
         private void Game_BoardChangedEvent(object? sender, string e) => PrintBoard();
 

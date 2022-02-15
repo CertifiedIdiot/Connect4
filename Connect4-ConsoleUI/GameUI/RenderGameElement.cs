@@ -1,28 +1,19 @@
 ﻿using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Connect4_ConsoleUI.UIProperties;
+using System.Drawing;
 
 namespace Connect4_ConsoleUI.GameUI
 {
-    public class RenderGameElement
+    public static class RenderGameElement
     {
-        
         /// <summary>
         /// Prints the background table at the chosen position.
         /// </summary>
         /// <param name="posX">Horizontal position.</param>
         /// <param name="posY">Vertical position.</param>
         /// <param name="tableColour">Colour of the table.</param>
-        public static void BackgroundTable(int posX, int posY, Color tableColour)
-        {
-            Print.AtPosition(ASCIIGraphics.tableArray, posX, posY, tableColour);
-        }
+        public static void BackgroundTable(int posX, int posY, Color tableColour) => Print.AtPosition(ASCIIGraphics.tableArray, posX, posY, tableColour);
 
         /// <summary>
         /// Prints out the gameboard at the chosen position with the chosen colour.
@@ -30,10 +21,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="posX">Horizontal position.</param>
         /// <param name="posY">Vertical position.</param>
         /// <param name="gameboardColour">Colour of the gameboard</param>
-        public static void GameBoard(int posX, int posY, Color gameboardColour)
-        {
-            Print.AtPosition(ASCIIGraphics.gameboardArray, posX, posY, gameboardColour);
-        }
+        public static void GameBoard(int posX, int posY, Color gameboardColour) => Print.AtPosition(ASCIIGraphics.gameboardArray, posX, posY, gameboardColour);
 
         /// <summary>
         /// Prints out the possible "drop positions" at the chosen position. The drop positions are relative to the position of the gameboard.

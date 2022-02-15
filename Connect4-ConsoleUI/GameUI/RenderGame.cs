@@ -47,9 +47,6 @@ namespace Connect4_ConsoleUI.GameUI
         /// <summary>
         /// UI method to update the player positions on the gameboard. Temp solution.
         /// </summary>
-        internal static void UIUpdatePlayerPositions()
-        {
-            RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
-        }
+        internal static void UIUpdatePlayerPositions() => RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
     }
 }

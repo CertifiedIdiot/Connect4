@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using Console = Colorful.Console;
 
-
 namespace Connect4_ConsoleUI.UIHelpers
 {
     public static class Print
@@ -15,7 +14,6 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="PosY">Vertical Console position.</param>
         public static void AtPosition(string[] graphicsObject, int posX, int PosY)
         {
-
             for (var i = 0; i < graphicsObject.Length; i++)
             {
                 Console.SetCursorPosition(posX, PosY++);
@@ -32,7 +30,6 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="colour">The color of the string, from the Color type.</param>
         public static void AtPosition(string[] graphicsObject, int posX, int PosY, Color colour)
         {
-
             for (var i = 0; i < graphicsObject.Length; i++)
             {
                 Console.SetCursorPosition(posX, PosY++);
@@ -50,7 +47,6 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="backgroundColour">Background colour of the text.</param>
         public static void AtPosition(string[] graphicsObject, int posX, int PosY, Color color, Color backgroundColour)
         {
-
             for (var i = 0; i < graphicsObject.Length; i++)
             {
                 Console.BackgroundColor = backgroundColour;
@@ -67,7 +63,6 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="PosY">Vertical Console position.</param>
         public static void AtPosition(string graphicsObject, int posX, int PosY)
         {
-
             Console.SetCursorPosition(posX, PosY);
             Console.WriteLine(graphicsObject);
         }
@@ -81,7 +76,6 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="colour">The color of the string, from the Color type.</param>
         public static void AtPosition(string graphicsObject, int posX, int PosY, Color colour)
         {
-
             Console.SetCursorPosition(posX, PosY);
             Console.WriteLine(graphicsObject, colour);
         }
@@ -96,7 +90,6 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="backgroundColour">Background colour of the text.</param>
         public static void AtPosition(string graphicsObject, int posX, int PosY, Color color, Color backgroundColour)
         {
-
             Console.BackgroundColor = backgroundColour;
             Console.SetCursorPosition(posX, PosY);
             Console.WriteLine(graphicsObject, color);

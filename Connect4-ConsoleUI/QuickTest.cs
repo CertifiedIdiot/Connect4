@@ -3,7 +3,9 @@
     using Connect4;
     using Connect4.Enums;
     using Connect4.Game;
+    using Connect4_ConsoleUI.GameUI;
     using System;
+    using Connect4_ConsoleUI.UIProperties;
 
     internal class QuickTest
     {
@@ -32,17 +34,19 @@
 
         private void PrintBoard()
         {
-            for (int row = 0; row <= game.Board.GetUpperBound(1); row++)
-            {
-                for (int column = 0; column <= game.Board.GetUpperBound(0); column++)
-                {
-                    if (game.Board[column, row].State == Owner.None) Console.Write(".");
-                    else if (game.Board[column, row].State == Owner.PlayerOne) Console.Write("X");
-                    else Console.Write("O");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("1234567");
+            RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
+            RenderGameElement.PlayerPositions(game.Board, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+            //for (int row = 0; row <= game.Board.GetUpperBound(1); row++)
+            //{
+            //    for (int column = 0; column <= game.Board.GetUpperBound(0); column++)
+            //    {
+            //        if (game.Board[column, row].State == Owner.None) Console.Write(".");
+            //        else if (game.Board[column, row].State == Owner.PlayerOne) Console.Write("X");
+            //        else Console.Write("O");
+            //    }
+            //    Console.WriteLine();
+            //}
+            //Console.WriteLine("1234567");
         }
     }
 }

@@ -33,8 +33,6 @@ namespace Connect4_ConsoleUI.GameUI
             var xOffsetPosition = UIPositions.GameBoardXPos + 3;
             var yOffsetPosition = UIPositions.GameBoardYPos - 5;
             var playerIconPositionXIncrease = 0;
-            // var xOffsetPosition = gameboardXPos + 3; // Print relative to the position of the gameboard
-            // var yOffsetPosition = gameboardYPos - 5;
             for (int i = 0; i < playerDropPositions.Length; i++)
             {
                 if (playerDropPositions[i])
@@ -68,8 +66,8 @@ namespace Connect4_ConsoleUI.GameUI
                         Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerTwoColour);
                     if (boardPositions[i, ii] == 'o' || boardPositions[i, ii] == 'O')
                         Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
-                    if (boardPositions[i, ii] == '*')
-                        Print.AtPosition("", 33 + xIncrease, 11 + yIncrease, playerOneColour);
+                    else 
+                        Print.AtPosition("", xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
                     xIncrease += columns;
                 }
                 yIncrease += 4; // Move 4 spaces down in y

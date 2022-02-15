@@ -2,6 +2,6 @@
 using Connect4_ConsoleUI;
 
 // Temp entry point for the UI
-// RenderGame.Start();
+RenderGame.Start();
 
-new QuickTest().Run();
+//new QuickTest().Run();

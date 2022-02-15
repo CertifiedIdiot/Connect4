@@ -69,6 +69,7 @@
             "░████████████████████████████████████████████████████",
         };
 
+        // Fireworks ASCII from "lgbeard" via https://www.asciiart.eu/holiday-and-events/fireworks and modified
         public static string splashscreenFireworks = @"
                        '                                                                      ¨
     *           '*          ,                       ¨       ¨'                                          '

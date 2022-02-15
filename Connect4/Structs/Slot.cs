@@ -11,8 +11,8 @@
         /// Gets or sets the state of the slot.
         /// </summary>
         /// <value>
-        /// The state can be either none for unoccupied or yellow or red depending on wich player has placed a token in the slot.
+        /// The state can be either None for unoccupied or PlayerOne or PlayerTwo depending on wich player has placed a token in the slot.
         /// </value>
-        public Color State { get; set; }
+        public Owner State { get; set; }
     }
 }

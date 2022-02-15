@@ -4,7 +4,7 @@
     using Connect4.Interfaces;
 
     /// <summary>
-    /// Cless representing one of the two players in a Connect 4 game
+    /// Class representing one of the two players in a Connect 4 game
     /// </summary>
     public class Player : IPlayer
     {
@@ -16,11 +16,11 @@
         /// </value>
         public string Name { get; set; } = "";
         /// <summary>
-        /// Gets or sets the color of the player.
+        /// Gets or sets if the player is number one or two
         /// </summary>
         /// <value>
-        /// The color of the player.
+        /// The player number of the player.
         /// </value>
-        public Color Color { get; set; }
+        public Owner PlayerNumber { get; set; }
     }
 }

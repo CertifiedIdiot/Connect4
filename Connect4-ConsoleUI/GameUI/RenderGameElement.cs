@@ -1,4 +1,5 @@
-﻿using Connect4.Game;
+﻿using Connect4.Enums;
+using Connect4.Structs;
 using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
@@ -51,7 +52,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="boardPositions"></param>
         /// <param name="playerOneColour"></param>
         /// <param name="playerTwoColour"></param>
-        public static void PlayerPositions(char[,] boardPositions, Color playerOneColour, Color playerTwoColour)
+        public static void PlayerPositions(Slot[,] boardPositions, Color playerOneColour, Color playerTwoColour)
         {
             const int rows = 6;
             const int columns = 7;
@@ -64,12 +65,12 @@ namespace Connect4_ConsoleUI.GameUI
             {
                 for (int ii = 0; ii < columns; ii++)
                 {
-                    if (boardPositions[i, ii] == 'x' || boardPositions[i, ii] == 'X')
+                    if (boardPositions[ii, i].State == Owner.PlayerOne)
                         Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerTwoColour);
-                    if (boardPositions[i, ii] == 'o' || boardPositions[i, ii] == 'O')
+                    if (boardPositions[ii, i].State == Owner.PlayerTwo)
                         Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
-                    else 
-                        Print.AtPosition("", xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
+                    if (boardPositions[ii, i].State == Owner.None)
+                        Print.AtPosition("", 33 + xIncrease, 11 + yIncrease, playerOneColour);
                     xIncrease += columns;
                 }
                 yIncrease += 4; // Move 4 spaces down in y

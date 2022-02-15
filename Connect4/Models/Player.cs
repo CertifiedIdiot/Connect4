@@ -1,10 +1,12 @@
 ﻿namespace Connect4.Models
 {
     using Connect4.Enums;
+    using Connect4.Interfaces;
+
     /// <summary>
     /// Cless representing one of the two players in a Connect 4 game
     /// </summary>
-    public class Player
+    public class Player : IPlayer
     {
         /// <summary>
         /// Gets or sets the players name.
@@ -19,6 +21,6 @@
         /// <value>
         /// The color of the player.
         /// </value>
-        public Colors Color { get; set; }
+        public Color Color { get; set; }
     }
 }

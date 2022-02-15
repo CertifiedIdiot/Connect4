@@ -5,7 +5,7 @@
     using Connect4.Game;
     using System;
 
-    internal class QuickTest : IDisposable
+    internal class QuickTest
     {
         readonly Game game;
         public QuickTest()
@@ -14,8 +14,8 @@
             game.BoardChangedEvent += Game_BoardChangedEvent;
             PrintBoard();
         }
+        ~QuickTest() => game.BoardChangedEvent -= Game_BoardChangedEvent;
 
-        public void Dispose() => game.BoardChangedEvent -= Game_BoardChangedEvent;
 
         public void Run()
         {
@@ -36,8 +36,8 @@
             {
                 for (int column = 0; column <= game.Board.GetUpperBound(0); column++)
                 {
-                    if (game.Board[column, row].State == Color.None) Console.Write(".");
-                    else if (game.Board[column, row].State == Color.Red) Console.Write("X");
+                    if (game.Board[column, row].State == Owner.None) Console.Write(".");
+                    else if (game.Board[column, row].State == Owner.PlayerOne) Console.Write("X");
                     else Console.Write("O");
                 }
                 Console.WriteLine();

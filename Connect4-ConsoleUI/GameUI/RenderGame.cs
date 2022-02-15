@@ -28,7 +28,7 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
             RenderGameElement.PlayerDropPositions(playerDropPos, UIColours.PlayerOneColour);
 
-            UIUpdatePlayerPositions();
+            //UIUpdatePlayerPositions();
 
             //Move console exit messages further down, for testing purposes.
             Console.SetCursorPosition(0, Console.WindowHeight - 1);
@@ -47,6 +47,6 @@ namespace Connect4_ConsoleUI.GameUI
         /// <summary>
         /// UI method to update the player positions on the gameboard. Temp solution.
         /// </summary>
-        internal static void UIUpdatePlayerPositions() => RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+        //internal static void UIUpdatePlayerPositions() => RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
     }
 }

@@ -97,5 +97,22 @@ namespace Connect4_ConsoleUI.GameUI
             }
             Console.CursorVisible = true;
         }
+
+        internal static void SplashscreenStart()
+        {
+            Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
+            while (true)
+            {
+                Console.CursorVisible = false;
+                for (int i = 0; i < 5; i++)
+                {
+
+                    Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
+                    System.Threading.Thread.Sleep(100);
+                    Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
+                }
+
+            }
+        }
     }
 }

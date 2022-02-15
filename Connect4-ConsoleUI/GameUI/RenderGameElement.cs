@@ -3,6 +3,7 @@ using Connect4.Structs;
 using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
+using Connect4.Game;
 using System.Drawing;
 
 namespace Connect4_ConsoleUI.GameUI
@@ -35,8 +36,6 @@ namespace Connect4_ConsoleUI.GameUI
             var xOffsetPosition = UIPositions.GameBoardXPos + 3;
             var yOffsetPosition = UIPositions.GameBoardYPos - 5;
             var playerIconPositionXIncrease = 0;
-            // var xOffsetPosition = gameboardXPos + 3; // Print relative to the position of the gameboard
-            // var yOffsetPosition = gameboardYPos - 5;
             for (int i = 0; i < playerDropPositions.Length; i++)
             {
                 if (playerDropPositions[i])
@@ -51,9 +50,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// Prints out the coloured player positions inside of the gameboard. The positions are relative to the gameboard.
         /// </summary>
         /// <param name="boardPositions"></param>
-        /// <param name="playerOneColour"></param>
-        /// <param name="playerTwoColour"></param>
-        public static void PlayerPositions(Slot[,] boardPositions, Color playerOneColour, Color playerTwoColour)
+        public static void PlayerPositions(Slot[,] boardPositions)
         {
             const int rows = 6;
             const int columns = 7;
@@ -67,11 +64,11 @@ namespace Connect4_ConsoleUI.GameUI
                 for (int ii = 0; ii < columns; ii++)
                 {
                     if (boardPositions[ii, i].State == Owner.PlayerOne)
-                        Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerTwoColour);
+                        Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, UIColours.PlayerOneColour);
                     if (boardPositions[ii, i].State == Owner.PlayerTwo)
-                        Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, playerOneColour);
+                        Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, UIColours.PlayerTwoColour);
                     if (boardPositions[ii, i].State == Owner.None)
-                        Print.AtPosition("", 33 + xIncrease, 11 + yIncrease, playerOneColour);
+                        Print.AtPosition("", xOffsetPosition + xIncrease, yOffsetPosition + yIncrease);
                     xIncrease += columns;
                 }
                 yIncrease += 4; // Move 4 spaces down in y

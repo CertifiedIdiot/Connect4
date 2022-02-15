@@ -5,31 +5,36 @@ namespace Connect4_ConsoleUI.GameUI
 {
     internal static class RenderGame
     {
+        // TODO graphical elements as separate classes instead?
 
-        
-        internal static void Start()
-        {
-            // TODO graphical elements as separate classes instead?
-            SetConsoleSettings();
-            RenderGameElement.BackgroundTable(UIPositions.BackgroundTableXpos, UIPositions.BackgroundTableYpos, UIColours.TableColour);
-            RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
-            UIUpdatePlayerPositions();
+        // Temp solution to be able to see the possible "drop positions" of the player icons above the board. True = Displays the icon above the board.
+        internal static bool[] playerDropPos = { true, true, true, true, true, true, true };
 
-
-            //Move console exit messages further down, for testing purposes.
-            Console.SetCursorPosition(0, Console.WindowHeight - 1);
-        }
-
-
+        // The gameboard display is controlled by this array, which is supposed to be the updated/actual gameboard. Can be manually changed for now.
         internal static char[,] GetCharBoardArrayTest() => new char[,]
-    {
+        {
                 { '*','*','*','*','*','*','*'},
                 { '*','o','*','*','*','*','*'},
                 { '*','x','*','*','*','*','*'},
                 { '*','x','o','*','*','*','*'},
                 { 'o','x','x','o','*','*','*'},
                 { 'x','o','o','x','*','*','*'},
-     };
+        };
+
+        internal static void Start()
+        {
+            SetConsoleSettings();
+            RenderGameElement.BackgroundTable(UIPositions.BackgroundTableXpos, UIPositions.BackgroundTableYpos, UIColours.TableColour);
+            RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
+            RenderGameElement.PlayerDropPositions(playerDropPos, UIColours.PlayerOneColour);
+
+            UIUpdatePlayerPositions();
+
+            //Move console exit messages further down, for testing purposes.
+            Console.SetCursorPosition(0, Console.WindowHeight - 1);
+        }
+
+
 
         /// <summary>
         /// Sets the console settings. Adjusts the console height to fit the UI, and changes the console background colour.
@@ -46,7 +51,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         internal static void UIUpdatePlayerPositions()
         {
-            RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+            RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Connect4_ConsoleUI.UIHelpers
         {
             var charArrayed = graphicsObject.ToCharArray();
             Console.CursorTop = posY;
-            Console.WriteWithGradient(charArrayed, colorA, colorB, 5);
+            Console.WriteWithGradient(charArrayed, colorA, colorB, 2);
         }
         #region Print at position + overloads
         /// <summary>

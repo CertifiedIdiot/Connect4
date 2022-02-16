@@ -78,7 +78,7 @@ namespace Connect4_ConsoleUI.GameUI
             }
         }
 
-        internal static void SplashscreenDisplayWinnerName(string winnerName)
+        internal static void WinSplashscreenDisplayWinnerName(string winnerName)
         {
             Console.CursorVisible = false;
             Print.StringAtPosition("                     ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
@@ -86,10 +86,10 @@ namespace Connect4_ConsoleUI.GameUI
             Console.ReadKey();
             Console.CursorVisible = true;
         }
-        internal static void SplashscreenBackground()
+
+        internal static void WinSplashscreenBackground()
         {
             Console.CursorVisible = false;
-
             for (int i = 0; i < 5; i++)
             {
                 Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
@@ -103,8 +103,7 @@ namespace Connect4_ConsoleUI.GameUI
 
         internal static void SplashscreenStartScreen()
         {
-            // Place in first menu constructor
-            
+            // Place in first menu constructor?
             while (!Console.KeyAvailable)
             {
                 Console.CursorVisible = false;

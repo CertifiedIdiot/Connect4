@@ -15,17 +15,16 @@
             game = Connect4Factory.GetGame();
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
-            RenderGame.StartScreen(); // - Temporary place for the startscreen, to be used in future menus instead, comment out to skip intro.
+            RenderGame.StartScreen(); // TODO: Comment out to skip intro. Temporary place for the startscreen, to be used in future menus instead. Only used for testing.
             RenderGame.RenderBasicGameElements();
             UpdatePlayerPositions();
-           
         }
 
         private void Game_GameWonEvent(object? sender, string e)
         {
             gameWon = true;
             Console.Clear();
-            RenderGame.WinSplashscreen($"{game.ActivePlayer.Name} won!");           
+            RenderGame.WinSplashscreen($"{game.ActivePlayer.Name} won!");
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
 
@@ -41,8 +40,7 @@
             do
             {
                 Console.CursorVisible = false;
-                RenderGameElement.DisplayPlayerTurn(game.ActivePlayer);
-                RenderGameElement.DisplayTurnCounter(counter);
+                RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
                 //Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position. - JE will add it
                 _ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(num - 1);

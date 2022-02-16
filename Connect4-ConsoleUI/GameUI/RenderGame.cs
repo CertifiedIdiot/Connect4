@@ -30,6 +30,7 @@ namespace Connect4_ConsoleUI.GameUI
 
         internal static void WinSplashscreen(string winner)
         {
+            Console.CursorVisible = false;
             RenderGameElement.WinSplashscreenBackground();
             RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
             Console.ReadKey();

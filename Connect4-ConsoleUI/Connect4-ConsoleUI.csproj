@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.15" />
+    <PackageReference Include="Figgle" Version="0.4.0" />
   </ItemGroup>
 
   <ItemGroup>

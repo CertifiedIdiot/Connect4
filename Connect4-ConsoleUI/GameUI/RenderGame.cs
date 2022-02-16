@@ -1,4 +1,5 @@
 ﻿using Connect4_ConsoleUI.UIProperties;
+using Connect4.Interfaces;
 using Console = Colorful.Console;
 
 namespace Connect4_ConsoleUI.GameUI
@@ -8,30 +9,13 @@ namespace Connect4_ConsoleUI.GameUI
         // TODO graphical elements as separate classes instead?
 
         // Temp solution to be able to see the possible "drop positions" of the player icons above the board. True = Displays the icon above the board.
-        internal static bool[] playerDropPos = { true, false, false, false, false, false, false };
+        //internal static bool[] playerDropPos = { true, false, false, false, false, false, false };
 
-        // The gameboard display is controlled by this array, which is supposed to be the updated/actual gameboard. Can be manually changed for now.
-        internal static char[,] GetCharBoardArrayTest() => new char[,]
-        {
-                { '*','*','*','*','*','*','*'},
-                { '*','o','*','*','*','*','*'},
-                { '*','x','*','*','*','*','*'},
-                { '*','x','o','*','*','*','*'},
-                { 'o','x','x','o','*','*','*'},
-                { 'x','o','o','x','*','*','*'},
-        };
-
-        internal static void Start()
+        internal static void RenderBasicGameElements()
         {
             SetConsoleSettings();
             RenderGameElement.BackgroundTable(UIPositions.BackgroundTableXpos, UIPositions.BackgroundTableYpos, UIColours.TableColour);
             RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
-            RenderGameElement.PlayerDropPositions(playerDropPos, UIColours.PlayerOneColour);
-
-            //UIUpdatePlayerPositions();
-
-            //Move console exit messages further down, for testing purposes.
-            Console.SetCursorPosition(0, Console.WindowHeight - 1);
         }
 
         /// <summary>
@@ -39,14 +23,30 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         internal static void SetConsoleSettings()
         {
-            Console.WindowHeight += 10;
+            Console.WindowHeight = 40;
             Console.BackgroundColor = UIColours.BackgroundColour;
             Console.Clear();
         }
 
-        /// <summary>
-        /// UI method to update the player positions on the gameboard. Temp solution.
-        /// </summary>
-        //internal static void UIUpdatePlayerPositions() => RenderGameElement.PlayerPositions(GetCharBoardArrayTest(), UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+        internal static void WinSplashscreen(string winner)
+        {
+            Console.CursorVisible = false;
+            RenderGameElement.WinSplashscreenBackground();
+            RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
+            Console.ReadKey();
+            new QuickTest().Run(); // TODO: Comment out this to prevent restart after splashscreen, only used for testing
+        }
+
+        internal static void StartScreen()
+        {
+            SetConsoleSettings();
+            RenderGameElement.SplashscreenStartScreen();
+        }
+
+        internal static void RenderLeftInfoBox(int counter, IPlayer player)
+        {
+            RenderGameElement.DisplayPlayerTurn(player);
+            RenderGameElement.DisplayTurnCounter(counter);
+        }
     }
 }

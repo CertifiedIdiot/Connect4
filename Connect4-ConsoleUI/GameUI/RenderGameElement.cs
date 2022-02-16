@@ -103,16 +103,14 @@ namespace Connect4_ConsoleUI.GameUI
 
         internal static void SplashscreenStartScreen()
         {
-            Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
-            while (true)
+            // Place in first menu constructor
+            
+            while (!Console.KeyAvailable)
             {
                 Console.CursorVisible = false;
-                for (int i = 0; i < 5; i++)
-                {
-                    Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
-                    System.Threading.Thread.Sleep(100);
-                    Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
-                }
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
+                System.Threading.Thread.Sleep(100);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);  
             }
         }
 

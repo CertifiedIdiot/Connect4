@@ -27,12 +27,18 @@ namespace Connect4_ConsoleUI.GameUI
             Console.Clear();
         }
 
-        internal static void RenderSplashscreen(string winner)
+        internal static void WinSplashscreen(string winner)
         {
             RenderGameElement.SplashscreenBackground();
             RenderGameElement.SplashscreenDisplayWinnerName(winner);
             Console.ReadKey();
             //new QuickTest().Run(); - restart after splashscreen, temp for testing
+        }
+
+        internal static void StartScreen()
+        {
+            SetConsoleSettings();
+            RenderGameElement.SplashscreenStartScreen();
         }
     }
 }

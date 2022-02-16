@@ -15,16 +15,17 @@
             game = Connect4Factory.GetGame();
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
+            RenderGame.StartScreen(); // - Temporary place for the startscreen, to be used in future menus instead, comment out to skip intro.
             RenderGame.RenderBasicGameElements();
             UpdatePlayerPositions();
+           
         }
 
         private void Game_GameWonEvent(object? sender, string e)
         {
             gameWon = true;
             Console.Clear();
-            //Console.WriteLine(e); // Add victory splashscreen + active player name in ascii font - JE will add it
-            RenderGame.RenderSplashscreen($"{game.ActivePlayer.Name} won!");           
+            RenderGame.WinSplashscreen($"{game.ActivePlayer.Name} won!");           
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
 

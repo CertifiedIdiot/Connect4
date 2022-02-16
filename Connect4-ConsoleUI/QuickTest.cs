@@ -6,6 +6,7 @@
     using Connect4_ConsoleUI.GameUI;
     using Connect4_ConsoleUI.UIProperties;
     using System;
+    using System.Data.Common;
 
     internal class QuickTest
     {
@@ -16,14 +17,17 @@
             game = Connect4Factory.GetGame(network,goFirst);
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
-            PrintBoard();
+            RenderGame.StartScreen(); // TODO: Comment out to skip intro. Temporary place for the startscreen, to be used in future menus instead. Only used for testing.
+            RenderGame.RenderBasicGameElements();
+            UpdatePlayerPositions();
         }
 
         private void Game_GameWonEvent(object? sender, string e)
         {
             gameWon = true;
             Console.Clear();
-            Console.WriteLine(e);
+            RenderGame.WinSplashscreen($"{game.ActivePlayer.Name} won!");
+            Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
 
         ~QuickTest()
@@ -35,31 +39,21 @@
         public void Run()
         {
             var counter = 1;
+            var topMessage = " pick a column below:";
             do
             {
-                Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: ");
+                Console.CursorVisible = false;
+                RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
+                RenderGameElement.DisplayColumnNumbers();
+                RenderGameElement.DisplayTopMessage(game.ActivePlayer.Name + topMessage);
                 _ = int.TryParse(Console.ReadLine(), out int num);
+                RenderGameElement.ClearNumber(game.ActivePlayer.Name + topMessage);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;
             } while (counter < 43 && !gameWon);
         }
-        private void Game_BoardChangedEvent(object? sender, string e) => PrintBoard();
+        private void Game_BoardChangedEvent(object? sender, string e) => UpdatePlayerPositions();
 
-        private void PrintBoard()
-        {
-            RenderGameElement.GameBoard(UIPositions.GameBoardXPos, UIPositions.GameBoardYPos, UIColours.GameboardColour);
-            RenderGameElement.PlayerPositions(game.Board, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
-            //for (int row = 0; row <= game.Board.GetUpperBound(1); row++)
-            //{
-            //    for (int column = 0; column <= game.Board.GetUpperBound(0); column++)
-            //    {
-            //        if (game.Board[column, row].State == Owner.None) Console.Write(".");
-            //        else if (game.Board[column, row].State == Owner.PlayerOne) Console.Write("X");
-            //        else Console.Write("O");
-            //    }
-            //    Console.WriteLine();
-            //}
-            //Console.WriteLine("1234567");
-        }
+        private void UpdatePlayerPositions() => RenderGameElement.PlayerPositions(game.Board);
     }
 }

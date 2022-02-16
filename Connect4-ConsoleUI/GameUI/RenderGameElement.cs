@@ -115,23 +115,46 @@ namespace Connect4_ConsoleUI.GameUI
 
         internal static void DisplayPlayerTurn(IPlayer player)
         {
-            const int yOffset = -1;
+            int yOffset = UIPositions.GameBoardYPos - 1;
             var playerOneAscii = FiggleFonts.Standard.Render("           P1    ");
             var playerTwoAscii = FiggleFonts.Standard.Render("           P2");
             if (player.PlayerNumber == Owner.PlayerOne)
                 //Print.StringAtPosition(ASCIIGraphics.playerOneP1Alt, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerOneColour);
-                Print.StringAtPosition(playerOneAscii, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerOneColour);
+                Print.StringAtPosition(playerOneAscii, yOffset, UIColours.PlayerOneColour);
             if (player.PlayerNumber == Owner.PlayerTwo)
                 //Print.StringAtPosition(ASCIIGraphics.playerTwoP2Alt, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerTwoColour);
-                Print.StringAtPosition(playerTwoAscii, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerTwoColour);
+                Print.StringAtPosition(playerTwoAscii, yOffset, UIColours.PlayerTwoColour);
         }
 
         internal static void DisplayTurnCounter(int gameTurn)
         {
-            const int yOffset = +5;
+            int yOffset = UIPositions.GameBoardYPos + 5;
             var stringGameTurn = gameTurn.ToString();
             var gameTurnAscii = FiggleFonts.Standard.Render($"           {stringGameTurn}     ");
-            Print.StringAtPosition(gameTurnAscii, UIPositions.GameBoardYPos + yOffset, UIColours.GameboardColour);
+            Print.StringAtPosition(gameTurnAscii, yOffset, UIColours.GameboardColour);
+        }
+        internal static void DisplayTopMessage(string text)
+        {
+            // Misc message, wip
+            int xOffset = UIPositions.GameBoardXPos + 1;
+            int yOffset = UIPositions.GameBoardYPos -5;
+            Print.StringAtPosition(text, xOffset, yOffset);
+        }
+
+        // Print selected number above corresponding column
+        internal static void DisplayChosenColumn(int num)
+        {
+            int xOffset = UIPositions.GameBoardXPos + 3;
+            int yOffset = UIPositions.GameBoardYPos + -2;
+
+            if (num.ToString() == "1")      Print.StringAtPosition("1", xOffset, yOffset);
+            else if (num.ToString() == "2") Print.StringAtPosition("2", xOffset + 7, yOffset);
+            else if (num.ToString() == "3") Print.StringAtPosition("3", xOffset + 14, yOffset);
+            else if (num.ToString() == "4") Print.StringAtPosition("4", xOffset + 21, yOffset);
+            else if (num.ToString() == "5") Print.StringAtPosition("5", xOffset + 28, yOffset);
+            else if (num.ToString() == "6") Print.StringAtPosition("6", xOffset + 35, yOffset);
+            else if (num.ToString() == "7") Print.StringAtPosition("7", xOffset + 42, yOffset);
+            
         }
     }
 }

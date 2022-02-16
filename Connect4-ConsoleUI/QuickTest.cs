@@ -41,7 +41,7 @@
             {
                 Console.CursorVisible = false;
                 RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
-                //Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position. - JE will add it
+                RenderGameElement.DisplayTopMessage($"{game.ActivePlayer.Name}, pick a column below:"); // Display choice of number above chosen column, somehow
                 _ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;

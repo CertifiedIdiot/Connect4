@@ -41,6 +41,7 @@
             var topMessage = " pick a column below:";
             do
             {
+                // TODO: Clean out Run() and move RenderGameElement stuff into a better place
                 Console.CursorVisible = false;
                 RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
                 RenderGameElement.DisplayColumnNumbers();

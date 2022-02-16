@@ -54,6 +54,12 @@ namespace Connect4_ConsoleUI.UIHelpers
             Console.CursorTop = posY;
             Console.WriteWithGradient(charArrayed, colorA, colorB, 2);
         }
+        public static void GradientAtPosition(string graphicsObject, int posY, Color colorA, Color colorB, int gradient)
+        {
+            var charArrayed = graphicsObject.ToCharArray();
+            Console.CursorTop = posY;
+            Console.WriteWithGradient(charArrayed, colorA, colorB, gradient);
+        }
         #region Print at position + overloads
         /// <summary>
         /// Prints a string array at a chosen console position. Prints each row in the array on a separate console-row.

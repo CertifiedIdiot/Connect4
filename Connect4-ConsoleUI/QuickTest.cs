@@ -5,6 +5,7 @@
     using Connect4_ConsoleUI.GameUI;
     using Connect4_ConsoleUI.UIProperties;
     using System;
+    using System.Data.Common;
 
     internal class QuickTest
     {
@@ -37,12 +38,15 @@
         public void Run()
         {
             var counter = 1;
+            var topMessage = " pick a column below:";
             do
             {
                 Console.CursorVisible = false;
                 RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
-                RenderGameElement.DisplayTopMessage($"{game.ActivePlayer.Name}, pick a column below:"); // Display choice of number above chosen column, somehow
+                RenderGameElement.DisplayColumnNumbers();
+                RenderGameElement.DisplayTopMessage(game.ActivePlayer.Name + topMessage);
                 _ = int.TryParse(Console.ReadLine(), out int num);
+                RenderGameElement.ClearNumber(game.ActivePlayer.Name + topMessage);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;
             } while (counter < 43 && !gameWon);

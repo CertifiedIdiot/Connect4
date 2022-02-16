@@ -8,37 +8,37 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <summary>
         /// Prints a string at the chosen console row position, in colour.
         /// </summary>
-        /// <param name="graphicsObject">The string to be printed.</param>
+        /// <param name="text">The string to be printed.</param>
         /// <param name="posY">The y position.</param>
         /// <param name="colour">The colour.</param>
-        public static void StringAtPosition(string graphicsObject, int posY, Color colour)
+        public static void StringAtPosition(string text, int posY, Color colour)
         {
             Console.CursorTop = posY;
-            Console.WriteLine(graphicsObject, colour);
+            Console.WriteLine(text, colour);
         }
         /// <summary>
         /// Prints a string at the chosen console column and row position, in colour.
         /// </summary>
-        /// <param name="graphicsObject">The string to be printed.</param>
+        /// <param name="text">The string to be printed.</param>
         /// <param name="posX">The x position.</param>
         /// <param name="posY">The y position.</param>
         /// <param name="colour">The colour.</param>
-        public static void StringAtPosition(string graphicsObject, int posX, int posY, Color colour)
+        public static void StringAtPosition(string text, int posX, int posY, Color colour)
         {
             Console.SetCursorPosition(posX, posY);
-            Console.WriteLine(graphicsObject, colour);
+            Console.WriteLine(text, colour);
         }
 
-        public static void StringAtPosition(string graphicsObject, int posY)
+        public static void StringAtPosition(string text, int posY)
         {
             Console.CursorTop = posY;
-            Console.WriteLine(graphicsObject);
+            Console.WriteLine(text);
         }
 
-        public static void StringAtPosition(string graphicsObject, int posX, int posY)
+        public static void StringAtPosition(string text, int posX, int posY)
         {
             Console.SetCursorPosition(posX, posY);
-            Console.WriteLine(graphicsObject);
+            Console.WriteLine(text);
         }
 
         /// <summary>

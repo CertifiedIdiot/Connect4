@@ -22,7 +22,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         internal static void SetConsoleSettings()
         {
-            Console.WindowHeight += 10;
+            Console.WindowHeight = 40;
             Console.BackgroundColor = UIColours.BackgroundColour;
             Console.Clear();
         }
@@ -30,7 +30,9 @@ namespace Connect4_ConsoleUI.GameUI
         internal static void RenderSplashscreen(string winner)
         {
             RenderGameElement.SplashscreenBackground();
-            RenderGameElement.SplashscreenWinner(winner);
+            RenderGameElement.SplashscreenDisplayWinnerName(winner);
+            Console.ReadKey();
+            //new QuickTest().Run(); - restart after splashscreen, temp for testing
         }
     }
 }

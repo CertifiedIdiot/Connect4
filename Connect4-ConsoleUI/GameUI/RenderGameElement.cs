@@ -76,7 +76,7 @@ namespace Connect4_ConsoleUI.GameUI
             }
         }
 
-        internal static void SplashscreenWinner(string winnerName)
+        internal static void SplashscreenDisplayWinnerName(string winnerName)
         {
             Console.CursorVisible = false;
             Print.GradientAtPosition(FiggleFonts.Standard.Render("                     "+winnerName), 12, Color.Black, Color.Red);
@@ -98,7 +98,7 @@ namespace Connect4_ConsoleUI.GameUI
             Console.CursorVisible = true;
         }
 
-        internal static void SplashscreenStart()
+        internal static void SplashscreenStartScreen()
         {
             Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
             while (true)
@@ -106,12 +106,10 @@ namespace Connect4_ConsoleUI.GameUI
                 Console.CursorVisible = false;
                 for (int i = 0; i < 5; i++)
                 {
-
                     Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
                     System.Threading.Thread.Sleep(100);
                     Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
                 }
-
             }
         }
     }

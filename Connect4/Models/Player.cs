@@ -22,5 +22,6 @@
         /// The player number of the player.
         /// </value>
         public Owner PlayerNumber { get; set; }
+        public bool PlayerOneStarts { get; set; }
     }
 }

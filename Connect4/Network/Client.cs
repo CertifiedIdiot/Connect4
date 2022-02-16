@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Connect4.Network
 {
-    public class Client
+    public class Client : INetwork
     {
         public string IP { get; set; } = string.Empty;
         private int dataByteCount { get; set; }
@@ -14,7 +14,7 @@ namespace Connect4.Network
         private Socket remoteServer;
         private IPEndPoint remoteServerPpep;
 
-        public Client(string IP)
+        public Client(string IP="")
         {
             this.IP = IP;
         }

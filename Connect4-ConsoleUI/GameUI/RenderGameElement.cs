@@ -1,7 +1,9 @@
 ﻿using Connect4.Enums;
+using Connect4.Interfaces;
 using Connect4.Structs;
 using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
+using Connect4_ConsoleUI.Helpers;
 using Connect4_ConsoleUI.UIProperties;
 using Figgle;
 using System.Drawing;
@@ -76,17 +78,18 @@ namespace Connect4_ConsoleUI.GameUI
             }
         }
 
-        internal static void SplashscreenWinner(string winnerName)
+        internal static void WinSplashscreenDisplayWinnerName(string winnerName)
         {
             Console.CursorVisible = false;
-            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     "+winnerName), 12, Color.Black, Color.Red);
+            Print.StringAtPosition("                     ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
+            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, Color.Black, Color.Red);
             Console.ReadKey();
             Console.CursorVisible = true;
         }
-        internal static void SplashscreenBackground()
+
+        internal static void WinSplashscreenBackground()
         {
             Console.CursorVisible = false;
-
             for (int i = 0; i < 5; i++)
             {
                 Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
@@ -96,6 +99,62 @@ namespace Connect4_ConsoleUI.GameUI
                 System.Threading.Thread.Sleep(50);
             }
             Console.CursorVisible = true;
+        }
+
+        internal static void SplashscreenStartScreen()
+        {
+            // Place in first menu constructor?
+            while (!Console.KeyAvailable)
+            {
+                Console.CursorVisible = false;
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
+                System.Threading.Thread.Sleep(100);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);  
+            }
+        }
+
+        internal static void DisplayPlayerTurn(IPlayer player)
+        {
+            int yOffset = UIPositions.GameBoardYPos - 1;
+            var playerOneAscii = FiggleFonts.Standard.Render("           P1    ");
+            var playerTwoAscii = FiggleFonts.Standard.Render("           P2");
+            if (player.PlayerNumber == Owner.PlayerOne)
+                //Print.StringAtPosition(ASCIIGraphics.playerOneP1Alt, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerOneColour);
+                Print.StringAtPosition(playerOneAscii, yOffset, UIColours.PlayerOneColour);
+            if (player.PlayerNumber == Owner.PlayerTwo)
+                //Print.StringAtPosition(ASCIIGraphics.playerTwoP2Alt, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerTwoColour);
+                Print.StringAtPosition(playerTwoAscii, yOffset, UIColours.PlayerTwoColour);
+        }
+
+        internal static void DisplayTurnCounter(int gameTurn)
+        {
+            int yOffset = UIPositions.GameBoardYPos + 5;
+            var stringGameTurn = gameTurn.ToString();
+            var gameTurnAscii = FiggleFonts.Standard.Render($"           {stringGameTurn}     ");
+            Print.StringAtPosition(gameTurnAscii, yOffset, UIColours.GameboardColour);
+        }
+        internal static void DisplayTopMessage(string text)
+        {
+            // Misc message, wip
+            int xOffset = UIPositions.GameBoardXPos + 1;
+            int yOffset = UIPositions.GameBoardYPos -5;
+            Print.StringAtPosition(text, xOffset, yOffset);
+        }
+
+        // Print selected number above corresponding column
+        internal static void DisplayChosenColumn(int num)
+        {
+            int xOffset = UIPositions.GameBoardXPos + 3;
+            int yOffset = UIPositions.GameBoardYPos + -2;
+
+            if (num.ToString() == "1")      Print.StringAtPosition("1", xOffset, yOffset);
+            else if (num.ToString() == "2") Print.StringAtPosition("2", xOffset + 7, yOffset);
+            else if (num.ToString() == "3") Print.StringAtPosition("3", xOffset + 14, yOffset);
+            else if (num.ToString() == "4") Print.StringAtPosition("4", xOffset + 21, yOffset);
+            else if (num.ToString() == "5") Print.StringAtPosition("5", xOffset + 28, yOffset);
+            else if (num.ToString() == "6") Print.StringAtPosition("6", xOffset + 35, yOffset);
+            else if (num.ToString() == "7") Print.StringAtPosition("7", xOffset + 42, yOffset);
+            
         }
     }
 }

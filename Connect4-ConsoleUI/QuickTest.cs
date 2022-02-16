@@ -15,6 +15,7 @@
             game = Connect4Factory.GetGame();
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
+            RenderGame.StartScreen(); // TODO: Comment out to skip intro. Temporary place for the startscreen, to be used in future menus instead. Only used for testing.
             RenderGame.RenderBasicGameElements();
             UpdatePlayerPositions();
         }
@@ -23,9 +24,7 @@
         {
             gameWon = true;
             Console.Clear();
-            //Console.WriteLine(e); // Add victory splashscreen + active player name in ascii font - JE will add it
-            RenderGame.RenderSplashscreen($"{game.ActivePlayer.Name} won!");
-           
+            RenderGame.WinSplashscreen($"{game.ActivePlayer.Name} won!");
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
 
@@ -40,7 +39,9 @@
             var counter = 1;
             do
             {
-                Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position. - JE will add it
+                Console.CursorVisible = false;
+                RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
+                RenderGameElement.DisplayTopMessage($"{game.ActivePlayer.Name}, pick a column below:"); // Display choice of number above chosen column, somehow
                 _ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;

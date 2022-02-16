@@ -1,4 +1,5 @@
 ﻿using Connect4_ConsoleUI.UIProperties;
+using Connect4.Interfaces;
 using Console = Colorful.Console;
 
 namespace Connect4_ConsoleUI.GameUI
@@ -22,15 +23,29 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         internal static void SetConsoleSettings()
         {
-            Console.WindowHeight += 10;
+            Console.WindowHeight = 40;
             Console.BackgroundColor = UIColours.BackgroundColour;
             Console.Clear();
         }
 
-        internal static void RenderSplashscreen(string winner)
+        internal static void WinSplashscreen(string winner)
         {
-            RenderGameElement.SplashscreenBackground();
-            RenderGameElement.SplashscreenWinner(winner);
+            RenderGameElement.WinSplashscreenBackground();
+            RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
+            Console.ReadKey();
+            new QuickTest().Run(); // TODO: Comment out this to prevent restart after splashscreen, only used for testing
+        }
+
+        internal static void StartScreen()
+        {
+            SetConsoleSettings();
+            RenderGameElement.SplashscreenStartScreen();
+        }
+
+        internal static void RenderLeftInfoBox(int counter, IPlayer player)
+        {
+            RenderGameElement.DisplayPlayerTurn(player);
+            RenderGameElement.DisplayTurnCounter(counter);
         }
     }
 }

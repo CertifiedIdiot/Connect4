@@ -1,26 +1,27 @@
 ﻿using Connect4.Enums;
 using Connect4.Interfaces;
+using Connect4.Models;
+using Connect4.Network;
 using Connect4.Structs;
 
 namespace Connect4.Game
 {
     public class Game
     {
+        private readonly INetwork network;
         public event EventHandler<string> BoardChangedEvent;
         public event EventHandler<string> GameWonEvent;
         public IPlayer PlayerOne { get; set; }
         public IPlayer PlayerTwo { get; set; }
         public Slot[,] Board { get; set; } = new Slot[7, 6];
         public IPlayer ActivePlayer { get; set; }
-        public Game(IPlayer player1, IPlayer player2)
+        public Game(INetwork network, bool goFirst)
         {
-            PlayerOne = player1;
-            PlayerOne.Name = "Player One";
-            PlayerOne.PlayerNumber = Owner.PlayerOne;
-            PlayerTwo = player2;
-            PlayerTwo.Name = "Player Two";
-            PlayerTwo.PlayerNumber = Owner.PlayerTwo;
+            this.network = network;
+            PlayerOne = Connect4Factory.GetPlayer("player1", Owner.PlayerOne);
+            PlayerTwo = Connect4Factory.GetPlayer("player2", Owner.PlayerTwo);
             ActivePlayer = PlayerOne;
+            if (!goFirst) RecieveGameState();
         }
 
         public bool MakeMove(int column)
@@ -34,12 +35,28 @@ namespace Connect4.Game
                     BoardChangedEvent?.Invoke(this, $"{ActivePlayer.Name} placed a token.");
                     var gameWon = CheckForFour();
                     ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
+                    if (network != null) SendGameState();
                     return true;
                 }
             }
             return false;
         }
+        private void SendGameState()
+        {
+            var json = JsonHandler.Serialize(new GameState() { PlayerOnesTurn = ActivePlayer == PlayerOne, Board = Board });
+            network.Send(json);
+            RecieveGameState();
+        }
 
+        private void RecieveGameState()
+        {
+            Console.WriteLine("Waiting for opponent...");
+            var json = network.Receive();
+            var gameState = JsonHandler.Deserialize<GameState>(json);
+            ActivePlayer = gameState.PlayerOnesTurn ? PlayerOne : PlayerTwo;
+            Board = gameState.Board;
+            BoardChangedEvent?.Invoke(this, "recived gameState");
+        }
         private bool CheckForFour() => CheckDirection(1, 0)
             || CheckDirection(1, 1)
             || CheckDirection(0, 1)

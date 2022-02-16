@@ -4,4 +4,5 @@ using Connect4_ConsoleUI;
 // Temp entry point for the UI
 // RenderGame.Start();
 
-new QuickTest().Run();
+//new QuickTest(null).Run();
+new NetworkSetup().Run();

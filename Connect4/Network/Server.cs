@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Connect4.Network
 {
-    public class Server
+    public class Server:INetwork
     {
         public string IP { get; set; } = string.Empty;
         private int dataByteCount { get; set; }
@@ -16,7 +16,7 @@ namespace Connect4.Network
         private IPEndPoint remoteClientIPep;
         private Socket newSocket;
 
-        public Server(string IP)
+        public Server(string IP = "")
         {
             this.IP = IP;
         }

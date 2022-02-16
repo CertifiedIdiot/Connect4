@@ -122,7 +122,6 @@ namespace Connect4_ConsoleUI.GameUI
             int yOffset = UIPositions.GameBoardYPos - 8;
             Print.StringAtPosition(text, xOffset, yOffset);
             Console.SetCursorPosition(xOffset + 39, yOffset);
-
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// <summary>
         /// Displays the column numbers above the gameboard.
         /// </summary>
-        internal static void DisplayColumnNumbers() 
+        internal static void DisplayColumnNumbers()
         {
             int xOffset = UIPositions.GameBoardXPos + 3;
             int yOffset = UIPositions.GameBoardYPos - 6;

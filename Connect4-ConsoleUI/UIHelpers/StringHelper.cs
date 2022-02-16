@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Connect4_ConsoleUI.Helpers
 {
-    public static class String
+    public static class StringHelper
     {
-        
+
     }
 }

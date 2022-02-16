@@ -16,7 +16,7 @@
         /// <returns>A Connect4 Game object.</returns>
         public static Game.Game GetGame(INetwork network,bool goFirst) => new(network,goFirst);
         public static IPlayer GetPlayer(string name="",Owner number=Owner.None) => new Player() { Name=name,PlayerNumber=number};
-        public static Server GetServer() => new Server();
-        public static Client GetClient() => new Client();
+        public static INetwork GetServer() => new Server();
+        public static INetwork GetClient() => new Client();
     }
 }

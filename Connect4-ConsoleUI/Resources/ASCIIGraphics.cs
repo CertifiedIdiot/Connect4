@@ -70,7 +70,7 @@
         };
 
         // Fireworks ASCII from "lgbeard" via https://www.asciiart.eu/holiday-and-events/fireworks and modified
-        public static string splashscreenFireworks = @"
+        internal static string splashscreenFireworks = @"
                        '                                                                      ¨
     *           '*          ,                       ¨       ¨'                                          '
         '                                  ,                               '              ,           
@@ -109,7 +109,7 @@
                  ,   .'                      .       '                                               .       '  
                                                                                 *           '´,   ";
 
-        public static string connect4string = @"
+        internal static string connect4string = @"
          ________      ________      ________       ________       _______       ________      _________   
         |\   ____\    |\   __  \    |\   ___  \    |\   ___  \    |\  ___ \     |\   ____\    |\___   ___\ 
         \ \  \___|    \ \  \|\  \   \ \  \\ \  \   \ \  \\ \  \   \ \   __/|    \ \  \___|    \|___ \  \_| 
@@ -128,5 +128,39 @@
                                                                  \ \__\                                    
                                                                   \|__|                                    
                                                                           ";
+        internal static string playerOneP1 = @"
+             /$$$$$$$    /$$    
+            | $$__  $$ /$$$$     
+            | $$  \ $$|_  $$      
+            | $$$$$$$/  | $$     
+            | $$____/   | $$     
+            | $$        | $$     
+            | $$       /$$$$$$   
+            |__/      |______/    ";
+        internal static string playerTwoP2 = @"
+             /$$$$$$$   /$$$$$$ 
+            | $$__  $$ /$$__  $$
+            | $$  \ $$|__/  \ $$
+            | $$$$$$$/  /$$$$$$/
+            | $$____/  /$$____/ 
+            | $$      | $$      
+            | $$      | $$$$$$$$
+            |__/      |________/
+                                ";
+
+        internal static string playerOneP1Alt = @"
+            ██████╗  ██╗     
+            ██╔══██╗███║     
+            ██████╔╝╚██║     
+            ██╔═══╝  ██║     
+            ██║      ██║     
+            ╚═╝      ╚═╝     ";
+        internal static string playerTwoP2Alt = @"
+            ██████╗ ██████╗ 
+            ██╔══██╗╚════██╗
+            ██████╔╝ █████╔╝
+            ██╔═══╝ ██╔═══╝ 
+            ██║     ███████╗
+            ╚═╝     ╚══════╝";
     }
 }

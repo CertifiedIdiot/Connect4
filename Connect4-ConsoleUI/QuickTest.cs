@@ -24,8 +24,7 @@
             gameWon = true;
             Console.Clear();
             //Console.WriteLine(e); // Add victory splashscreen + active player name in ascii font - JE will add it
-            RenderGame.RenderSplashscreen($"{game.ActivePlayer.Name} won!");
-           
+            RenderGame.RenderSplashscreen($"{game.ActivePlayer.Name} won!");           
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
 
@@ -40,7 +39,10 @@
             var counter = 1;
             do
             {
-                Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position. - JE will add it
+                Console.CursorVisible = false;
+                RenderGameElement.DisplayPlayerTurn(game.ActivePlayer);
+                RenderGameElement.DisplayTurnCounter(counter);
+                //Console.Write($"(Move: {counter}){game.ActivePlayer.Name}, enter a column: "); // Move into a "make a move" messagebox at certain position. - JE will add it
                 _ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(num - 1);
                 if (validMove) counter++;

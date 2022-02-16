@@ -1,7 +1,9 @@
 ﻿using Connect4.Enums;
+using Connect4.Interfaces;
 using Connect4.Structs;
 using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
+using Connect4_ConsoleUI.Helpers;
 using Connect4_ConsoleUI.UIProperties;
 using Figgle;
 using System.Drawing;
@@ -79,7 +81,8 @@ namespace Connect4_ConsoleUI.GameUI
         internal static void SplashscreenDisplayWinnerName(string winnerName)
         {
             Console.CursorVisible = false;
-            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     "+winnerName), 12, Color.Black, Color.Red);
+            Print.StringAtPosition("                     ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
+            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, Color.Black, Color.Red);
             Console.ReadKey();
             Console.CursorVisible = true;
         }
@@ -111,6 +114,27 @@ namespace Connect4_ConsoleUI.GameUI
                     Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
                 }
             }
+        }
+
+        internal static void DisplayPlayerTurn(IPlayer player)
+        {
+            const int yOffset = -1;
+            var playerOneAscii = FiggleFonts.Standard.Render("           P1    ");
+            var playerTwoAscii = FiggleFonts.Standard.Render("           P2");
+            if (player.PlayerNumber == Owner.PlayerOne)
+                //Print.StringAtPosition(ASCIIGraphics.playerOneP1Alt, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerOneColour);
+                Print.StringAtPosition(playerOneAscii, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerOneColour);
+            if (player.PlayerNumber == Owner.PlayerTwo)
+                //Print.StringAtPosition(ASCIIGraphics.playerTwoP2Alt, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerTwoColour);
+                Print.StringAtPosition(playerTwoAscii, UIPositions.GameBoardYPos + yOffset, UIColours.PlayerTwoColour);
+        }
+
+        internal static void DisplayTurnCounter(int gameTurn)
+        {
+            const int yOffset = +5;
+            var stringGameTurn = gameTurn.ToString();
+            var gameTurnAscii = FiggleFonts.Standard.Render($"           {stringGameTurn}     ");
+            Print.StringAtPosition(gameTurnAscii, UIPositions.GameBoardYPos + yOffset, UIColours.GameboardColour);
         }
     }
 }

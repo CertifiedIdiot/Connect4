@@ -8,9 +8,9 @@ namespace Connect4_ConsoleUI.GameUI
     {
         // TODO graphical elements as separate classes instead?
 
-        // Temp solution to be able to see the possible "drop positions" of the player icons above the board. True = Displays the icon above the board.
-        //internal static bool[] playerDropPos = { true, false, false, false, false, false, false };
-
+        /// <summary>
+        /// Renders the basic game elements. The gameboard, the table, and adjusts the console.
+        /// </summary>
         internal static void RenderBasicGameElements()
         {
             SetConsoleSettings();

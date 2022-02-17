@@ -12,6 +12,7 @@ namespace Connect4.Game
         private readonly INetwork network;
         public event EventHandler<string> BoardChangedEvent;
         public event EventHandler<string> GameWonEvent;
+        public Owner InstanceId { get; private set; }
         public IPlayer PlayerOne { get; set; }
         public IPlayer PlayerTwo { get; set; }
         public Slot[,] Board { get; set; } = new Slot[7, 6];
@@ -22,7 +23,23 @@ namespace Connect4.Game
             PlayerOne = Connect4Factory.GetPlayer("player1", Owner.PlayerOne);
             PlayerTwo = Connect4Factory.GetPlayer("player2", Owner.PlayerTwo);
             ActivePlayer = PlayerOne;
-            if (!goFirst) RecieveGameState();
+            InstanceId = goFirst ? Owner.PlayerOne : Owner.PlayerTwo;
+        }
+
+        public void SetupNewGame()
+        {
+            Board = new Slot[7, 6];
+            if (gameWonBy != Owner.None)
+            {
+                ActivePlayer = gameWonBy == Owner.PlayerOne ? PlayerTwo : PlayerOne;
+                gameWonBy = Owner.None;
+            }
+            BoardChangedEvent?.Invoke(this, "New game.");
+            
+        }
+        public void Start()
+        {
+            if (network != null && ActivePlayer.PlayerNumber != InstanceId) RecieveGameState();
         }
 
         public bool MakeMove(int column)

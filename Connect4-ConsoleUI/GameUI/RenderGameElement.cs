@@ -3,7 +3,6 @@ using Connect4.Interfaces;
 using Connect4.Structs;
 using Connect4_ConsoleUI.Resources;
 using Connect4_ConsoleUI.UIHelpers;
-using Connect4_ConsoleUI.Helpers;
 using Connect4_ConsoleUI.UIProperties;
 using Figgle;
 using System.Drawing;
@@ -149,7 +148,7 @@ namespace Connect4_ConsoleUI.GameUI
         {
             int xOffset = UIPositions.GameBoardXPos + 3;
             int yOffset = UIPositions.GameBoardYPos - 6;
-            Console.SetCursorPosition(xOffset,yOffset);
+            Console.SetCursorPosition(xOffset, yOffset);
             //Print.GradientAtPosition(ASCIIGraphics.columnNumbers, yOffset, UIColours.PlayerOneColour, UIColours.PlayerTwoColour, 10);
             Print.StringAtPosition(ASCIIGraphics.columnNumbers, yOffset, UIColours.GameboardColour);
         }

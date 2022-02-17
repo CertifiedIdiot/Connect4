@@ -9,9 +9,11 @@ namespace Connect4.Game
     public class Game
     {
         private Owner gameWonBy;
+
         private readonly INetwork network;
         public event EventHandler<string> BoardChangedEvent;
         public event EventHandler<string> GameWonEvent;
+        public int MoveCounter { get; set; } = 1;
         public Owner InstanceId { get; private set; }
         public IPlayer PlayerOne { get; set; }
         public IPlayer PlayerTwo { get; set; }
@@ -28,6 +30,7 @@ namespace Connect4.Game
 
         public void SetupNewGame()
         {
+            MoveCounter = 1;
             Board = new Slot[7, 6];
             if (gameWonBy != Owner.None)
             {
@@ -35,7 +38,7 @@ namespace Connect4.Game
                 gameWonBy = Owner.None;
             }
             BoardChangedEvent?.Invoke(this, "New game.");
-            
+
         }
         public void Start()
         {
@@ -50,6 +53,7 @@ namespace Connect4.Game
                 if (row >= 0)
                 {
                     Board[column, row].State = ActivePlayer.PlayerNumber;
+                    MoveCounter++;
                     BoardChangedEvent?.Invoke(this, $"{ActivePlayer.Name} placed a token.");
                     var gameWon = CheckForFour();
                     ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
@@ -61,7 +65,13 @@ namespace Connect4.Game
         }
         private void SendGameState()
         {
-            var json = JsonHandler.Serialize(new GameState() { PlayerOnesTurn = ActivePlayer == PlayerOne, Board = Board, GameWonBy = gameWonBy });
+            var json = JsonHandler.Serialize(new GameState()
+            {
+                PlayerOnesTurn = ActivePlayer == PlayerOne,
+                Board = Board,
+                GameWonBy = gameWonBy,
+                MoveCounter = MoveCounter
+            });
             network.Send(json);
             if (gameWonBy == Owner.None) RecieveGameState();
         }
@@ -73,6 +83,7 @@ namespace Connect4.Game
             ActivePlayer = gameState.PlayerOnesTurn ? PlayerOne : PlayerTwo;
             Board = gameState.Board;
             gameWonBy = gameState.GameWonBy;
+            MoveCounter = gameState.MoveCounter;
             BoardChangedEvent?.Invoke(this, "recived gameState");
             if (gameState.GameWonBy != Owner.None) GameWonEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? PlayerOne.Name : PlayerTwo.Name);
         }

@@ -2,6 +2,7 @@
 {
     using Connect4;
     using Connect4.Game;
+    using Connect4.Network;
     using Connect4_ConsoleUI.GameUI;
     using Connect4_ConsoleUI.UIProperties;
     using System;
@@ -11,9 +12,9 @@
     {
         readonly Game game;
         bool gameWon = false;
-        public QuickTest()
+        public QuickTest(INetwork network,bool goFirst)
         {
-            game = Connect4Factory.GetGame();
+            game = Connect4Factory.GetGame(network,goFirst);
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
             RenderGame.StartScreen(); // TODO: Comment out to skip intro. Temporary place for the startscreen, to be used in future menus instead. Only used for testing.

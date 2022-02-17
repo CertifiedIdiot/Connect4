@@ -34,7 +34,7 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.WinSplashscreenBackground();
             RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
             Console.ReadKey();
-            new QuickTest().Run(); // TODO: Comment out this to prevent restart after splashscreen, only used for testing
+            //new QuickTest().Run(null, true); // TODO: Comment out this to prevent restart after splashscreen, only used for testing
         }
 
         internal static void StartScreen()

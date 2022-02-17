@@ -36,6 +36,7 @@
 
         public void Run()
         {
+
             game.SetupNewGame();
             DrawUI();
             game.Start();
@@ -43,8 +44,8 @@
             do
             {
                 UpdateUI();
-                _ = int.TryParse(Console.ReadLine(), out int num);
-                bool validMove = game.MakeMove(num - 1);
+                bool validMove = game.MakeMove(GetChosenColumn() - 1);
+
                 if (validMove) counter++;
             } while (counter < 43);
         }
@@ -57,10 +58,21 @@
         private void UpdateUI()
         {
             var topMessage = " pick a column below:";
-            RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
+            //RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", counter, game.ActivePlayer);
             RenderGameElement.DisplayTopMessage(game.ActivePlayer.Name + topMessage);
             RenderGameElement.PlayerPositions(game.Board);
         }
+        private static int GetChosenColumn() => Console.ReadKey(true).Key switch
+        {
+            ConsoleKey.D1 => 1,
+            ConsoleKey.D2 => 2,
+            ConsoleKey.D3 => 3,
+            ConsoleKey.D4 => 4,
+            ConsoleKey.D5 => 5,
+            ConsoleKey.D6 => 6,
+            ConsoleKey.D7 => 7,
+            _ => 0,
+        };
 
     }
 }

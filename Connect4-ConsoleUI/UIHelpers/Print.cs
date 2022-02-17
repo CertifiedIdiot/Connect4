@@ -6,6 +6,25 @@ namespace Connect4_ConsoleUI.UIHelpers
     public static class Print
     {
         /// <summary>
+        /// Prints a string centered on itself at the selected Y axis of the console.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="posY">The vertical position of the text</param>
+        /// <param name="colour">The colour.</param>
+        public static void StringAtPositionCentered(string text, int posY, Color colour)
+        {
+            var maxStringLength = Console.WindowWidth;
+            var consoleCenter = Console.WindowWidth / 2;
+            var textInHalf = text.Length / 2;
+            if (text.Length >= maxStringLength - 2)
+                Print.StringAtPosition(text, posY, colour);
+            else
+            {
+                Console.CursorLeft = consoleCenter - textInHalf;
+                Print.StringAtPosition(text, posY, colour);
+            }
+        }
+        /// <summary>
         /// Prints a string at the chosen console row position, in colour.
         /// </summary>
         /// <param name="text">The string to be printed.</param>
@@ -16,6 +35,7 @@ namespace Connect4_ConsoleUI.UIHelpers
             Console.CursorTop = posY;
             Console.WriteLine(text, colour);
         }
+
         /// <summary>
         /// Prints a string at the chosen console column and row position, in colour.
         /// </summary>

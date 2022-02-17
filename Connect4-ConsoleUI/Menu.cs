@@ -7,6 +7,9 @@ namespace Connect4_ConsoleUI
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using UIProperties;
+    using Console = Colorful.Console;
 
     internal class Menu
     {
@@ -14,8 +17,8 @@ namespace Connect4_ConsoleUI
         #region Private Fields
 
         private string bottomLine = "";
-        private static readonly ConsoleColor currentBackground = Console.BackgroundColor;
-        private static readonly ConsoleColor currentForeground = Console.ForegroundColor;
+        private static readonly Color currentBackground = UIColours.BackgroundColour;
+        private static readonly Color currentForeground = UIColours.TextColour;
         private int headerLines = 0;
         private readonly string HelpText = " Arrow keys to navigate, Enter to select.";
         private int infoLines = 0;

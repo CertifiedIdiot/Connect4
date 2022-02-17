@@ -79,7 +79,11 @@ namespace Connect4_ConsoleUI.GameUI
         }
         #endregion
 
-        #region Elements to the left
+        #region Elements to the left        
+        /// <summary>
+        /// Displays P1/P2 respectively next to the gameboard, for the currently active player.
+        /// </summary>
+        /// <param name="player">The active player.</param>
         internal static void DisplayPlayerTurn(IPlayer player)
         {
             int yOffset = UIPositions.GameBoardYPos - 1;
@@ -91,6 +95,10 @@ namespace Connect4_ConsoleUI.GameUI
                 Print.StringAtPosition(playerTwoAscii, yOffset, UIColours.PlayerTwoColour);
         }
 
+        /// <summary>
+        /// Displays the turn counter to the left of the gameboard
+        /// </summary>
+        /// <param name="gameTurn">The current game turn.</param>
         internal static void DisplayTurnCounter(int gameTurn)
         {
             int yOffset = UIPositions.GameBoardYPos + 5;
@@ -100,7 +108,11 @@ namespace Connect4_ConsoleUI.GameUI
         }
         #endregion
 
-        #region Top messagebox
+        #region Top messagebox        
+        /// <summary>
+        /// Displays messages on top of the gameboard.
+        /// </summary>
+        /// <param name="text">The text.</param>
         internal static void DisplayTopMessage(string text)
         {
             // Misc message, wip
@@ -108,10 +120,13 @@ namespace Connect4_ConsoleUI.GameUI
             int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
             Print.StringAtPosition(text, xOffset, yOffset);
-            Console.SetCursorPosition(xOffset + 39, yOffset);
-
+            //Console.SetCursorPosition(xOffset + 39, yOffset);
         }
 
+        /// <summary>
+        /// Clears whatever is on the DisplayTopMessage row, for example leftover "Console input"-numbers.
+        /// </summary>
+        /// <param name="text">The text.</param>
         internal static void ClearNumber(string text)
         {
             string eraser = "";
@@ -125,8 +140,11 @@ namespace Connect4_ConsoleUI.GameUI
         }
         #endregion
 
-        #region Column numbers
-        internal static void DisplayColumnNumbers() // Animate
+        #region Column numbers        
+        /// <summary>
+        /// Displays the column numbers above the gameboard.
+        /// </summary>
+        internal static void DisplayColumnNumbers()
         {
             int xOffset = UIPositions.GameBoardXPos + 3;
             int yOffset = UIPositions.GameBoardYPos - 6;

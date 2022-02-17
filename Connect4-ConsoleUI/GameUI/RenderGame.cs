@@ -8,9 +8,9 @@ namespace Connect4_ConsoleUI.GameUI
     {
         // TODO graphical elements as separate classes instead?
 
-        // Temp solution to be able to see the possible "drop positions" of the player icons above the board. True = Displays the icon above the board.
-        //internal static bool[] playerDropPos = { true, false, false, false, false, false, false };
-
+        /// <summary>
+        /// Renders the basic game elements. The gameboard, the table, and adjusts the console.
+        /// </summary>
         internal static void RenderBasicGameElements()
         {
             SetConsoleSettings();
@@ -44,10 +44,13 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.SplashscreenStartScreen();
         }
 
-        internal static void RenderLeftInfoBox(int counter, IPlayer player)
+        internal static void RenderGameInfo(string messagebox, int counter, IPlayer player)
         {
+            Console.CursorVisible = false;
             RenderGameElement.DisplayPlayerTurn(player);
             RenderGameElement.DisplayTurnCounter(counter);
+            RenderGameElement.DisplayTopMessage(messagebox);
+            RenderGameElement.DisplayColumnNumbers();
         }
     }
 }

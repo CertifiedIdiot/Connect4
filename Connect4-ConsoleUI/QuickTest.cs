@@ -53,7 +53,8 @@
 
         private static int GetChosenColumn()
         {
-            return char.IsDigit(Console.ReadKey(true).KeyChar) ? int.Parse(Console.ReadKey(true).KeyChar.ToString()) : 0;
+            var input = Console.ReadKey(true);
+            return char.IsDigit(input.KeyChar) ? int.Parse(input.KeyChar.ToString()) : 0;
         }
     }
 }

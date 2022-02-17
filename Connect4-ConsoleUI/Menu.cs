@@ -28,7 +28,7 @@ namespace Connect4_ConsoleUI
         #region internal Constructors
 
         
-        internal Menu(List<string> menuItems,int headerLines=1,int infoLines=0)
+        internal Menu(IList<string> menuItems,int headerLines=1,int infoLines=0)
         {
             SetupMenu(this, menuItems, headerLines, infoLines);
         }
@@ -37,7 +37,7 @@ namespace Connect4_ConsoleUI
 
         #region internal Properties
 
-        internal List<string> MenuItems { get; set; }
+        internal IList<string> MenuItems { get; set; }
 
         #endregion internal Properties
 
@@ -109,7 +109,7 @@ namespace Connect4_ConsoleUI
             Console.BackgroundColor = currentBackground;
         }
 
-        private static void SetupMenu(Menu menu, List<string> menuItems, int headerLines, int infoLines)
+        private static void SetupMenu(Menu menu, IList<string> menuItems, int headerLines, int infoLines)
         {
             menu.MenuItems = menuItems;
             menu.HeaderLines = headerLines;

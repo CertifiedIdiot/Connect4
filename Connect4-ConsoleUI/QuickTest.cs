@@ -51,11 +51,7 @@
             RenderGameElement.DisplayColumnNumbers();
             UpdateUI();
         }
-        private void UpdateUI()
-        {
-            RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", game.MoveCounter, game.ActivePlayer);
-            RenderGameElement.PlayerPositions(game.Board);
-        }
+        private void UpdateUI() => RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", game.MoveCounter, game.ActivePlayer, game.Board);
 
         private static int GetChosenColumn()
         {

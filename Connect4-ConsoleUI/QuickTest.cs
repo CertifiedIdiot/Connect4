@@ -12,9 +12,9 @@
     {
         readonly Game game;
         bool gameWon = false;
-        public QuickTest(INetwork network,bool goFirst)
+        public QuickTest(INetwork network, bool goFirst)
         {
-            game = Connect4Factory.GetGame(network,goFirst);
+            game = Connect4Factory.GetGame(network, goFirst);
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
             RenderGame.StartScreen(); // TODO: Comment out to skip intro. Temporary place for the startscreen, to be used in future menus instead. Only used for testing.
@@ -39,22 +39,28 @@
         public void Run()
         {
             var counter = 1;
-            var topMessage = " pick a column below:";
             do
             {
-                // TODO: Clean out Run() and move RenderGameElement stuff into a better place
-                Console.CursorVisible = false;
-                RenderGame.RenderLeftInfoBox(counter, game.ActivePlayer);
-                RenderGameElement.DisplayColumnNumbers();
-                RenderGameElement.DisplayTopMessage(game.ActivePlayer.Name + topMessage);
-                _ = int.TryParse(Console.ReadLine(), out int num);
-                RenderGameElement.ClearNumber(game.ActivePlayer.Name + topMessage);
-                bool validMove = game.MakeMove(num - 1);
+                RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", counter, game.ActivePlayer);
+                //_ = int.TryParse(Console.ReadLine(), out int num);
+                bool validMove = game.MakeMove(GetChosenColumn() - 1);
                 if (validMove) counter++;
             } while (counter < 43 && !gameWon);
         }
         private void Game_BoardChangedEvent(object? sender, string e) => UpdatePlayerPositions();
 
         private void UpdatePlayerPositions() => RenderGameElement.PlayerPositions(game.Board);
+
+        private static int GetChosenColumn() => Console.ReadKey(true).Key switch
+        {
+            ConsoleKey.D1 => 1,
+            ConsoleKey.D2 => 2,
+            ConsoleKey.D3 => 3,
+            ConsoleKey.D4 => 4,
+            ConsoleKey.D5 => 5,
+            ConsoleKey.D6 => 6,
+            ConsoleKey.D7 => 7,
+            _ => 0,
+        };
     }
 }

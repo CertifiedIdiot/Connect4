@@ -121,11 +121,11 @@ namespace Connect4_ConsoleUI.GameUI
             int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
             Print.StringAtPosition(text, xOffset, yOffset);
-            Console.SetCursorPosition(xOffset + 39, yOffset);
+            //Console.SetCursorPosition(xOffset + 39, yOffset);
         }
 
         /// <summary>
-        /// Clears the written text from the DisplayTopMessage method.
+        /// Clears whatever is on the DisplayTopMessage row, for example leftover "Console input"-numbers.
         /// </summary>
         /// <param name="text">The text.</param>
         internal static void ClearNumber(string text)

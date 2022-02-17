@@ -43,10 +43,13 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.SplashscreenStartScreen();
         }
 
-        internal static void RenderLeftInfoBox(int counter, IPlayer player)
+        internal static void RenderGameInfo(string messagebox, int counter, IPlayer player)
         {
+            Console.CursorVisible = false;
             RenderGameElement.DisplayPlayerTurn(player);
             RenderGameElement.DisplayTurnCounter(counter);
+            RenderGameElement.DisplayTopMessage(messagebox);
+            RenderGameElement.DisplayColumnNumbers();
         }
     }
 }

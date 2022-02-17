@@ -25,6 +25,7 @@ namespace Connect4_ConsoleUI.GameUI
         {
             Console.WindowHeight = 40;
             Console.BackgroundColor = UIColours.BackgroundColour;
+            Console.CursorVisible = false;
             Console.Clear();
         }
 

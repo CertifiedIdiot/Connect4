@@ -1,6 +1,7 @@
 ﻿using Connect4_ConsoleUI.UIProperties;
 using Connect4.Interfaces;
 using Console = Colorful.Console;
+using Connect4.Structs;
 
 namespace Connect4_ConsoleUI.GameUI
 {
@@ -44,13 +45,14 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.SplashscreenStartScreen();
         }
 
-        internal static void RenderGameInfo(string messagebox, int counter, IPlayer player)
+        internal static void RenderGameInfo(string messagebox, int counter, IPlayer player, Slot[,] gameboard)
         {
             Console.CursorVisible = false;
             RenderGameElement.DisplayPlayerTurn(player);
             RenderGameElement.DisplayTurnCounter(counter);
             RenderGameElement.DisplayTopMessage(messagebox);
             RenderGameElement.DisplayColumnNumbers();
+            RenderGameElement.PlayerPositions(gameboard);
         }
     }
 }

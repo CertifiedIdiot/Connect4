@@ -27,7 +27,7 @@
         private void Game_GameWonEvent(object? sender, string e)
         {
             Console.Clear();
-            RenderGame.WinSplashscreen($"{e} won!");
+            RenderGame.WinSplashscreen($"     {e} won!");
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
             counter = 1;
             Run();
@@ -43,7 +43,9 @@
 
             do
             {
+
                 UpdateUI();
+
                 bool validMove = game.MakeMove(GetChosenColumn() - 1);
 
                 if (validMove) counter++;
@@ -62,17 +64,12 @@
             RenderGameElement.DisplayTopMessage(game.ActivePlayer.Name + topMessage);
             RenderGameElement.PlayerPositions(game.Board);
         }
-        private static int GetChosenColumn() => Console.ReadKey(true).Key switch
+
+        private static int GetChosenColumn()
         {
-            ConsoleKey.D1 => 1,
-            ConsoleKey.D2 => 2,
-            ConsoleKey.D3 => 3,
-            ConsoleKey.D4 => 4,
-            ConsoleKey.D5 => 5,
-            ConsoleKey.D6 => 6,
-            ConsoleKey.D7 => 7,
-            _ => 0,
-        };
+            var input = Console.ReadKey(true);
+            return char.IsDigit(input.KeyChar) ? int.Parse(input.KeyChar.ToString()) : 0;
+        }
 
     }
 }

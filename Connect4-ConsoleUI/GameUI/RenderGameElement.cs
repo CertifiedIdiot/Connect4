@@ -119,7 +119,7 @@ namespace Connect4_ConsoleUI.GameUI
 
             int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
-            Print.StringAtPosition(text, xOffset, yOffset);
+            Print.StringAtPosition(text, xOffset, yOffset, UIColours.TextColour);
             //Console.SetCursorPosition(xOffset + 39, yOffset);
         }
 

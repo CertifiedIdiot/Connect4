@@ -7,15 +7,17 @@ namespace Connect4_ConsoleUI
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using UIProperties;
+    using Console = Colorful.Console;
 
     internal class Menu
     {
-
         #region Private Fields
 
         private string bottomLine = "";
-        private static readonly ConsoleColor currentBackground = Console.BackgroundColor;
-        private static readonly ConsoleColor currentForeground = Console.ForegroundColor;
+        private static readonly Color currentBackground = UIColours.BackgroundColour;
+        private static readonly Color currentForeground = UIColours.TextColour;
         private int headerLines = 0;
         private readonly string HelpText = " Arrow keys to navigate, Enter to select.";
         private int infoLines = 0;
@@ -27,8 +29,7 @@ namespace Connect4_ConsoleUI
 
         #region internal Constructors
 
-        
-        internal Menu(IList<string> menuItems,int headerLines=1,int infoLines=0)
+        internal Menu(IList<string> menuItems, int headerLines = 1, int infoLines = 0)
         {
             SetupMenu(this, menuItems, headerLines, infoLines);
         }
@@ -90,6 +91,8 @@ namespace Connect4_ConsoleUI
                         break;
 
                     default:
+                        if (char.IsDigit(input.KeyChar))
+                            highlightItem = menu.StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
                         break;
                 }
             } while (userChoice == "");

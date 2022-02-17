@@ -51,7 +51,6 @@ namespace Connect4.Game
 
         private void RecieveGameState()
         {
-            Console.WriteLine("Waiting for opponent...");
             var json = network.Receive();
             var gameState = JsonHandler.Deserialize<GameState>(json);
             ActivePlayer = gameState.PlayerOnesTurn ? PlayerOne : PlayerTwo;

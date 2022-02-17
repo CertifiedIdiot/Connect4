@@ -26,7 +26,7 @@
         {
             gameWon = true;
             Console.Clear();
-            RenderGame.WinSplashscreen($"{e} won!");
+            RenderGame.WinSplashscreen($"     {e} won!");
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
 
@@ -42,7 +42,6 @@
             do
             {
                 RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", counter, game.ActivePlayer);
-                //_ = int.TryParse(Console.ReadLine(), out int num);
                 bool validMove = game.MakeMove(GetChosenColumn() - 1);
                 if (validMove) counter++;
             } while (counter < 43 && !gameWon);

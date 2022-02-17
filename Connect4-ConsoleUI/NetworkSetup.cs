@@ -7,20 +7,32 @@
     {
         public void Run()
         {
-            Console.WriteLine("1) Start as server.");
-            Console.WriteLine("2) Start as client.");
-            Console.WriteLine("3) Start a hot seat game.");
-            Console.WriteLine("Pick a number or ESC to exit.");
-            var input = Console.ReadKey(true);
-            switch (input.Key)
+            //Console.WriteLine("1) Start as server.");
+            //Console.WriteLine("2) Start as client.");
+            //Console.WriteLine("3) Start a hot seat game.");
+            //Console.WriteLine("Pick a number or ESC to exit.");
+            //var input = Console.ReadKey(true);
+            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Start hot seat game.", "Exit." };
+
+            var input = new Menu(menuItems).UseMenu();
+            switch (input)
             {
-                case ConsoleKey.D1 or ConsoleKey.NumPad1: StartNetwork(true); break;
-                case ConsoleKey.D2 or ConsoleKey.NumPad2: StartNetwork(false); break;
-                case ConsoleKey.D3 or ConsoleKey.NumPad3: StartHotSeat(); break;
-                case ConsoleKey.Escape: Environment.Exit(0); break;
+                case "Start as server.": StartNetwork(true); break;
+                case "Start as client": StartNetwork(false); break;
+                case "Start hot seat game.": StartHotSeat(); break;
+                case "Exit.": Environment.Exit(0); break;
                 default:
                     break;
             }
+            //switch (input.Key)
+            //{
+            //    case ConsoleKey.D1 or ConsoleKey.NumPad1: StartNetwork(true); break;
+            //    case ConsoleKey.D2 or ConsoleKey.NumPad2: StartNetwork(false); break;
+            //    case ConsoleKey.D3 or ConsoleKey.NumPad3: StartHotSeat(); break;
+            //    case ConsoleKey.Escape: Environment.Exit(0); break;
+            //    default:
+            //        break;
+            //}
         }
 
         private void StartHotSeat() => new QuickTest(null!, true).Run();

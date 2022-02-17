@@ -51,16 +51,9 @@
 
         private void UpdatePlayerPositions() => RenderGameElement.PlayerPositions(game.Board);
 
-        private static int GetChosenColumn() => Console.ReadKey(true).Key switch
+        private static int GetChosenColumn()
         {
-            ConsoleKey.D1 => 1,
-            ConsoleKey.D2 => 2,
-            ConsoleKey.D3 => 3,
-            ConsoleKey.D4 => 4,
-            ConsoleKey.D5 => 5,
-            ConsoleKey.D6 => 6,
-            ConsoleKey.D7 => 7,
-            _ => 0,
-        };
+            return char.IsDigit(Console.ReadKey(true).KeyChar) ? int.Parse(Console.ReadKey(true).KeyChar.ToString()) : 0;
+        }
     }
 }

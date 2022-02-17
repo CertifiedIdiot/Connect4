@@ -8,6 +8,7 @@ namespace Connect4.Game
 {
     public class Game
     {
+        private Owner gameWonBy;
         private readonly INetwork network;
         public event EventHandler<string> BoardChangedEvent;
         public event EventHandler<string> GameWonEvent;
@@ -43,9 +44,9 @@ namespace Connect4.Game
         }
         private void SendGameState()
         {
-            var json = JsonHandler.Serialize(new GameState() { PlayerOnesTurn = ActivePlayer == PlayerOne, Board = Board });
+            var json = JsonHandler.Serialize(new GameState() { PlayerOnesTurn = ActivePlayer == PlayerOne, Board = Board, GameWonBy = gameWonBy });
             network.Send(json);
-            RecieveGameState();
+            if (gameWonBy == Owner.None) RecieveGameState();
         }
 
         private void RecieveGameState()
@@ -55,7 +56,9 @@ namespace Connect4.Game
             var gameState = JsonHandler.Deserialize<GameState>(json);
             ActivePlayer = gameState.PlayerOnesTurn ? PlayerOne : PlayerTwo;
             Board = gameState.Board;
+            gameWonBy = gameState.GameWonBy;
             BoardChangedEvent?.Invoke(this, "recived gameState");
+            if (gameState.GameWonBy != Owner.None) GameWonEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? PlayerOne.Name : PlayerTwo.Name);
         }
         private bool CheckForFour() => CheckDirection(1, 0)
             || CheckDirection(1, 1)
@@ -70,7 +73,9 @@ namespace Connect4.Game
                 {
                     if (FindConnecting(column, row, deltaColumn, deltaRow) == 4)
                     {
-                        GameWonEvent?.Invoke(this, $"{ActivePlayer.Name} won.");
+                        gameWonBy = ActivePlayer.PlayerNumber;
+                        if (network != null) SendGameState();
+                        GameWonEvent?.Invoke(this, $"{ActivePlayer.Name}");
                         return true;
                     }
                 }

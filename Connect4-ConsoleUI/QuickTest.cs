@@ -9,7 +9,6 @@
     internal class QuickTest
     {
         readonly Game game;
-        int counter = 1;
 
         public QuickTest(INetwork network, bool goFirst)
         {
@@ -29,7 +28,6 @@
             Console.Clear();
             RenderGame.WinSplashscreen($"     {e} won!");
             Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
-            counter = 1;
             Run();
         }
         private void Game_BoardChangedEvent(object? sender, string e) => UpdateUI();
@@ -43,13 +41,9 @@
 
             do
             {
-
                 UpdateUI();
-
-                bool validMove = game.MakeMove(GetChosenColumn() - 1);
-
-                if (validMove) counter++;
-            } while (counter < 43);
+                game.MakeMove(GetChosenColumn() - 1);
+            } while (game.MoveCounter < 43);
         }
         private void DrawUI()
         {
@@ -59,7 +53,7 @@
         }
         private void UpdateUI()
         {
-            RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", counter, game.ActivePlayer);
+            RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", game.MoveCounter, game.ActivePlayer);
             RenderGameElement.PlayerPositions(game.Board);
         }
 

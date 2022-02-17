@@ -13,7 +13,6 @@ namespace Connect4_ConsoleUI
 
     internal class Menu
     {
-
         #region Private Fields
 
         private string bottomLine = "";
@@ -30,8 +29,7 @@ namespace Connect4_ConsoleUI
 
         #region internal Constructors
 
-        
-        internal Menu(IList<string> menuItems,int headerLines=1,int infoLines=0)
+        internal Menu(IList<string> menuItems, int headerLines = 1, int infoLines = 0)
         {
             SetupMenu(this, menuItems, headerLines, infoLines);
         }
@@ -93,6 +91,8 @@ namespace Connect4_ConsoleUI
                         break;
 
                     default:
+                        if (char.IsDigit(input.KeyChar))
+                            highlightItem = menu.StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
                         break;
                 }
             } while (userChoice == "");

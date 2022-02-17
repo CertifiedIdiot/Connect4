@@ -24,6 +24,10 @@ namespace Connect4.Game
             if (!goFirst) RecieveGameState();
         }
 
+        public Game()
+        {
+        }
+
         public bool MakeMove(int column)
         {
             if (column >= 0 && column <= Board.GetUpperBound(0))

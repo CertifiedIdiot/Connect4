@@ -59,9 +59,7 @@
         }
         private void UpdateUI()
         {
-            var topMessage = " pick a column below:";
             RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", counter, game.ActivePlayer);
-            RenderGameElement.DisplayTopMessage(game.ActivePlayer.Name + topMessage);
             RenderGameElement.PlayerPositions(game.Board);
         }
 

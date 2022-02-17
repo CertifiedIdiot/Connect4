@@ -115,12 +115,9 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="text">The text.</param>
         internal static void DisplayTopMessage(string text)
         {
-            // Misc message, wip
-
             int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
-            Print.StringAtPosition(text, xOffset, yOffset, UIColours.TextColour);
-            //Console.SetCursorPosition(xOffset + 39, yOffset);
+            Print.StringAtPositionCentered(text, yOffset, UIColours.TextColour);
         }
 
         /// <summary>

@@ -25,6 +25,7 @@ namespace Connect4_ConsoleUI.GameUI
         {
             Console.WindowHeight = 40;
             Console.BackgroundColor = UIColours.BackgroundColour;
+            Console.ForegroundColor = UIColours.TextColour;
             Console.CursorVisible = false;
             Console.Clear();
         }
@@ -35,7 +36,6 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.WinSplashscreenBackground();
             RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
             Console.ReadKey();
-            //new QuickTest().Run(null, true); // TODO: Comment out this to prevent restart after splashscreen, only used for testing
         }
 
         internal static void StartScreen()

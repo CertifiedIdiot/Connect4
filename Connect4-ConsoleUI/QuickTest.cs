@@ -5,6 +5,7 @@
     using Connect4.Network;
     using Connect4_ConsoleUI.GameUI;
     using System;
+    using Connect4.Interfaces;
 
     internal class QuickTest
     {

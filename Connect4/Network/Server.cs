@@ -8,18 +8,15 @@ namespace Connect4.Network
     public class Server:INetwork
     {
         public string IP { get; set; } = string.Empty;
-        private int dataByteCount { get; set; }
-        private byte[] dataBuffer { get; set; } = new byte[1024];
-        private string dataIn { get; set; } = string.Empty;
+        private int DataByteCount { get; set; }
+        private byte[] DataBuffer { get; set; } = new byte[1024];
+        private string DataIn { get; set; } = string.Empty;
 
-        private Socket remoteClient;
-        private IPEndPoint remoteClientIPep;
-        private Socket newSocket;
+        private Socket remoteClient = default!;
+        private IPEndPoint remoteClientIPep = default!;
+        private Socket newSocket = default!;
 
-        public Server(string IP = "")
-        {
-            this.IP = IP;
-        }
+        public Server(string IP = "") => this.IP = IP;
 
         public string Start()
         {
@@ -30,7 +27,7 @@ namespace Connect4.Network
             newSocket.Listen(1);
             // Will not continue from this point until a client connects
             remoteClient = newSocket.Accept();
-            remoteClientIPep = (IPEndPoint)remoteClient.RemoteEndPoint;
+            remoteClientIPep = (IPEndPoint)remoteClient.RemoteEndPoint!;
 
             return string.Format("Now connected to {0} on port {1}.", remoteClientIPep.Address, remoteClientIPep.Port);
         }
@@ -49,28 +46,27 @@ namespace Connect4.Network
             return string.Format("Disconnected from {0} on port {1}." + remoteClientIPep.Address, remoteClientIPep.Port);
         }
 
-        public void Send(string message)
-        {
-            remoteClient.Send(Encoding.UTF8.GetBytes(message));
-        }
+        public void Send(string message) => remoteClient.Send(Encoding.UTF8.GetBytes(message));
 
         public string Receive()
         {
-            dataByteCount = remoteClient.Receive(dataBuffer);
-            dataIn = Encoding.UTF8.GetString(dataBuffer, 0, dataByteCount);
-            dataBuffer = new byte[1024]; // Resetting databuffer
+            DataByteCount = remoteClient.Receive(DataBuffer);
+            DataIn = Encoding.UTF8.GetString(DataBuffer, 0, DataByteCount);
+            DataBuffer = new byte[1024]; // Resetting databuffer
 
-            return dataIn;
+            return DataIn;
         }
 
-        public string GetIPV4()
+        public static string GetIPV4()
         {
             string output = string.Empty;
             foreach (NetworkInterface net in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (net.NetworkInterfaceType == NetworkInterfaceType.Ethernet ||
-                    net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
+                if ((net.NetworkInterfaceType == NetworkInterfaceType.Ethernet &&
                     net.OperationalStatus == OperationalStatus.Up)
+                    ||
+                    (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
+                    net.OperationalStatus == OperationalStatus.Up))
                 {
                     foreach (UnicastIPAddressInformation IP in net.GetIPProperties().UnicastAddresses)
                     {

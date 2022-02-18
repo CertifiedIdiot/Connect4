@@ -105,7 +105,8 @@ namespace Connect4_ConsoleUI
                 }
             } while (userChoice?.Length == 0);
             Console.ResetColor();
-            Console.Clear();
+            //Console.Clear();
+            EraseMenu();
             return userChoice!;
         }
 
@@ -183,6 +184,19 @@ namespace Connect4_ConsoleUI
             Console.WriteLine(bottomLine);
             Console.CursorLeft = menuPosX;
             Console.WriteLine(HelpText);
+        }
+        private void EraseMenu()
+        {
+            var rows = MenuItems.Count + 3;
+            if (headerLines > 0) rows++;
+            if (infoLines > 0) rows++;
+            var eraser = new string(' ', menuWidth);
+            Console.SetCursorPosition(menuPosX, menuPosY);
+            for (int i = 0; i < rows; i++)
+            {
+                Console.CursorLeft = menuPosX;
+                System.Console.WriteLine(eraser);
+            }
         }
         #endregion Private Methods
     }

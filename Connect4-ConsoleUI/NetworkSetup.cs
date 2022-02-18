@@ -7,8 +7,8 @@
     {
         public void Run()
         { 
-            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Start hot seat game.", "Exit." };
-            var input = new Menu(menuItems).UseMenu();
+            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Start hot seat game.", "Exit."};
+            var input = new Menu(menuItems).UseMenu(true); // if true = menu is centered
 
             switch (input)
             {

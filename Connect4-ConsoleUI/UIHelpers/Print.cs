@@ -24,6 +24,19 @@ namespace Connect4_ConsoleUI.UIHelpers
                 Print.StringAtPosition(text, posY, colour);
             }
         }
+        public static void StringAtPositionCentered(string text, int posY)
+        {
+            var maxStringLength = Console.WindowWidth;
+            var consoleCenter = Console.WindowWidth / 2;
+            var textInHalf = text.Length / 2;
+            if (text.Length >= maxStringLength - 2)
+                Print.StringAtPosition(text, posY);
+            else
+            {
+                Console.CursorLeft = consoleCenter - textInHalf;
+                Print.StringAtPosition(text, posY);
+            }
+        }
         /// <summary>
         /// Prints a string at the chosen console row position, in colour.
         /// </summary>

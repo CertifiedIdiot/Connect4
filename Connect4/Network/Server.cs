@@ -6,9 +6,9 @@ using Connect4.Interfaces;
 
 namespace Connect4.Network
 {
-    public class Server:INetwork
+    public class Server : INetwork
     {
-        public string IP { get; set; } = string.Empty;
+        public string IP { get; set; }
         private int DataByteCount { get; set; }
         private byte[] DataBuffer { get; set; } = new byte[1024];
         private string DataIn { get; set; } = string.Empty;
@@ -69,11 +69,11 @@ namespace Connect4.Network
                     (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
                     net.OperationalStatus == OperationalStatus.Up))
                 {
-                    foreach (UnicastIPAddressInformation IP in net.GetIPProperties().UnicastAddresses)
+                    foreach (UnicastIPAddressInformation _IP in net.GetIPProperties().UnicastAddresses)
                     {
-                        if (IP.Address.AddressFamily == AddressFamily.InterNetwork)
+                        if (_IP.Address.AddressFamily == AddressFamily.InterNetwork)
                         {
-                            output = IP.Address.ToString();
+                            output = _IP.Address.ToString();
                         }
                     }
                 }

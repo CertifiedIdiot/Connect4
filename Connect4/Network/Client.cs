@@ -7,7 +7,7 @@ namespace Connect4.Network
 {
     public class Client : INetwork
     {
-        public string IP { get; set; } = string.Empty;
+        public string IP { get; set; }
         private int DataByteCount { get; set; }
         private byte[] DataBuffer { get; set; } = new byte[1024];
         private string DataIn { get; set; } = string.Empty;

@@ -115,7 +115,6 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="text">The text.</param>
         internal static void DisplayTopMessage(string text)
         {
-            int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
             Print.StringAtPositionCentered(text, yOffset, UIColours.TextColour);
         }
@@ -186,7 +185,6 @@ namespace Connect4_ConsoleUI.GameUI
 
         internal static void SplashscreenStartScreen()
         {
-            // Place in first menu constructor?
             while (!Console.KeyAvailable)
             {
                 Console.CursorVisible = false;

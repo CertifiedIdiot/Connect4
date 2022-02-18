@@ -1,5 +1,6 @@
 ﻿namespace Connect4_ConsoleUI
 {
+    using Connect4_ConsoleUI.Menus;
     using System;
     using System.Text.RegularExpressions;
 
@@ -7,21 +8,15 @@
     {
         public void Run()
         {
-            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Start hot seat game.", "Exit."};
-            var input = new Menu(menuItems,true).UseMenu(); // if true = menu is centered
-
-            switch (input)
+            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Return to Main Menu" };
+            switch (new Menu(menuItems, true).UseMenu())
             {
                 case "Start as server.": StartNetwork(true); break;
                 case "Start as client": StartNetwork(false); break;
-                case "Start hot seat game.": StartHotSeat(); break;
-                case "Exit.": Environment.Exit(0); break;
-                default:
-                    break;
+                case "Return to Main Menu": MainMenu.Run(); break;
             }
         }
 
-        private void StartHotSeat() => new QuickTest(null!, true).Run();
         private void StartNetwork(bool startAsServer)
         {
             var network = startAsServer ? Connect4.Connect4Factory.GetServer() : Connect4.Connect4Factory.GetClient();

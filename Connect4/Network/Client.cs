@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Connect4.Interfaces;
 
 namespace Connect4.Network
 {

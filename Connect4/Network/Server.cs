@@ -2,6 +2,7 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using Connect4.Interfaces;
 
 namespace Connect4.Network
 {

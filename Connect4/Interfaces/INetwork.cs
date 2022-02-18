@@ -1,4 +1,4 @@
-﻿namespace Connect4.Network
+﻿namespace Connect4.Interfaces
 {
     public interface INetwork
     {

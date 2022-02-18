@@ -21,24 +21,33 @@ namespace Connect4_ConsoleUI
         private int headerLines = 0;
         private readonly string HelpText = " Arrow keys to navigate, Enter to select.";
         private int infoLines = 0;
-        private int menuwidth = 0;
+        private int menuWidth = 0;
         private string midLine = "";
         private string topLine = "";
+        private int menuPosX = 0;
+        private int menuPosY = 0;
 
         #endregion Private Fields
 
         #region internal Constructors
 
-        internal Menu(IList<string> menuItems, int headerLines = 1, int infoLines = 0)
+        internal Menu(IList<string> menuItems, bool center = false, int headerLines = 1, int infoLines = 0)
         {
-            SetupMenu(this, menuItems, headerLines, infoLines);
+            if (menuItems == null || menuItems.Count == 0)
+            {
+                menuItems = new List<string>() { "Autoadded item because of null or empty menu. Check your code!" };
+                headerLines = 0;
+                infoLines = 0;
+            }
+            MenuItems = menuItems;
+            SetupMenu(center, headerLines, infoLines);
         }
 
         #endregion internal Constructors
 
         #region internal Properties
 
-        internal IList<string> MenuItems { get; set; }
+        private IList<string> MenuItems { get; }
 
         #endregion internal Properties
 
@@ -55,21 +64,15 @@ namespace Connect4_ConsoleUI
         /// <summary>
         /// Draws the menu. Send in true to print menu in the center of the screen.
         /// </summary>
-        /// <param name="centeredmenu">True/false for centered or uncentered menu</param>
-        /// <returns></returns>
-        internal string UseMenu(bool centeredMenu = false)
-        {
-            if (MenuItems.Count == 0) MenuItems.Add("Auto added item because of empy menu, check your code.");
-            return centeredMenu ? DoMenuCentered(this) : DoMenu(this);
-        }
+        internal string UseMenu() => DoMenu();
 
         #endregion internal Methods
 
         #region Private Methods
 
-        private static string DoMenu(Menu menu)
+        private string DoMenu()
         {
-            var highlightItem = menu.StartSelected;
+            var highlightItem = StartSelected;
             var userChoice = "";
 
             SetColors();
@@ -77,36 +80,34 @@ namespace Connect4_ConsoleUI
 
             do
             {
-                UpdateMenu(menu, highlightItem);
+                UpdateMenu(highlightItem);
                 var input = Console.ReadKey(true);
                 switch (input.Key)
                 {
                     case ConsoleKey.LeftArrow or ConsoleKey.UpArrow:
-                        if (highlightItem == menu.StartSelected) highlightItem = menu.MenuItems.Count - 1;
+                        if (highlightItem == StartSelected) highlightItem = MenuItems.Count - 1;
                         else highlightItem--;
                         break;
 
                     case ConsoleKey.RightArrow or ConsoleKey.DownArrow:
-                        if (highlightItem == menu.MenuItems.Count - 1) highlightItem = menu.StartSelected;
+                        if (highlightItem == MenuItems.Count - 1) highlightItem = StartSelected;
                         else highlightItem++;
                         break;
 
                     case ConsoleKey.Enter:
-                        userChoice = menu.MenuItems[highlightItem];
+                        userChoice = MenuItems[highlightItem];
                         break;
 
                     default:
                         if (char.IsDigit(input.KeyChar))
-                            highlightItem = menu.StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
+                            highlightItem = StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
                         break;
                 }
-            } while (userChoice == "");
+            } while (userChoice?.Length == 0);
             Console.ResetColor();
             Console.Clear();
-            return userChoice;
+            return userChoice!;
         }
-
-
 
         private static void InvertColors()
         {
@@ -120,131 +121,69 @@ namespace Connect4_ConsoleUI
             Console.BackgroundColor = currentBackground;
         }
 
-        private static void SetupMenu(Menu menu, IList<string> menuItems, int headerLines, int infoLines)
+        private void SetupMenu(bool center, int headerLines, int infoLines)
         {
-            menu.MenuItems = menuItems;
-            menu.HeaderLines = headerLines;
-            menu.InfoLines = infoLines;
-            SetupPrintables(menu);
+            HeaderLines = headerLines;
+            InfoLines = infoLines;
+            SetupPrintables();
+            SetupPosition(center);
         }
 
-        private static void SetupPrintables(Menu menu)
+        private void SetupPosition(bool center)
         {
-            menu.menuwidth = menu.HelpText.Length;
-            foreach (var item in menu.MenuItems)
+            if (center)
             {
-                if (item.Length > menu.menuwidth) menu.menuwidth = item.Length;
+                menuPosX = (Console.WindowWidth / 2) - (bottomLine.Length / 2);
+                menuPosY = (Console.WindowHeight / 2) - MenuItems.Count;
+            }
+        }
+
+        private void SetupPrintables()
+        {
+            menuWidth = HelpText.Length;
+            foreach (var item in MenuItems.Where(item => item.Length > menuWidth))
+            {
+                menuWidth = item.Length;
             }
 
-            menu.topLine = "╔" + new string('═', menu.menuwidth) + "╗";
-            menu.midLine = "╟" + new string('─', menu.menuwidth) + "╢";
-            menu.bottomLine = "╚" + new string('═', menu.menuwidth) + "╝";
+            topLine = "╔" + new string('═', menuWidth) + "╗";
+            midLine = "╟" + new string('─', menuWidth) + "╢";
+            bottomLine = "╚" + new string('═', menuWidth) + "╝";
         }
 
-        private static void UpdateMenu(Menu menu, int highlightItem)
+        private void UpdateMenu(int highlightItem)
         {
             Console.CursorVisible = false;
-            Console.SetCursorPosition(0, 0);
+            Console.SetCursorPosition(menuPosX, menuPosY);
 
-            Console.WriteLine(menu.topLine);
+            Console.WriteLine(topLine);
 
-            for (var row = 0; row < menu.MenuItems.Count; row++)
+            for (var row = 0; row < MenuItems.Count; row++)
             {
+                Console.CursorLeft = menuPosX;
                 if (row == highlightItem)
                 {
                     Console.Write("║");
                     InvertColors();
-                    Console.Write(menu.MenuItems[row].PadRight(menu.menuwidth));
+                    Console.Write(MenuItems[row].PadRight(menuWidth));
                     SetColors();
                     Console.WriteLine("║");
                 }
                 else
                 {
-                    Console.WriteLine($"║" + menu.MenuItems[row].PadRight(menu.menuwidth) + "║");
-                    if (row == menu.HeaderLines - 1 || row == menu.HeaderLines + menu.InfoLines - 1) Console.WriteLine(menu.midLine);
-                }
-            }
-            Console.WriteLine(menu.bottomLine);
-            Console.WriteLine(menu.HelpText);
-        }
-
-        #region HackyCenteredMenuSolution
-        private static string DoMenuCentered(Menu menu)
-        {
-            var highlightItem = menu.StartSelected;
-            var userChoice = "";
-            SetColors();
-            Console.Clear();
-            do
-            {
-                UpdateMenuCentered(menu, highlightItem);
-                var input = Console.ReadKey(true);
-                switch (input.Key)
-                {
-                    case ConsoleKey.LeftArrow or ConsoleKey.UpArrow:
-                        if (highlightItem == menu.StartSelected) highlightItem = menu.MenuItems.Count - 1;
-                        else highlightItem--;
-                        break;
-
-                    case ConsoleKey.RightArrow or ConsoleKey.DownArrow:
-                        if (highlightItem == menu.MenuItems.Count - 1) highlightItem = menu.StartSelected;
-                        else highlightItem++;
-                        break;
-
-                    case ConsoleKey.Enter:
-                        userChoice = menu.MenuItems[highlightItem];
-                        break;
-
-                    default:
-                        if (char.IsDigit(input.KeyChar))
-                            highlightItem = menu.StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
-                        break;
-                }
-            } while (userChoice == "");
-            Console.ResetColor();
-            Console.Clear();
-            return userChoice;
-        }
-
-        private static void UpdateMenuCentered(Menu menu, int highlightItem)
-        {
-            Console.CursorVisible = false;
-            var menuItemsList = menu.MenuItems.ToList();
-
-            int middlePosition = Console.WindowWidth / 2 - (menu.bottomLine.Length / 2);
-            int heigthPosition = (Console.WindowHeight / 2) - menuItemsList.Count;
-
-            Console.SetCursorPosition(middlePosition, heigthPosition);
-            Console.WriteLine(menu.topLine);
-            
-            for (var row = 0; row < menu.MenuItems.Count; row++)
-            {
-                if (row == highlightItem)
-                {
-                    Console.CursorLeft = middlePosition;
-                    Console.Write("║");
-                    InvertColors();
-                    Console.Write(menu.MenuItems[row].PadRight(menu.menuwidth));
-                    SetColors();
-                    Console.WriteLine("║");
-                }
-                else
-                {
-                    Console.CursorLeft = middlePosition;
-                    Console.WriteLine($"║" + menu.MenuItems[row].PadRight(menu.menuwidth) + "║");
-                    if (row == menu.HeaderLines - 1 || row == menu.HeaderLines + menu.InfoLines - 1)
+                    Console.WriteLine("║" + MenuItems[row].PadRight(menuWidth) + "║");
+                    if (row == HeaderLines - 1 || row == HeaderLines + InfoLines - 1)
                     {
-                        Console.CursorLeft = middlePosition;
-                        Console.WriteLine(menu.midLine);
+                        Console.CursorLeft = menuPosX;
+                        Console.WriteLine(midLine);
                     }
                 }
             }
-            Console.CursorLeft = middlePosition;
-            Console.WriteLine(menu.bottomLine);
-            Console.CursorLeft = middlePosition;
-            Console.WriteLine(menu.HelpText);
+            Console.CursorLeft = menuPosX;
+            Console.WriteLine(bottomLine);
+            Console.CursorLeft = menuPosX;
+            Console.WriteLine(HelpText);
         }
-        #endregion
         #endregion Private Methods
     }
 }

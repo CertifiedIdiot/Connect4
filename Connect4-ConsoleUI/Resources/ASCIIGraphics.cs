@@ -109,7 +109,6 @@
                  ,   .'                      .       '                                               .       '  
                                                                                 *           '´,   ";
 
-
         internal static string splashscreenFireworksAlt = @"
                     .       ,       ',      .¨´       :;        ;        ,´
 ,           .                        ld.    ;l       ,oc.      :l      ,        ,   

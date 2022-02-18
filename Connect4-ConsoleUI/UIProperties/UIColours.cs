@@ -17,6 +17,5 @@ namespace Connect4_ConsoleUI.UIProperties
         internal static Color TableColour { get; set; } = Color.SaddleBrown;      // Original colour - Color.SaddleBrown
         internal static Color BackgroundColour { get; set; } = Color.Bisque;     // Original colour - Color.Bisque
         internal static Color TextColour { get; set; } = Color.DarkCyan;
-
     }
 }

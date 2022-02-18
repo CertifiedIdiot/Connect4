@@ -44,6 +44,11 @@ namespace Connect4_ConsoleUI.GameUI
             SetConsoleSettings();
             RenderGameElement.SplashscreenStartScreen();
         }
+        internal static void StartRound()
+        {
+            SetConsoleSettings();
+            RenderGameElement.SplashscreenPreMatch();
+        }
 
         internal static void RenderGameInfo(string messagebox, int counter, IPlayer player, Slot[,] gameboard)
         {

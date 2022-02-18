@@ -6,7 +6,7 @@
     {
         public static string Serialize<T>(T data)
         {
-            var json = JsonConvert.SerializeObject(data);
+            var json = JsonConvert.SerializeObject(data) ?? "";
             return json;
         }
 

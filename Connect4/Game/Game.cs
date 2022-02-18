@@ -11,8 +11,8 @@ namespace Connect4.Game
         private Owner gameWonBy;
 
         private readonly INetwork network;
-        public event EventHandler<string> BoardChangedEvent;
-        public event EventHandler<string> GameWonEvent;
+        public event EventHandler<string>? BoardChangedEvent;
+        public event EventHandler<string>? GameWonEvent;
         public int MoveCounter { get; set; } = 1;
         public Owner InstanceId { get; private set; }
         public IPlayer PlayerOne { get; set; }
@@ -47,22 +47,41 @@ namespace Connect4.Game
 
         public bool MakeMove(int column)
         {
+            if (ValidMove(column, out int row))
+            {
+                PlaceToken(column, row);
+                _ = CheckForFour();
+                UpdateGameState();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ValidMove(int column, out int row)
+        {
+            row = -1;
             if (column >= 0 && column <= Board.GetUpperBound(0))
             {
-                var row = CheckColumn(column);
-                if (row >= 0)
-                {
-                    Board[column, row].State = ActivePlayer.PlayerNumber;
-                    MoveCounter++;
-                    BoardChangedEvent?.Invoke(this, $"{ActivePlayer.Name} placed a token.");
-                    var gameWon = CheckForFour();
-                    ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
-                    if (network != null) SendGameState();
-                    return true;
-                }
+                row = CheckColumn(column);
+                return row >= 0;
             }
             return false;
         }
+
+        private void UpdateGameState()
+        {
+            MoveCounter++;
+            ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
+            if (network != null) SendGameState();
+        }
+
+        private void PlaceToken(int column, int row)
+        {
+            Board[column, row].State = ActivePlayer.PlayerNumber;
+            BoardChangedEvent?.Invoke(this, $"{ActivePlayer.Name} placed a token.");
+        }
+
         private void SendGameState()
         {
             var json = JsonHandler.Serialize(new GameState()
@@ -87,6 +106,7 @@ namespace Connect4.Game
             BoardChangedEvent?.Invoke(this, "recived gameState");
             if (gameState.GameWonBy != Owner.None) GameWonEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? PlayerOne.Name : PlayerTwo.Name);
         }
+
         private bool CheckForFour() => CheckDirection(1, 0)
             || CheckDirection(1, 1)
             || CheckDirection(0, 1)

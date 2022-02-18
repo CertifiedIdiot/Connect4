@@ -192,6 +192,7 @@ namespace Connect4_ConsoleUI.GameUI
                 System.Threading.Thread.Sleep(100);
                 Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
             }
+            Console.ReadKey(true);
         }
         internal static void SplashscreenPreMatch()
         {

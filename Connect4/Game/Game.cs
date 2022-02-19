@@ -22,8 +22,8 @@ namespace Connect4.Game
         public Game(INetwork network, bool goFirst)
         {
             this.network = network;
-            PlayerOne = Connect4Factory.GetPlayer("player1", Owner.PlayerOne);
-            PlayerTwo = Connect4Factory.GetPlayer("player2", Owner.PlayerTwo);
+            PlayerOne = Connect4Factory.GetPlayer("Player 1", Owner.PlayerOne);
+            PlayerTwo = Connect4Factory.GetPlayer("Player 2", Owner.PlayerTwo);
             ActivePlayer = PlayerOne;
             InstanceId = goFirst ? Owner.PlayerOne : Owner.PlayerTwo;
         }
@@ -123,7 +123,7 @@ namespace Connect4.Game
                     {
                         gameWonBy = ActivePlayer.PlayerNumber;
                         if (network != null) SendGameState();
-                        GameOverEvent?.Invoke(this, $"{ActivePlayer.Name}");
+                        GameOverEvent?.Invoke(this, new GameOverEventArgs(ActivePlayer.Name));
                         return true;
                     }
                 }

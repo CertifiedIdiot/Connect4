@@ -2,10 +2,9 @@
 {
     using Connect4;
     using Connect4.Game;
-    using Connect4.Network;
+    using Connect4.Interfaces;
     using Connect4_ConsoleUI.GameUI;
     using System;
-    using Connect4.Interfaces;
 
     internal class QuickTest
     {
@@ -16,7 +15,7 @@
             game = Connect4Factory.GetGame(network, goFirst);
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameWonEvent += Game_GameWonEvent;
-            RenderGame.StartScreen(); // TODO: Comment out to skip intro. Temporary place for the startscreen, to be used in future menus instead. Only used for testing.
+            RenderGame.StartRound();
         }
 
         ~QuickTest()
@@ -28,14 +27,13 @@
         {
             Console.Clear();
             RenderGame.WinSplashscreen($"     {e} won!");
-            Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
-            Run();
+            Menus.PlayAgainMenu.Hotseat();  // TODO - Runs the Hotseat version of the PlayAgainMenu, might need to switch for the Network PlayAgainMenu. Depending on how "playagain" works when played over network.
+            //Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
         }
         private void Game_BoardChangedEvent(object? sender, string e) => UpdateUI();
 
         public void Run()
         {
-
             game.SetupNewGame();
             DrawUI();
             game.Start();
@@ -59,6 +57,5 @@
             var input = Console.ReadKey(true);
             return char.IsDigit(input.KeyChar) ? int.Parse(input.KeyChar.ToString()) : 0;
         }
-
     }
 }

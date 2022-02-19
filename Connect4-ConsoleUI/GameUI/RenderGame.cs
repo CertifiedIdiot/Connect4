@@ -36,13 +36,18 @@ namespace Connect4_ConsoleUI.GameUI
             Console.CursorVisible = false;
             RenderGameElement.WinSplashscreenBackground();
             RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         internal static void StartScreen()
         {
             SetConsoleSettings();
             RenderGameElement.SplashscreenStartScreen();
+        }
+        internal static void StartRound()
+        {
+            SetConsoleSettings();
+            RenderGameElement.SplashscreenPreMatch();
         }
 
         internal static void RenderGameInfo(string messagebox, int counter, IPlayer player, Slot[,] gameboard)

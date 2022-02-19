@@ -10,6 +10,7 @@ namespace Connect4_ConsoleUI.UIProperties
     public static class UIColours
     {
         // TODO: Feel free to try out other colours to create a nice looking colour scheme
+        // TODO: Colourscheme to make it easier to switch all colours at once?
         internal static Color PlayerOneColour { get; set; } = Color.DodgerBlue;     // Original colour - Color.DodgerBlue
         internal static Color PlayerTwoColour { get; set; } = Color.OrangeRed;     // Original colour - Color.OrangeRed
         internal static Color GameboardColour { get; set; } = Color.CadetBlue;     // Original colour - Color.CadetBlue

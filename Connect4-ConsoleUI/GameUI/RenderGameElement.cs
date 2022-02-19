@@ -115,7 +115,6 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="text">The text.</param>
         internal static void DisplayTopMessage(string text)
         {
-            int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
             Print.StringAtPositionCentered(text, yOffset, UIColours.TextColour);
         }
@@ -170,28 +169,36 @@ namespace Connect4_ConsoleUI.GameUI
         internal static void WinSplashscreenDisplayWinnerName(string winnerName)
         {
             Print.StringAtPosition("                     ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
-            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, Color.Black, Color.Red);
-            Console.ReadKey();
+            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, UIColours.PlayerOneColour, UIColours.PlayerTwoColour, 3);
         }
 
         internal static void WinSplashscreenBackground()
         {
             for (int i = 0; i < 5; i++)
             {
-                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworksAlt, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
                 System.Threading.Thread.Sleep(50);
-                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworks, 0, UIColours.PlayerTwoColour, UIColours.PlayerOneColour);
-                //Print.GradientAtPosition(FiggleFonts.Colossal.Render(winnerName), 15, Color.Crimson, Color.Fuchsia);
+                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworksAlt, 0, UIColours.PlayerTwoColour, UIColours.PlayerOneColour);
                 System.Threading.Thread.Sleep(50);
             }
         }
 
         internal static void SplashscreenStartScreen()
         {
-            // Place in first menu constructor?
             while (!Console.KeyAvailable)
             {
                 Console.CursorVisible = false;
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
+                System.Threading.Thread.Sleep(100);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
+            }
+            Console.ReadKey(true);
+        }
+        internal static void SplashscreenPreMatch()
+        {
+            Console.CursorVisible = false;
+            for (int i = 0; i < 3; i++)
+            {
                 Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
                 System.Threading.Thread.Sleep(100);
                 Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);

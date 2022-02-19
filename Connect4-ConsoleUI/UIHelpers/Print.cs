@@ -85,7 +85,7 @@ namespace Connect4_ConsoleUI.UIHelpers
         {
             var charArrayed = graphicsObject.ToCharArray();
             Console.CursorTop = posY;
-            Console.WriteWithGradient(charArrayed, colorA, colorB, 2);
+            Console.WriteWithGradient(charArrayed, colorA, colorB, 1);
         }
         public static void GradientAtPosition(string graphicsObject, int posY, Color colorA, Color colorB, int gradient)
         {

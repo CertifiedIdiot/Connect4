@@ -104,9 +104,9 @@ namespace Connect4_ConsoleUI
                         break;
                 }
             } while (userChoice?.Length == 0);
-            Console.ResetColor();
+            //Console.ResetColor();
             //Console.Clear();
-            EraseMenu();
+            //EraseMenu();
             return userChoice!;
         }
 

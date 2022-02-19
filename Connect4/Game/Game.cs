@@ -12,9 +12,9 @@ namespace Connect4.Game
 
         private readonly INetwork network;
         public event EventHandler<string>? BoardChangedEvent;
-        public event EventHandler<string>? GameWonEvent;
+        public event EventHandler<string>? GameOverEvent;
         public int MoveCounter { get; set; } = 1;
-        public Owner InstanceId { get; private set; }
+        public Owner InstanceId { get; }
         public IPlayer PlayerOne { get; set; }
         public IPlayer PlayerTwo { get; set; }
         public Slot[,] Board { get; set; } = new Slot[7, 6];
@@ -38,7 +38,6 @@ namespace Connect4.Game
                 gameWonBy = Owner.None;
             }
             BoardChangedEvent?.Invoke(this, "New game.");
-
         }
         public void Start()
         {
@@ -73,6 +72,7 @@ namespace Connect4.Game
         {
             MoveCounter++;
             ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
+            if (MoveCounter == 43 && gameWonBy == Owner.None) GameOverEvent?.Invoke(this, "Draw.");
             if (network != null) SendGameState();
         }
 
@@ -92,7 +92,7 @@ namespace Connect4.Game
                 MoveCounter = MoveCounter
             });
             network.Send(json);
-            if (gameWonBy == Owner.None) RecieveGameState();
+            if (gameWonBy == Owner.None && MoveCounter != 43) RecieveGameState();
         }
 
         private void RecieveGameState()
@@ -104,7 +104,8 @@ namespace Connect4.Game
             gameWonBy = gameState.GameWonBy;
             MoveCounter = gameState.MoveCounter;
             BoardChangedEvent?.Invoke(this, "recived gameState");
-            if (gameState.GameWonBy != Owner.None) GameWonEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? PlayerOne.Name : PlayerTwo.Name);
+            if (gameState.GameWonBy != Owner.None) GameOverEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? PlayerOne.Name : PlayerTwo.Name);
+            else if (MoveCounter == 43) GameOverEvent?.Invoke(this, "Draw.");
         }
 
         private bool CheckForFour() => CheckDirection(1, 0)
@@ -122,7 +123,7 @@ namespace Connect4.Game
                     {
                         gameWonBy = ActivePlayer.PlayerNumber;
                         if (network != null) SendGameState();
-                        GameWonEvent?.Invoke(this, $"{ActivePlayer.Name}");
+                        GameOverEvent?.Invoke(this, $"{ActivePlayer.Name}");
                         return true;
                     }
                 }

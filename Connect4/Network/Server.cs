@@ -35,7 +35,7 @@ namespace Connect4.Network
         public Server(string IP = "") => this.IP = IP;
 
         /// <summary>
-        /// Starts this instance waits for a <see cref="Client"/> connection attempt.
+        /// Starts this instance and waits for a <see cref="Client"/> connection attempt.
         /// </summary>
         /// <remarks>Will NOT continue until a <see cref="Client"/> connects.</remarks>
         /// <returns>string connection message with IP and port from the <see cref="Client"/> </returns>

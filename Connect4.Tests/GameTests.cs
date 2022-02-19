@@ -4,33 +4,23 @@ namespace Connect4.Tests
 {
     public class GameTests
     {
+        private readonly Game.Game game;
         public GameTests()
         {
-            [Fact]
-            void MakeMoveOutOfBoundsTest()
+            game = new Game.Game(null!, true);
+        }
+
+        [Theory]
+        [InlineData(1, 6, false)]
+        [InlineData(1, 5, true)]
+        public void MakeMoveBoundsTest(int column, int times, bool expected)
+        {
+            for (int i = 0; i < times; i++)
             {
-                var game = new Game.Game(null!, true);
-
-                for(int i = 0; i < 6; i++)
-                {
-                    game.MakeMove(1);
-                }
-
-                Assert.False(game.MakeMove(1));
+                game.MakeMove(column);
             }
 
-            [Fact]
-            void MakeMoveInBoundsTest()
-            {
-                var game = new Game.Game(null!, true);
-
-                for (int i = 0; i < 5; i++)
-                {
-                    game.MakeMove(6);
-                }
-
-                Assert.True(game.MakeMove(6));
-            }
+            Assert.Equal(expected, game.MakeMove(column));
         }
     }
 }

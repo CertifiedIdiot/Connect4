@@ -23,14 +23,14 @@
             game.BoardChangedEvent -= Game_BoardChangedEvent;
             game.GameOverEvent -= Game_GameWonEvent;
         }
-        private void Game_GameWonEvent(object? sender, string e)
+        private void Game_GameWonEvent(object? sender, GameOverEventArgs e)
         {
-            if (e == "Draw.") RenderGame.WinSplashscreen($"     Draw!");
-            else RenderGame.WinSplashscreen($"     {e} won!");
+            if (e.Winner == "Draw.") RenderGame.WinSplashscreen($"     Draw!");
+            else RenderGame.WinSplashscreen($"     {e.Winner} won!");
             Menus.PlayAgainMenu.Rematch(this);
         }
 
-        private void Game_BoardChangedEvent(object? sender, string e) => UpdateUI();
+        private void Game_BoardChangedEvent(object? sender, EventArgs e) => UpdateUI();
 
         public void Run()
         {

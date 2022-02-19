@@ -25,11 +25,10 @@
         }
         private void Game_GameWonEvent(object? sender, string e)
         {
-            Console.Clear();
             RenderGame.WinSplashscreen($"     {e} won!");
-            Menus.PlayAgainMenu.Hotseat();  // TODO - Runs the Hotseat version of the PlayAgainMenu, might need to switch for the Network PlayAgainMenu. Depending on how "playagain" works when played over network.
-            //Console.SetCursorPosition(0, Console.WindowHeight - 1);  //Moves console "exit messages" further down, for testing purposes.
+            Menus.PlayAgainMenu.Rematch(this);
         }
+
         private void Game_BoardChangedEvent(object? sender, string e) => UpdateUI();
 
         public void Run()

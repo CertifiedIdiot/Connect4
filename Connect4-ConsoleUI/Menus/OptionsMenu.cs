@@ -20,7 +20,7 @@ namespace Connect4_ConsoleUI.Menus
                 "[4] - Monochrome n' Chill",
                 "[5] - Return to Main Menu"
             };
-            switch (new Menu(menuItems, true).UseMenu())
+            switch (new CreateMenu(menuItems, true).UseMenu())
             {
                 case "[1] - Default Colour Scheme.": ChangeDisplaySettings(0);
                     break;

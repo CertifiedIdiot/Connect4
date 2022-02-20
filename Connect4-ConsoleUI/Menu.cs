@@ -76,8 +76,7 @@ namespace Connect4_ConsoleUI
             var userChoice = "";
 
             SetColors();
-            Console.Clear();
-
+            //Console.Clear();
             do
             {
                 UpdateMenu(highlightItem);

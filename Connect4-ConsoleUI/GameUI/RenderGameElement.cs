@@ -205,5 +205,28 @@ namespace Connect4_ConsoleUI.GameUI
             }
         }
         #endregion
+
+        internal static void MenuHeader()
+        {
+            var posX = 42;
+            var posY = 10;
+            var xIncrease = 0;
+            Print.StringAtPosition(ASCIIGraphics.connect4stringHeader, 1);
+            for (int i = 0; i < 4; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Print.AtPosition(ASCIIGraphics.playerIconArray, posX + xIncrease, posY, UIColours.PlayerTwoColour);
+                }
+                else
+                    Print.AtPosition(ASCIIGraphics.playerIconArray, posX + xIncrease, posY, UIColours.PlayerOneColour);
+                xIncrease += 10;
+            }
+        }
+        internal static void ExitMessage()
+        {
+            Print.StringAtPositionCentered("Thank you for playing. Press any key to exit.", 15);
+            Console.ReadKey(true);
+        }
     }
 }

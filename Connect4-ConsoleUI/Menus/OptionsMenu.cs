@@ -11,8 +11,9 @@ namespace Connect4_ConsoleUI.Menus
     {
         internal static void Run()
         {
+            RenderGame.MenuHeader();
             var menuItems = new List<string>() {
-                "Display Settings",
+                "Change the Game Colours",
                 "[1] - Default Colour Scheme.",
                 "[2] - Placeholder Scheme 1",
                 "[3] - Return to Main Menu"

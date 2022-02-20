@@ -91,7 +91,8 @@ namespace Connect4_ConsoleUI
                         break;
 
                     case ConsoleKey.Enter:
-                        userChoice = MenuItems[highlightItem];
+                        if (highlightItem <= MenuItems.Count - 1)
+                            userChoice = MenuItems[highlightItem];
                         break;
 
                     default:

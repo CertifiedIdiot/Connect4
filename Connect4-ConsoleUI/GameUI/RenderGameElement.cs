@@ -154,7 +154,7 @@ namespace Connect4_ConsoleUI.GameUI
         internal static void WinSplashscreenDisplayWinnerName(string winnerName)
         {
             Print.StringAtPosition("                     ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
-            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, UIColours.PlayerOneColour);
+            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, UIColours.GameboardColour);
         }
 
         internal static void WinSplashscreenBackground()
@@ -173,9 +173,9 @@ namespace Connect4_ConsoleUI.GameUI
             while (!Console.KeyAvailable)
             {
                 Console.CursorVisible = false;
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerOneColour);
                 System.Threading.Thread.Sleep(100);
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerTwoColour);
             }
             Console.ReadKey(true);
         }
@@ -184,9 +184,9 @@ namespace Connect4_ConsoleUI.GameUI
             Console.CursorVisible = false;
             for (int i = 0; i < 3; i++)
             {
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerOneColour);
                 System.Threading.Thread.Sleep(100);
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerTwoColour);
             }
         }
         #endregion

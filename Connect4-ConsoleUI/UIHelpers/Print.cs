@@ -81,7 +81,7 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="posY">The position y.</param>
         /// <param name="colorA">The color a.</param>
         /// <param name="colorB">The color b.</param>
-        public static void GradientAtPosition(string graphicsObject, int posY, Color colorA, Color colorB, int gradient = 2)
+        public static void GradientAtPosition(string graphicsObject, int posY, Color colorA, Color colorB, int gradient = 1)
         {
             var charArrayed = graphicsObject.ToCharArray();
             Console.CursorTop = posY;

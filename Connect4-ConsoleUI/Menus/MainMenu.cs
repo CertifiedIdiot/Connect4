@@ -20,7 +20,7 @@ namespace Connect4_ConsoleUI.Menus
                 "[3] - Display Settings.",
                 "[4] - Quit Game."
             };
-            switch (new Menu(menuItems, true).UseMenu())
+            switch (new CreateMenu(menuItems, true).UseMenu())
             {
                 case "[1] - Hotseat Game.": StartHotSeat(); break;
                 case "[2] - Multiplayer Setup.": StartNetWorkSetUp(); break;
@@ -28,11 +28,13 @@ namespace Connect4_ConsoleUI.Menus
                 case "[4] - Quit Game.": ExitTheGame(); break; // TODO - "exiting game"-screen before close
             }
         }
-        internal static void ExitTheGame()
+
+        private static void ExitTheGame()
         {
             RenderGame.ExitScreen();
             Environment.Exit(0);
         }
+
         private static void StartHotSeat() => new QuickTest(null!, true).Run();
 
         private static void StartNetWorkSetUp() => new NetworkSetup().Run();

@@ -11,13 +11,11 @@ namespace Connect4_ConsoleUI
     using UIProperties;
     using Console = Colorful.Console;
 
-    internal class Menu
+    internal class CreateMenu
     {
         #region Private Fields
 
         private string bottomLine = "";
-        private static readonly Color currentBackground = UIColours.BackgroundColour;
-        private static readonly Color currentForeground = UIColours.TextColour;
         private int headerLines = 0;
         private readonly string HelpText = " Arrow keys to navigate, Enter to select.";
         private int infoLines = 0;
@@ -31,7 +29,7 @@ namespace Connect4_ConsoleUI
 
         #region internal Constructors
 
-        internal Menu(IList<string> menuItems, bool center = false, int headerLines = 1, int infoLines = 0)
+        internal CreateMenu(IList<string> menuItems, bool center = false, int headerLines = 1, int infoLines = 0)
         {
             if (menuItems == null || menuItems.Count == 0)
             {
@@ -107,14 +105,14 @@ namespace Connect4_ConsoleUI
 
         private static void InvertColors()
         {
-            Console.ForegroundColor = currentBackground;
-            Console.BackgroundColor = currentForeground;
+            Console.ForegroundColor = UIColours.BackgroundColour;
+            Console.BackgroundColor = UIColours.TextColour;
         }
 
         private static void SetColors()
         {
-            Console.ForegroundColor = currentForeground;
-            Console.BackgroundColor = currentBackground;
+            Console.ForegroundColor = UIColours.TextColour;
+            Console.BackgroundColor = UIColours.BackgroundColour;
         }
 
         private void SetupMenu(bool center, int headerLines, int infoLines)

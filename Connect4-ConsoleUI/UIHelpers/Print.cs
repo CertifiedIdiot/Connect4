@@ -81,11 +81,15 @@ namespace Connect4_ConsoleUI.UIHelpers
         /// <param name="posY">The position y.</param>
         /// <param name="colorA">The color a.</param>
         /// <param name="colorB">The color b.</param>
-        public static void GradientAtPosition(string graphicsObject, int posY, Color colorA, Color colorB, int gradient = 1)
+        public static void GradientAtPosition(string graphicsObject, int posY, Color colorA)
         {
             var charArrayed = graphicsObject.ToCharArray();
             Console.CursorTop = posY;
-            Console.WriteWithGradient(charArrayed, colorA, colorB, gradient);
+            for (int i = 0; i < charArrayed.Length; i++)
+            {
+                Console.Write(charArrayed[i].ToString(), colorA);
+            }
+            
         }
 
         #region Print at position + overloads

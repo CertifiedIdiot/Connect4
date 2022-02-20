@@ -23,7 +23,8 @@ namespace Connect4_ConsoleUI.UIProperties
         // Colour order - PlayerOneColour, PlayerTwoColour, GameboardColour, TableColour, BackgroundColour, Textcolour
             new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"},
             new List<string> { "Black", "White", "DodgerBlue", "DarkCyan", "OrangeRed", "Bisque"},
-            //new List<string> {"", "", "", "", "", "" },
+            new List<string> {"Gainsboro", "DarkGray", "Gray", "DimGray", "Black", "Silver" },
+            new List<string> {"Gainsboro", "DimGray", "LightSlateGray", "Black", "DarkSlateGray", "Silver" },
         };
 
         /// <summary> Gets or sets the player one colour See also <seealso cref="ColourSchemes"/> for more info. </summary>

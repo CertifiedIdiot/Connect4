@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace Connect4.Network
 {
-    public class ConnMgr
+    public class GameDataMgr
     {
         RelayUser PlayerLobby { get; set; }
         RelayUser Player { get; set; }
-        public ConnMgr(RelayUser PlayerLobby, RelayUser Player)
+        public GameDataMgr(RelayUser PlayerLobby, RelayUser Player)
         {
             this.PlayerLobby = PlayerLobby;
             this.Player = Player;
         }
-        
-
     }
 }

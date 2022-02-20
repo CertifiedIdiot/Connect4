@@ -3,4 +3,7 @@ using Connect4_ConsoleUI.Menus;
 
 //new QuickTest(null).Run();
 //new NetworkSetup().Run();
-MainMenu.Start();
+// TODO: remove comment
+//MainMenu.Start();
+RelayDebug.Start();
+

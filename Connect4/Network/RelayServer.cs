@@ -2,7 +2,6 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
-using Connect4.Interfaces;
 
 namespace Connect4.Network
 {
@@ -10,47 +9,100 @@ namespace Connect4.Network
     {
         public string IP { get; set; }
         private bool PoolConnections = true;
-
         private readonly List<RelayUser> ConnectionPool = new();
-        readonly CancellationTokenSource StopToken = new();
-        public RelayServer(string IP = "")
-        {
-            this.IP = IP;
-        }
+
+        public RelayServer(string IP = "") => this.IP = IP;
 
         public void Start()
         {
             StartConnectionPool();
         }
-        public string[] GetConnectionPoolUsers()
-        {
-            string[] users = new string[ConnectionPool.Count];
 
-            for(int i = 0; i < ConnectionPool.Count; i++)
+        void SendActConnPoolUsers(RelayUser user)
+        {
+
+            List<string> users = new();
+
+            foreach (RelayUser u in ConnectionPool)
             {
-                users[i] = ConnectionPool[i].Username;
+                if(user.LobbyIsOpen == true)
+                {
+                    users.Add(u.Username);
+                }
             }
 
-            return users;
+            string jsonUsers = JsonHandler.Serialize(users);
+            Send(user, jsonUsers);
         }
-        public static string Receive(RelayUser user)
+
+        private void AddUserToPool(RelayUser user)
+        {
+            bool accepted = false;
+
+            while (!accepted)
+            {
+                var username = Receive(user);
+                if (IsNameDupe(username))
+                {
+                    Send(user, "rejected");
+                }
+                else
+                {
+                    accepted = true;
+                }
+            }
+
+            ConnectionPool.Add(user);
+            Send(user, "accepted");
+        }
+        private bool IsNameDupe(string username)
+        {
+            if (ConnectionPool.Exists(u => u.Username.Equals(username)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public string Receive(RelayUser user)
         {
             int DataByteCount;
             byte[] DataBuffer = new byte[1024];
+            string output;
 
             DataByteCount = user.ClientSocket.Receive(DataBuffer);
+            output = Encoding.UTF8.GetString(DataBuffer, 0, DataByteCount);
 
-            return Encoding.UTF8.GetString(DataBuffer, 0, DataByteCount);
+            if(output == "sendActiveUsers")
+            {
+                SendActConnPoolUsers(user);
+                return "";
+            }
+            if(output == "ping")
+            {
+                return "pong";
+            }
+
+            return output;
         }
 
-        public static void Send(RelayUser user, string message) =>
-            user.ClientSocket.Send(Encoding.UTF8.GetBytes(message));
-
-        // TODO: Prevent duplicate usernames
-        private void AddUserToPool(RelayUser user)
+        public string Receive(string username)
         {
-            user.Username = Receive(user);
-            ConnectionPool.Add(user);
+            try
+            {
+                return Receive(ConnectionPool.Find(u => u.Username.Equals(username)));
+            }
+            catch (Exception ex)
+            {
+                return string.Format("Error: " + ex.ToString());
+            }
+        }
+
+        public static void Send(RelayUser user, string message)
+        {
+            user.ClientSocket.Send(Encoding.UTF8.GetBytes(message));
         }
 
         public void StartConnectionPool()
@@ -60,7 +112,7 @@ namespace Connect4.Network
                 IPEndPoint IPep = new(IPAddress.Parse(IP), 9050);
                 RelayUser user = new();
                 user.ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                
+
                 user.ClientSocket.Bind(IPep);
                 user.ClientSocket.Listen(10);
                 // Will not continue from this point until a client connects
@@ -69,14 +121,42 @@ namespace Connect4.Network
                 new Task(() => AddUserToPool(user)).Start();
             }
         }
-
+        
         public void Stop()
         {
             PoolConnections = false;
-            foreach(var user in ConnectionPool)
+            foreach (RelayUser user in ConnectionPool)
             {
                 user.ClientSocket.Close();
             }
+        }
+
+        /// <summary>
+        /// Gets the most likely IPV4 address in use for internet connection.
+        /// </summary>
+        /// <remarks>Can and will fail you.</remarks>
+        /// <returns>string IPV4 address.</returns>
+        public static string GetIPV4()
+        {
+            string output = string.Empty;
+            foreach (NetworkInterface net in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if ((net.NetworkInterfaceType == NetworkInterfaceType.Ethernet &&
+                    net.OperationalStatus == OperationalStatus.Up)
+                    ||
+                    (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
+                    net.OperationalStatus == OperationalStatus.Up))
+                {
+                    foreach (UnicastIPAddressInformation _IP in net.GetIPProperties().UnicastAddresses)
+                    {
+                        if (_IP.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            output = _IP.Address.ToString();
+                        }
+                    }
+                }
+            }
+            return output;
         }
     }
 }

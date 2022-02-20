@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Connect4_ConsoleUI.GameUI
 {
-    public static class RenderGameElement
+    internal static class RenderGameElement
     {
         /// <summary>
         /// Prints the background table at the chosen position.
@@ -17,7 +17,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="posX">Horizontal position.</param>
         /// <param name="posY">Vertical position.</param>
         /// <param name="tableColour">Colour of the table.</param>
-        public static void BackgroundTable(int posX, int posY, Color tableColour) => Print.AtPosition(ASCIIGraphics.tableArray, posX, posY, tableColour);
+        internal static void BackgroundTable(int posX, int posY, Color tableColour) => Print.AtPosition(ASCIIGraphics.tableArray, posX, posY, tableColour);
 
         /// <summary>
         /// Prints out the gameboard at the chosen position with the chosen colour.
@@ -25,7 +25,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// <param name="posX">Horizontal position.</param>
         /// <param name="posY">Vertical position.</param>
         /// <param name="gameboardColour">Colour of the gameboard</param>
-        public static void GameBoard(int posX, int posY, Color gameboardColour) => Print.AtPosition(ASCIIGraphics.gameboardArray, posX, posY, gameboardColour);
+        internal static void GameBoard(int posX, int posY, Color gameboardColour) => Print.AtPosition(ASCIIGraphics.gameboardArray, posX, posY, gameboardColour);
 
         #region Player positions
         /// <summary>
@@ -33,7 +33,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         /// <param name="playerDropPositions"></param>
         /// <param name="playerColour"></param>
-        public static void PlayerDropPositions(bool[] playerDropPositions, Color playerColour)
+        internal static void PlayerDropPositions(bool[] playerDropPositions, Color playerColour)
         {
             var xOffsetPosition = UIPositions.GameBoardXPos + 3;
             var yOffsetPosition = UIPositions.GameBoardYPos - 5;
@@ -52,7 +52,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// Prints out the coloured player positions inside of the gameboard. The positions are relative to the gameboard.
         /// </summary>
         /// <param name="boardPositions"></param>
-        public static void PlayerPositions(Slot[,] boardPositions)
+        internal static void PlayerPositions(Slot[,] boardPositions)
         {
             const int rows = 6;
             const int columns = 7;
@@ -145,24 +145,9 @@ namespace Connect4_ConsoleUI.GameUI
             int xOffset = UIPositions.GameBoardXPos + 3;
             int yOffset = UIPositions.GameBoardYPos - 6;
             Console.SetCursorPosition(xOffset, yOffset);
-            //Print.GradientAtPosition(ASCIIGraphics.columnNumbers, yOffset, UIColours.PlayerOneColour, UIColours.PlayerTwoColour, 10);
             Print.StringAtPosition(ASCIIGraphics.columnNumbers, yOffset, UIColours.GameboardColour);
         }
 
-        // Print selected number above corresponding column
-        //internal static void DisplayChosenColumn(int num)
-        //{
-        //    int xOffset = UIPositions.GameBoardXPos + 3;
-        //    int yOffset = UIPositions.GameBoardYPos + -2;
-
-        //    if (num.ToString() == "1")      Print.StringAtPosition("1", xOffset, yOffset);
-        //    else if (num.ToString() == "2") Print.StringAtPosition("2", xOffset + 7, yOffset);
-        //    else if (num.ToString() == "3") Print.StringAtPosition("3", xOffset + 14, yOffset);
-        //    else if (num.ToString() == "4") Print.StringAtPosition("4", xOffset + 21, yOffset);
-        //    else if (num.ToString() == "5") Print.StringAtPosition("5", xOffset + 28, yOffset);
-        //    else if (num.ToString() == "6") Print.StringAtPosition("6", xOffset + 35, yOffset);
-        //    else if (num.ToString() == "7") Print.StringAtPosition("7", xOffset + 42, yOffset);   
-        //}
         #endregion
 
         #region SplashScreens
@@ -223,6 +208,7 @@ namespace Connect4_ConsoleUI.GameUI
                 xIncrease += 10;
             }
         }
+
         internal static void ExitMessage()
         {
             Print.StringAtPositionCentered("Thank you for playing. Press any key to exit.", 15);

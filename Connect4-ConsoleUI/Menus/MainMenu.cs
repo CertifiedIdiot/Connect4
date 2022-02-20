@@ -20,7 +20,7 @@ namespace Connect4_ConsoleUI.Menus
                 "[3] - Display Settings.",
                 "[4] - Quit Game."
             };
-            switch (new Menu(menuItems, true).UseMenu())
+            switch (new CreateMenu(menuItems, true).UseMenu())
             {
                 case "[1] - Hotseat Game.": StartHotSeat(); break;
                 case "[2] - Multiplayer Setup.": StartNetWorkSetUp(); break;

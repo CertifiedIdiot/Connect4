@@ -13,7 +13,7 @@ namespace Connect4_ConsoleUI.Menus
                 "[2] - Return to Main Menu.",
                 "[3] - Exit Game."
                 };
-            switch (new Menu(menuItems, true).UseMenu())
+            switch (new CreateMenu(menuItems, true).UseMenu())
             {
                 case "[1] - Play the opponent again.": qt.Run(); break;
                 case "[2] - Return to Main Menu.": MainMenu.Run(); break;

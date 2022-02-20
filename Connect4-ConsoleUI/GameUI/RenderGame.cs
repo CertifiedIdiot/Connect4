@@ -7,8 +7,6 @@ namespace Connect4_ConsoleUI.GameUI
 {
     internal static class RenderGame
     {
-        // TODO graphical elements as separate classes instead?
-
         /// <summary>
         /// Renders the basic game elements. The gameboard, the table, and adjusts the console.
         /// </summary>

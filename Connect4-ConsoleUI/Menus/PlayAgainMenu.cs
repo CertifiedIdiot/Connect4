@@ -17,8 +17,14 @@ namespace Connect4_ConsoleUI.Menus
             {
                 case "[1] - Play the opponent again.": qt.Run(); break;
                 case "[2] - Return to Main Menu.": MainMenu.Run(); break;
-                case "[3] - Exit Game.": MainMenu.ExitTheGame(); break;
+                case "[3] - Exit Game.": ExitTheGame(); break;
             }
+        }
+
+        private static void ExitTheGame()
+        {
+            RenderGame.ExitScreen();
+            Environment.Exit(0);
         }
     }
 }

@@ -28,11 +28,13 @@ namespace Connect4_ConsoleUI.Menus
                 case "[4] - Quit Game.": ExitTheGame(); break; // TODO - "exiting game"-screen before close
             }
         }
-        internal static void ExitTheGame()
+
+        private static void ExitTheGame()
         {
             RenderGame.ExitScreen();
             Environment.Exit(0);
         }
+
         private static void StartHotSeat() => new QuickTest(null!, true).Run();
 
         private static void StartNetWorkSetUp() => new NetworkSetup().Run();

@@ -33,6 +33,7 @@ namespace Connect4_ConsoleUI.GameUI
 
         internal static void WinSplashscreen(string winner)
         {
+            Console.Clear();
             Console.CursorVisible = false;
             RenderGameElement.WinSplashscreenBackground();
             RenderGameElement.WinSplashscreenDisplayWinnerName(winner);
@@ -58,6 +59,16 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.DisplayTopMessage(messagebox);
             RenderGameElement.DisplayColumnNumbers();
             RenderGameElement.PlayerPositions(gameboard);
+        }
+        internal static void MenuHeader()
+        {
+            Console.Clear();
+            RenderGameElement.MenuHeader();
+        }
+        internal static void ExitScreen()
+        {
+            MenuHeader();
+            RenderGameElement.ExitMessage();
         }
     }
 }

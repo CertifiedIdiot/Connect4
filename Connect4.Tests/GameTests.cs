@@ -6,6 +6,8 @@ using Connect4.Interfaces;
 using Connect4.Models;
 using Xunit;
 using Moq;
+using System.Data.Common;
+using System.Reflection;
 
 namespace Connect4.Tests
 {
@@ -102,6 +104,7 @@ namespace Connect4.Tests
             mock.Verify(x => x.Send(It.IsAny<string>()), Times.Exactly(1));
             mock.Verify(x => x.Receive(), Times.Exactly(1));
         }
+
         [Fact]
         public void MakeMove_GameWonWithNetwork_ShouldNotEnterRecieveState()
         {
@@ -113,6 +116,30 @@ namespace Connect4.Tests
             sut.MakeMove(3);
             mock.Verify(x => x.Send(It.IsAny<string>()), Times.AtLeastOnce);
             mock.Verify(x => x.Receive(), Times.Never());
+        }
+
+        [Fact]
+        public void Receiving_GameWon_ShouldTriggerGameOverEvent()
+        {
+            var mock = new Mock<INetwork>();
+            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState() { GameWonBy = Token.PlayerTwo }));
+            var moqNet = mock.Object;
+            var sut = new Game.Game(moqNet, true) { Board = testBoard };
+
+            var gameOver = Assert.Raises<GameOverEventArgs>(x => sut.GameOverEvent += x, x => sut.GameOverEvent -= x, () => sut.MakeMove(1));
+            Assert.Equal("Player 2", gameOver.Arguments.Winner);
+        }
+
+        [Fact]
+        public void Receiving_MoveCounter43_ShouldTriggerGameOverEvent()
+        {
+            var mock = new Mock<INetwork>();
+            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState() { MoveCounter = 43}));
+            var moqNet = mock.Object;
+            var sut = new Game.Game(moqNet, true) { Board = testBoard };
+
+            var gameOver = Assert.Raises<GameOverEventArgs>(x => sut.GameOverEvent += x, x => sut.GameOverEvent -= x, () => sut.MakeMove(1));
+            Assert.Equal("Draw.", gameOver.Arguments.Winner);
         }
 
         [Theory]
@@ -142,6 +169,7 @@ namespace Connect4.Tests
                 MoveCounter = 2
             });
             sut.Board[1, 5].State = Token.None;
+
             sut.MakeMove(1);
 
             mock.Verify(x => x.Send(expected), Times.Exactly(1));

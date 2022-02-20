@@ -11,10 +11,10 @@ namespace Connect4.Game
         private Owner gameWonBy;
 
         private readonly INetwork network;
-        public event EventHandler<string>? BoardChangedEvent;
-        public event EventHandler<string>? GameWonEvent;
+        public event EventHandler<EventArgs>? BoardChangedEvent;
+        public event EventHandler<GameOverEventArgs>? GameOverEvent;
         public int MoveCounter { get; set; } = 1;
-        public Owner InstanceId { get; private set; }
+        public Owner InstanceId { get; }
         public IPlayer PlayerOne { get; set; }
         public IPlayer PlayerTwo { get; set; }
         public Slot[,] Board { get; set; } = new Slot[7, 6];
@@ -22,8 +22,8 @@ namespace Connect4.Game
         public Game(INetwork network, bool goFirst)
         {
             this.network = network;
-            PlayerOne = Connect4Factory.GetPlayer("player1", Owner.PlayerOne);
-            PlayerTwo = Connect4Factory.GetPlayer("player2", Owner.PlayerTwo);
+            PlayerOne = Connect4Factory.GetPlayer("Player 1", Owner.PlayerOne);
+            PlayerTwo = Connect4Factory.GetPlayer("Player 2", Owner.PlayerTwo);
             ActivePlayer = PlayerOne;
             InstanceId = goFirst ? Owner.PlayerOne : Owner.PlayerTwo;
         }
@@ -37,8 +37,7 @@ namespace Connect4.Game
                 ActivePlayer = gameWonBy == Owner.PlayerOne ? PlayerTwo : PlayerOne;
                 gameWonBy = Owner.None;
             }
-            BoardChangedEvent?.Invoke(this, "New game.");
-
+            BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
         public void Start()
         {
@@ -73,13 +72,14 @@ namespace Connect4.Game
         {
             MoveCounter++;
             ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
+            if (MoveCounter == 43 && gameWonBy == Owner.None) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
             if (network != null) SendGameState();
         }
 
         private void PlaceToken(int column, int row)
         {
             Board[column, row].State = ActivePlayer.PlayerNumber;
-            BoardChangedEvent?.Invoke(this, $"{ActivePlayer.Name} placed a token.");
+            BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void SendGameState()
@@ -92,7 +92,7 @@ namespace Connect4.Game
                 MoveCounter = MoveCounter
             });
             network.Send(json);
-            if (gameWonBy == Owner.None) RecieveGameState();
+            if (gameWonBy == Owner.None && MoveCounter != 43) RecieveGameState();
         }
 
         private void RecieveGameState()
@@ -103,8 +103,9 @@ namespace Connect4.Game
             Board = gameState.Board;
             gameWonBy = gameState.GameWonBy;
             MoveCounter = gameState.MoveCounter;
-            BoardChangedEvent?.Invoke(this, "recived gameState");
-            if (gameState.GameWonBy != Owner.None) GameWonEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? PlayerOne.Name : PlayerTwo.Name);
+            BoardChangedEvent?.Invoke(this, EventArgs.Empty);
+            if (gameState.GameWonBy != Owner.None) GameOverEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? new GameOverEventArgs(PlayerOne.Name) : new GameOverEventArgs(PlayerTwo.Name));
+            else if (MoveCounter == 43) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
         }
 
         private bool CheckForFour() => CheckDirection(1, 0)
@@ -122,7 +123,7 @@ namespace Connect4.Game
                     {
                         gameWonBy = ActivePlayer.PlayerNumber;
                         if (network != null) SendGameState();
-                        GameWonEvent?.Invoke(this, $"{ActivePlayer.Name}");
+                        GameOverEvent?.Invoke(this, new GameOverEventArgs(ActivePlayer.Name));
                         return true;
                     }
                 }

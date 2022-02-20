@@ -65,11 +65,11 @@ namespace Connect4_ConsoleUI.GameUI
             {
                 for (int ii = 0; ii < columns; ii++)
                 {
-                    if (boardPositions[ii, i].State == Owner.PlayerOne)
+                    if (boardPositions[ii, i].State == Token.PlayerOne)
                         Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, UIColours.PlayerOneColour);
-                    if (boardPositions[ii, i].State == Owner.PlayerTwo)
+                    if (boardPositions[ii, i].State == Token.PlayerTwo)
                         Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + xIncrease, yOffsetPosition + yIncrease, UIColours.PlayerTwoColour);
-                    if (boardPositions[ii, i].State == Owner.None)
+                    if (boardPositions[ii, i].State == Token.None)
                         Print.AtPosition("", xOffsetPosition + xIncrease, yOffsetPosition + yIncrease);
                     xIncrease += columns;
                 }
@@ -89,9 +89,9 @@ namespace Connect4_ConsoleUI.GameUI
             int yOffset = UIPositions.GameBoardYPos - 1;
             var playerOneAscii = FiggleFonts.Standard.Render("           P1    ");
             var playerTwoAscii = FiggleFonts.Standard.Render("           P2");
-            if (player.PlayerNumber == Owner.PlayerOne)
+            if (player.PlayerNumber == Token.PlayerOne)
                 Print.StringAtPosition(playerOneAscii, yOffset, UIColours.PlayerOneColour);
-            if (player.PlayerNumber == Owner.PlayerTwo)
+            if (player.PlayerNumber == Token.PlayerTwo)
                 Print.StringAtPosition(playerTwoAscii, yOffset, UIColours.PlayerTwoColour);
         }
 

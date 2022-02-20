@@ -1,6 +1,6 @@
 ﻿namespace Connect4.Enums
 {
-    public enum Owner
+    public enum Token
     {
         None,
         PlayerOne,

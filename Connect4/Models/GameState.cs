@@ -8,7 +8,7 @@
     {
         public Slot[,] Board { get; set; } = new Slot[7, 6];
         public bool PlayerOnesTurn { get; set; }
-        public Owner GameWonBy { get; set; }
+        public Token GameWonBy { get; set; }
         public int MoveCounter { get; set; }
     }
 }

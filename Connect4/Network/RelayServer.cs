@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 
@@ -18,14 +17,13 @@ namespace Connect4.Network
             StartConnectionPool();
         }
 
-        void SendActConnPoolUsers(RelayUser user)
+        private void SendActConnPoolUsers(RelayUser user)
         {
-
             List<string> users = new();
 
             foreach (RelayUser u in ConnectionPool)
             {
-                if(user.LobbyIsOpen == true)
+                if (user.LobbyIsOpen)
                 {
                     users.Add(u.Username);
                 }
@@ -41,7 +39,7 @@ namespace Connect4.Network
 
             while (!accepted)
             {
-                var username = Receive(user);
+                string? username = Receive(user);
                 if (IsNameDupe(username))
                 {
                     Send(user, "rejected");
@@ -55,6 +53,7 @@ namespace Connect4.Network
             ConnectionPool.Add(user);
             Send(user, "accepted");
         }
+
         private bool IsNameDupe(string username)
         {
             if (ConnectionPool.Exists(u => u.Username.Equals(username)))
@@ -66,6 +65,7 @@ namespace Connect4.Network
                 return false;
             }
         }
+
         public string Receive(RelayUser user)
         {
             int DataByteCount;
@@ -75,12 +75,12 @@ namespace Connect4.Network
             DataByteCount = user.ClientSocket.Receive(DataBuffer);
             output = Encoding.UTF8.GetString(DataBuffer, 0, DataByteCount);
 
-            if(output == "sendActiveUsers")
+            if (output == "sendActiveUsers")
             {
                 SendActConnPoolUsers(user);
                 return "";
             }
-            if(output == "ping")
+            if (output == "ping")
             {
                 return "pong";
             }
@@ -90,14 +90,19 @@ namespace Connect4.Network
 
         public string Receive(string username)
         {
-            try
+            if (ValidUsername(username))
             {
                 return Receive(ConnectionPool.Find(u => u.Username.Equals(username)));
             }
-            catch (Exception ex)
+            else
             {
-                return string.Format("Error: " + ex.ToString());
+                return "rejected";
             }
+        }
+
+        private bool ValidUsername(string username)
+        {
+            return ConnectionPool.Exists(u => u.Username.Equals(username));
         }
 
         public static void Send(RelayUser user, string message)
@@ -121,42 +126,14 @@ namespace Connect4.Network
                 new Task(() => AddUserToPool(user)).Start();
             }
         }
-        
+
         public void Stop()
         {
             PoolConnections = false;
-            foreach (RelayUser user in ConnectionPool)
+            foreach (RelayUser? user in ConnectionPool)
             {
                 user.ClientSocket.Close();
             }
-        }
-
-        /// <summary>
-        /// Gets the most likely IPV4 address in use for internet connection.
-        /// </summary>
-        /// <remarks>Can and will fail you.</remarks>
-        /// <returns>string IPV4 address.</returns>
-        public static string GetIPV4()
-        {
-            string output = string.Empty;
-            foreach (NetworkInterface net in NetworkInterface.GetAllNetworkInterfaces())
-            {
-                if ((net.NetworkInterfaceType == NetworkInterfaceType.Ethernet &&
-                    net.OperationalStatus == OperationalStatus.Up)
-                    ||
-                    (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
-                    net.OperationalStatus == OperationalStatus.Up))
-                {
-                    foreach (UnicastIPAddressInformation _IP in net.GetIPProperties().UnicastAddresses)
-                    {
-                        if (_IP.Address.AddressFamily == AddressFamily.InterNetwork)
-                        {
-                            output = _IP.Address.ToString();
-                        }
-                    }
-                }
-            }
-            return output;
         }
     }
 }

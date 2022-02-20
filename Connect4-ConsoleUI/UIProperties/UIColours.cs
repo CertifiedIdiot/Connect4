@@ -22,8 +22,9 @@ namespace Connect4_ConsoleUI.UIProperties
         {
         // Colour order - PlayerOneColour, PlayerTwoColour, GameboardColour, TableColour, BackgroundColour, Textcolour
             new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"},
-            new List<string> { ""},
-            //new List<string> {"", "", "", "", "", "" },
+            new List<string> { "Black", "White", "DodgerBlue", "DarkCyan", "OrangeRed", "Bisque"},
+            new List<string> {"Gainsboro", "DarkGray", "Gray", "DimGray", "Black", "Silver" },
+            new List<string> {"Gainsboro", "DimGray", "LightSlateGray", "Black", "DarkSlateGray", "Silver" },
         };
 
         /// <summary> Gets or sets the player one colour See also <seealso cref="ColourSchemes"/> for more info. </summary>
@@ -43,5 +44,21 @@ namespace Connect4_ConsoleUI.UIProperties
 
         /// <summary> Gets or sets the text colour. See also <seealso cref="ColourSchemes"/> for more info. </summary>
         internal static Color TextColour { get; set; } = Color.FromName(ColourSchemes[0][5]);           // Original colour - Color.DarkCyan
+
+        /// <summary>
+        /// Selects a scheme from the <seealso cref="ColourSchemes"/> list, and changes the colour scheme to the sent in value.
+        /// </summary>
+        /// <param name="selectedScheme">The selected <seealso cref="ColourSchemes"/> scheme.</param>
+        internal static void ChangeColourScheme(int selectedScheme)
+        {
+            UIColours.PlayerOneColour = Color.FromName(ColourSchemes[selectedScheme][0]);
+            UIColours.PlayerTwoColour = Color.FromName(ColourSchemes[selectedScheme][1]);
+            UIColours.GameboardColour = Color.FromName(ColourSchemes[selectedScheme][2]);
+            UIColours.TableColour = Color.FromName(ColourSchemes[selectedScheme][3]);
+            UIColours.BackgroundColour = Color.FromName(ColourSchemes[selectedScheme][4]);
+            UIColours.TextColour = Color.FromName(ColourSchemes[selectedScheme][5]);
+        }
     }
+
+
 }

@@ -22,6 +22,5 @@
         /// The player number of the player.
         /// </value>
         public Token PlayerNumber { get; set; }
-        public bool PlayerOneStarts { get; set; }
     }
 }

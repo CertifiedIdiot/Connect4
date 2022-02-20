@@ -41,7 +41,7 @@ namespace Connect4.Game
         }
         public void Start()
         {
-            if (network != null && ActivePlayer.PlayerNumber != InstanceId) RecieveGameState();
+            if (network != null! && ActivePlayer.PlayerNumber != InstanceId) RecieveGameState();
         }
 
         public bool MakeMove(int column)
@@ -73,7 +73,7 @@ namespace Connect4.Game
             MoveCounter++;
             ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
             if (MoveCounter == 43 && gameWonBy == Token.None) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
-            if (network != null) SendGameState();
+            if (network != null!) SendGameState();
         }
 
         private void PlaceToken(int column, int row)

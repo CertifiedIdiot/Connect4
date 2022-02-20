@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+#JetBrains Rider files
+.idea/
+riderModule.iml
+/_ReSharper.Caches/
+
 # User-specific files
 *.rsuser
 *.suo

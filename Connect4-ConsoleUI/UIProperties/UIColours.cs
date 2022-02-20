@@ -44,6 +44,10 @@ namespace Connect4_ConsoleUI.UIProperties
         /// <summary> Gets or sets the text colour. See also <seealso cref="ColourSchemes"/> for more info. </summary>
         internal static Color TextColour { get; set; } = Color.FromName(ColourSchemes[0][5]);           // Original colour - Color.DarkCyan
 
+        /// <summary>
+        /// Selects a scheme from the <seealso cref="ColourSchemes"/> list, and changes the colour scheme to the sent in value.
+        /// </summary>
+        /// <param name="selectedScheme">The selected <seealso cref="ColourSchemes"/> scheme.</param>
         internal static void ChangeColourScheme(int selectedScheme)
         {
             UIColours.PlayerOneColour = Color.FromName(ColourSchemes[selectedScheme][0]);

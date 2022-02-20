@@ -69,6 +69,8 @@
             "░████████████████████████████████████████████████████",
         };
 
+        // Fireworks ASCII inspired by https://www.shutterstock.com/image-vector/colorful-fireworks-icon-black-style-isolated-530385244
+
         internal static string splashscreenFireworksAlt = @"
                     .       ,       ',      .¨´       :;        ;        ,´
 ,           .                        ld.    ;l       ,oc.      :l      ,        ,   

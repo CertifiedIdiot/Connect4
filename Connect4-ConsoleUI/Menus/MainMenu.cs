@@ -25,7 +25,7 @@ namespace Connect4_ConsoleUI.Menus
                 case "[1] - Hotseat Game.": StartHotSeat(); break;
                 case "[2] - Multiplayer Setup.": StartNetWorkSetUp(); break;
                 case "[3] - Display Settings.": StartOptionsMenu(); break;
-                case "[4] - Quit Game.": ExitTheGame(); break; // TODO - "exiting game"-screen before close
+                case "[4] - Quit Game.": ExitTheGame(); break;
             }
         }
 

@@ -11,9 +11,8 @@ namespace Connect4_ConsoleUI.Menus
                 "[1] - Default Colour Scheme.",
                 "[2] - Retro à la Pong",
                 "[3] - Monochrome n' Chill",
-                "[4] - Doom 1989",
-                "[5] - Aurora Fourealis",
-                "[6] - Return to Main Menu"
+                "[4] - Aurora Fourealis",
+                "[5] - Return to Main Menu"
             };
             switch (new CreateMenu(menuItems, true, 0).UseMenu())
             {
@@ -26,13 +25,10 @@ namespace Connect4_ConsoleUI.Menus
                 case "[3] - Monochrome n' Chill":
                     ChangeDisplaySettings(2);
                     break;
-                case "[4] - Doom 1989":
+                case "[4] - Aurora Fourealis":
                     ChangeDisplaySettings(3);
                     break;
-                case "[5] - Aurora Fourealis":
-                    ChangeDisplaySettings(4);
-                    break;
-                case "[6] - Return to Main Menu": MainMenu.Run(); break;
+                case "[5] - Return to Main Menu": MainMenu.Run(); break;
             }
 
         }

@@ -17,14 +17,14 @@ namespace Connect4_ConsoleUI.Menus
                 "Main Menu",
                 "[1] - Hotseat Game.",
                 "[2] - Multiplayer Setup.",
-                "[3] - Display Settings.",
+                "[3] - Change Colour Scheme.",
                 "[4] - Quit Game."
             };
             switch (new CreateMenu(menuItems, true).UseMenu())
             {
                 case "[1] - Hotseat Game.": StartHotSeat(); break;
                 case "[2] - Multiplayer Setup.": StartNetWorkSetUp(); break;
-                case "[3] - Display Settings.": StartOptionsMenu(); break;
+                case "[3] - Change Colour Scheme.": StartOptionsMenu(); break;
                 case "[4] - Quit Game.": ExitTheGame(); break;
             }
         }

@@ -40,6 +40,5 @@ namespace Connect4_ConsoleUI.Menus
         private static void StartNetWorkSetUp() => new NetworkSetup().Run();
 
         private static void StartOptionsMenu() => OptionsMenu.Run();
-
     }
 }

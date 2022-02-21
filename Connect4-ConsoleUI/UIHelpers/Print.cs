@@ -17,11 +17,11 @@ namespace Connect4_ConsoleUI.UIHelpers
             var consoleCenter = Console.WindowWidth / 2;
             var textInHalf = text.Length / 2;
             if (text.Length >= maxStringLength - 2)
-                Print.StringAtPosition(text, posY, colour);
+                StringAtPosition(text, posY, colour);
             else
             {
                 Console.CursorLeft = consoleCenter - textInHalf;
-                Print.StringAtPosition(text, posY, colour);
+                StringAtPosition(text, posY, colour);
             }
         }
         public static void StringAtPositionCentered(string text, int posY)
@@ -30,11 +30,11 @@ namespace Connect4_ConsoleUI.UIHelpers
             var consoleCenter = Console.WindowWidth / 2;
             var textInHalf = text.Length / 2;
             if (text.Length >= maxStringLength - 2)
-                Print.StringAtPosition(text, posY);
+                StringAtPosition(text, posY);
             else
             {
                 Console.CursorLeft = consoleCenter - textInHalf;
-                Print.StringAtPosition(text, posY);
+                StringAtPosition(text, posY);
             }
         }
         /// <summary>
@@ -89,7 +89,6 @@ namespace Connect4_ConsoleUI.UIHelpers
             {
                 Console.Write(charArrayed[i].ToString(), colorA);
             }
-            
         }
 
         #region Print at position + overloads

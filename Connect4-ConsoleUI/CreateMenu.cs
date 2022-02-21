@@ -8,6 +8,7 @@ namespace Connect4_ConsoleUI
     using System;
     using System.Collections.Generic;
     using UIProperties;
+using static System.Net.Mime.MediaTypeNames;
     using Console = Colorful.Console;
 
     internal class CreateMenu
@@ -16,7 +17,7 @@ namespace Connect4_ConsoleUI
 
         private string bottomLine = "";
         private int headerLines = 0;
-        private readonly string HelpText = " Arrow keys to navigate, Enter to select.";
+        private readonly string HelpText = " Arrow keys/Numbers to navigate. Enter/Spacebar to select. Esc to Exit Menu.";
         private int infoLines = 0;
         private int menuWidth = 0;
         private string midLine = "";
@@ -139,7 +140,8 @@ namespace Connect4_ConsoleUI
 
         private void SetupPrintables()
         {
-            menuWidth = HelpText.Length;
+            var padding = 10;
+            menuWidth = GetLongestMenuItem() + padding;
             foreach (var item in MenuItems.Where(item => item.Length > menuWidth))
             {
                 menuWidth = item.Length;
@@ -149,7 +151,16 @@ namespace Connect4_ConsoleUI
             midLine = "╟" + new string('─', menuWidth) + "╢";
             bottomLine = "╚" + new string('═', menuWidth) + "╝";
         }
-
+        private int GetLongestMenuItem()
+        {
+            var longestItem = "";
+            for (int i = 0; i < MenuItems.Count; i++)
+            {
+                if(MenuItems[i].Length > longestItem.Length)
+                    longestItem = MenuItems[i];
+            }
+            return longestItem.Length;
+        }
         private void UpdateMenu(int highlightItem)
         {
             Console.CursorVisible = false;
@@ -181,7 +192,20 @@ namespace Connect4_ConsoleUI
             Console.CursorLeft = menuPosX;
             Console.WriteLine(bottomLine);
             Console.CursorLeft = menuPosX;
-            Console.WriteLine(HelpText);
+            WriteHelpText(HelpText);
+        }
+        private void WriteHelpText(string helptext)
+        {
+            var maxStringLength = Console.WindowWidth;
+            var consoleCenter = Console.WindowWidth / 2;
+            var helpTextInHalf = helptext.Length / 2;
+            if (helptext.Length >= maxStringLength - 2)
+                Console.WriteLine(helptext);
+            else
+            {
+                Console.CursorLeft = consoleCenter - helpTextInHalf;
+                Console.WriteLine(helptext);
+            }
         }
         #endregion Private Methods
     }

@@ -32,11 +32,47 @@ namespace Connect4.Game
         /// The current move number.
         /// </value>
         public int MoveCounter { get; set; } = 1;
+        /// <summary>
+        /// This value is set by the constructor in a network game to indicate wheter this class instance belongs to player one or two.
+        /// </summary>
+        /// <value>
+        /// <see cref="Token"/> indicating if the player of this instance is Player One or Player Two.
+        /// </value>
         public Token InstanceId { get; }
+        /// <summary>
+        /// Gets or sets information about Player One.
+        /// </summary>
+        /// <value>
+        /// <see cref="IPlayer"/> implementation that contains Player One data.
+        /// </value>
         public IPlayer PlayerOne { get; set; }
+        /// <summary>
+        /// Gets or sets information about Player Two.
+        /// </summary>
+        /// <value>
+        /// <see cref="IPlayer"/> implementation that contains Player Two data.
+        /// </value>
         public IPlayer PlayerTwo { get; set; }
+        /// <summary>
+        /// Gets or sets the Connect 4 board.
+        /// </summary>
+        /// <value>
+        /// The game board represented by two dimensional array of <see cref="Slot"/>s.
+        /// </value>
         public Slot[,] Board { get; set; } = new Slot[7, 6];
+        /// <summary>
+        /// Gets or sets the active player.
+        /// </summary>
+        /// <value>
+        /// The active player, as in, the player who's turn it is to make a move.
+        /// </value>
         public IPlayer ActivePlayer { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game"/> class.
+        /// </summary>
+        /// <param name="network">The <see cref="INetwork"/> implementation passed in, null for a hotseat game.</param>
+        /// <param name="goFirst">if set to <c>true</c> this <see cref="Game"/> instance will be set to Player One and go first, otherwise it will be set to Player Two and wait.</param>
         public Game(INetwork network, bool goFirst)
         {
             this.network = network;
@@ -45,11 +81,17 @@ namespace Connect4.Game
             ActivePlayer = PlayerOne;
             InstanceId = goFirst ? Token.PlayerOne : Token.PlayerTwo;
         }
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Game"/> class.
+        /// </summary>
         ~Game()
         {
             if (network != null) network.Stop();
         }
 
+        /// <summary>
+        /// Setups (and if needed, resets) all needed values of the <see cref="Game"/> instance to be ready to begin a new game.
+        /// </summary>
         public void SetupNewGame()
         {
             MoveCounter = 1;
@@ -61,6 +103,9 @@ namespace Connect4.Game
             }
             BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
+        /// <summary>
+        /// Makes sure that during a network game, the player who doesn't go first enters network receive state, otherwise, has no effect.
+        /// </summary>
         public void Start()
         {
             if (network != null! && ActivePlayer.PlayerNumber != InstanceId) ReceiveGameState();

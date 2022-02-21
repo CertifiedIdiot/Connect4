@@ -8,7 +8,6 @@ namespace Connect4_ConsoleUI
     using System;
     using System.Collections.Generic;
     using UIProperties;
-using static System.Net.Mime.MediaTypeNames;
     using Console = Colorful.Console;
 
     internal class CreateMenu
@@ -134,7 +133,7 @@ using static System.Net.Mime.MediaTypeNames;
             if (center)
             {
                 menuPosX = (Console.WindowWidth / 2) - (bottomLine.Length / 2);
-                menuPosY = (Console.WindowHeight / 2) - MenuItems.Count + 2;
+                menuPosY = (Console.WindowHeight / 2) - MenuItems.Count;
             }
         }
 
@@ -151,16 +150,18 @@ using static System.Net.Mime.MediaTypeNames;
             midLine = "╟" + new string('─', menuWidth) + "╢";
             bottomLine = "╚" + new string('═', menuWidth) + "╝";
         }
+
         private int GetLongestMenuItem()
         {
             var longestItem = "";
             for (int i = 0; i < MenuItems.Count; i++)
             {
-                if(MenuItems[i].Length > longestItem.Length)
+                if (MenuItems[i].Length > longestItem.Length)
                     longestItem = MenuItems[i];
             }
             return longestItem.Length;
         }
+
         private void UpdateMenu(int highlightItem)
         {
             Console.CursorVisible = false;
@@ -194,6 +195,7 @@ using static System.Net.Mime.MediaTypeNames;
             Console.CursorLeft = menuPosX;
             WriteHelpText(HelpText);
         }
+
         private void WriteHelpText(string helptext)
         {
             var maxStringLength = Console.WindowWidth;

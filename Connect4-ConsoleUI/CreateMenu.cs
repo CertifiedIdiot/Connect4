@@ -97,11 +97,13 @@ namespace Connect4_ConsoleUI
                         if (char.IsDigit(input.KeyChar) && input.KeyChar != '0')
                             highlightItem = StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
                         if (highlightItem > MenuItems.Count - 1) highlightItem = MenuItems.Count - 1;
+
                         else if (input.Key is ConsoleKey.Escape)
                         {
                             highlightItem = MenuItems.Count - 1;
                             userChoice = MenuItems[highlightItem];
                         }
+
                         break;
                 }
             } while (userChoice?.Length == 0);

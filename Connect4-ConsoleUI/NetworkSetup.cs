@@ -37,7 +37,7 @@ using Connect4_ConsoleUI.GameUI;
             while (!ValidIP(input!))
             {
                 Console.Write("Please enter a valid IP: ");
-                input = Console.ReadLine();
+                input = Console.ReadLine()!.Trim();
             }
             return input!;
         }

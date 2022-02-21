@@ -1,9 +1,4 @@
 ﻿using Connect4_ConsoleUI.GameUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Connect4_ConsoleUI.Menus
 {
@@ -13,7 +8,6 @@ namespace Connect4_ConsoleUI.Menus
         {
             RenderGame.MenuHeader();
             var menuItems = new List<string>() {
-                //"Change the Game Colours",
                 "[1] - Default Colour Scheme.",
                 "[2] - Retro à la Pong",
                 "[3] - Monochrome n' Chill",

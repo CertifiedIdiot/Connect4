@@ -7,7 +7,6 @@ namespace Connect4_ConsoleUI
 {
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using UIProperties;
     using Console = Colorful.Console;
 
@@ -91,7 +90,7 @@ namespace Connect4_ConsoleUI
                         break;
 
                     case ConsoleKey.Enter:
-                            userChoice = MenuItems[highlightItem];
+                        userChoice = MenuItems[highlightItem];
                         break;
 
                     default:

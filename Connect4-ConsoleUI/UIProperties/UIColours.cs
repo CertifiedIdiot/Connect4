@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Connect4_ConsoleUI.UIProperties
 {
@@ -21,10 +16,12 @@ namespace Connect4_ConsoleUI.UIProperties
         private static readonly List<List<string>> ColourSchemes = new List<List<string>>()
         {
         // Colour order - PlayerOneColour, PlayerTwoColour, GameboardColour, TableColour, BackgroundColour, Textcolour
-            new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"},
-            new List<string> { "Black", "White", "DodgerBlue", "DarkCyan", "OrangeRed", "Bisque"},
-            new List<string> {"Gainsboro", "DarkGray", "Gray", "DimGray", "Black", "Silver" },
-            new List<string> {"Gainsboro", "DimGray", "LightSlateGray", "Black", "DarkSlateGray", "Silver" },
+            new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"}, //default
+            new List<string> {"Gainsboro", "DarkGray", "Gray", "DimGray", "Black", "Silver" }, // "pong"
+            new List<string> {"Gainsboro", "Black", "LightSlateGray", "Black", "DarkSlateGray", "White" }, //"mono"
+            new List<string> { "OliveDrab", "LightCoral", "Black", "DimGray", "Maroon", "White"}, // "doom"
+            new List<string> { "AquaMarine", "Orchid", "LightBlue", "MediumSlateBlue", "MidnightBlue", "White"}, // "Aurora"
+            
         };
 
         /// <summary> Gets or sets the player one colour See also <seealso cref="ColourSchemes"/> for more info. </summary>

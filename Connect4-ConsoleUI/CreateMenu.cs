@@ -7,7 +7,6 @@ namespace Connect4_ConsoleUI
 {
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using UIProperties;
     using Console = Colorful.Console;
 
@@ -91,13 +90,13 @@ namespace Connect4_ConsoleUI
                         break;
 
                     case ConsoleKey.Enter:
-                        if (highlightItem <= MenuItems.Count - 1)
-                            userChoice = MenuItems[highlightItem];
+                        userChoice = MenuItems[highlightItem];
                         break;
 
                     default:
-                        if (char.IsDigit(input.KeyChar))
+                        if (char.IsDigit(input.KeyChar) && input.KeyChar != '0')
                             highlightItem = StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
+                        if (highlightItem > MenuItems.Count - 1) highlightItem = MenuItems.Count - 1;
                         break;
                 }
             } while (userChoice?.Length == 0);
@@ -129,7 +128,7 @@ namespace Connect4_ConsoleUI
             if (center)
             {
                 menuPosX = (Console.WindowWidth / 2) - (bottomLine.Length / 2);
-                menuPosY = (Console.WindowHeight / 2) - MenuItems.Count;
+                menuPosY = (Console.WindowHeight / 2) - MenuItems.Count + 2;
             }
         }
 

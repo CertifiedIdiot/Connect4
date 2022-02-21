@@ -28,7 +28,10 @@ namespace Connect4_ConsoleUI.GameUI
             Console.CursorVisible = false;
             Console.Clear();
         }
-
+        /// <summary>
+        /// Displays the win-condition splashscreen, with a background and the winners name.
+        /// </summary>
+        /// <param name="winner">The winner.</param>
         internal static void WinSplashscreen(string winner)
         {
             Console.Clear();
@@ -38,17 +41,30 @@ namespace Connect4_ConsoleUI.GameUI
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Displays the startscreen of the game and sets the console settings.
+        /// </summary>
         internal static void StartScreen()
         {
             SetConsoleSettings();
             RenderGameElement.SplashscreenStartScreen();
         }
+        /// <summary>
+        /// Displays the shorter version startscreen before each round.
+        /// </summary>
         internal static void StartRound()
         {
             SetConsoleSettings();
             RenderGameElement.SplashscreenPreMatch();
         }
 
+        /// <summary>
+        /// Renders the game information.
+        /// </summary>
+        /// <param name="messagebox">The message on top of the board.</param>
+        /// <param name="counter">The turn counter.</param>
+        /// <param name="player">The active player.</param>
+        /// <param name="gameboard">The positions on the gameboard.</param>
         internal static void RenderGameInfo(string messagebox, int counter, IPlayer player, Slot[,] gameboard)
         {
             Console.CursorVisible = false;
@@ -58,11 +74,13 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.DisplayColumnNumbers();
             RenderGameElement.PlayerPositions(gameboard);
         }
+
         internal static void MenuHeader()
         {
             Console.Clear();
             RenderGameElement.MenuHeader();
         }
+
         internal static void ExitScreen()
         {
             MenuHeader();

@@ -1,9 +1,4 @@
 ﻿using Connect4_ConsoleUI.GameUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Connect4_ConsoleUI.Menus
 {
@@ -13,24 +8,31 @@ namespace Connect4_ConsoleUI.Menus
         {
             RenderGame.MenuHeader();
             var menuItems = new List<string>() {
-                "Change the Game Colours",
                 "[1] - Default Colour Scheme.",
-                "[2] - Placeholder Scheme 1",
-                "[3] - Retro à la Pong",
-                "[4] - Monochrome n' Chill",
-                "[5] - Return to Main Menu"
+                "[2] - Retro à la Pong",
+                "[3] - Monochrome n' Chill",
+                "[4] - Doom 1989",
+                "[5] - Aurora Fourealis",
+                "[6] - Return to Main Menu"
             };
-            switch (new CreateMenu(menuItems, true).UseMenu())
+            switch (new CreateMenu(menuItems, true, 0).UseMenu())
             {
-                case "[1] - Default Colour Scheme.": ChangeDisplaySettings(0);
+                case "[1] - Default Colour Scheme.":
+                    ChangeDisplaySettings(0);
                     break;
-                case "[2] - Placeholder Scheme 1": ChangeDisplaySettings(1);
+                case "[2] - Retro à la Pong":
+                    ChangeDisplaySettings(1);
                     break;
-                case "[3] - Retro à la Pong": ChangeDisplaySettings(2);
+                case "[3] - Monochrome n' Chill":
+                    ChangeDisplaySettings(2);
                     break;
-                case "[4] - Monochrome n' Chill": ChangeDisplaySettings(3);
+                case "[4] - Doom 1989":
+                    ChangeDisplaySettings(3);
                     break;
-                case "[5] - Return to Main Menu": MainMenu.Run(); break;
+                case "[5] - Aurora Fourealis":
+                    ChangeDisplaySettings(4);
+                    break;
+                case "[6] - Return to Main Menu": MainMenu.Run(); break;
             }
 
         }

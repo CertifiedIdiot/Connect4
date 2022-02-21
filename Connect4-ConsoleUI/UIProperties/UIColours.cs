@@ -13,14 +13,13 @@ namespace Connect4_ConsoleUI.UIProperties
         ///
         /// <para> Color.FromName(ColourSchemes[0][0]) => Color.FromName(ColourSchemes[1][0]) => the PlayerOneColour has changed to the second colour scheme in the ColourSchemes list. </para>
         /// </summary>
-        private static readonly List<List<string>> ColourSchemes = new List<List<string>>()
+        private static readonly List<List<string>> ColourSchemes = new()
         {
         // Colour order - PlayerOneColour, PlayerTwoColour, GameboardColour, TableColour, BackgroundColour, Textcolour
             new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"}, //default
             new List<string> {"White", "DimGray", "White", "DimGray", "Black", "White" }, // "pong"
-            new List<string> {"White", "Black", "Black", "Black", "DarkSlateGray", "White" }, //"mono"
-            new List<string> { "AquaMarine", "Orchid", "LightBlue", "MediumSlateBlue", "MidnightBlue", "White"}, // "Aurora"
-            
+            new List<string> {"White", "Black", "White", "Black", "DarkSlateGray", "White" }, //"mono"
+            new List<string> { "AquaMarine", "Orchid", "LightBlue", "MediumSlateBlue", "MidnightBlue", "White"}, // "Aurora"            
         };
 
         /// <summary> Gets or sets the player one colour See also <seealso cref="ColourSchemes"/> for more info. </summary>
@@ -55,6 +54,4 @@ namespace Connect4_ConsoleUI.UIProperties
             UIColours.TextColour = Color.FromName(ColourSchemes[selectedScheme][5]);
         }
     }
-
-
 }

@@ -30,7 +30,6 @@ namespace Connect4_ConsoleUI.Menus
                     break;
                 case "[5] - Return to Main Menu": MainMenu.Run(); break;
             }
-
         }
         private static void ChangeDisplaySettings(int schemeNumber)
         {

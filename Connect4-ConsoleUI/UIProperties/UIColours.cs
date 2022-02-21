@@ -18,7 +18,7 @@ namespace Connect4_ConsoleUI.UIProperties
         // Colour order - PlayerOneColour, PlayerTwoColour, GameboardColour, TableColour, BackgroundColour, Textcolour
             new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"}, //default
             new List<string> {"White", "DimGray", "White", "DimGray", "Black", "White" }, // "pong"
-            new List<string> {"White", "Black", "Black", "Black", "DarkSlateGray", "White" }, //"mono"
+            new List<string> {"White", "Black", "White", "Black", "DarkSlateGray", "White" }, //"mono"
             new List<string> { "AquaMarine", "Orchid", "LightBlue", "MediumSlateBlue", "MidnightBlue", "White"}, // "Aurora"            
         };
 

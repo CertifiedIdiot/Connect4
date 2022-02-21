@@ -126,7 +126,10 @@ namespace Connect4.Tests
             var moqNet = mock.Object;
             var sut = new Game.Game(moqNet, true) { Board = testBoard };
 
-            var gameOver = Assert.Raises<GameOverEventArgs>(x => sut.GameOverEvent += x, x => sut.GameOverEvent -= x, () => sut.MakeMove(1));
+            var gameOver = Assert.Raises<GameOverEventArgs>(
+                x => sut.GameOverEvent += x,
+                x => sut.GameOverEvent -= x,
+                () => sut.MakeMove(1));
             Assert.Equal("Player 2", gameOver.Arguments.Winner);
         }
 
@@ -138,7 +141,10 @@ namespace Connect4.Tests
             var moqNet = mock.Object;
             var sut = new Game.Game(moqNet, true) { Board = testBoard };
 
-            var gameOver = Assert.Raises<GameOverEventArgs>(x => sut.GameOverEvent += x, x => sut.GameOverEvent -= x, () => sut.MakeMove(1));
+            var gameOver = Assert.Raises<GameOverEventArgs>(
+                x => sut.GameOverEvent += x,
+                x => sut.GameOverEvent -= x,
+                () => sut.MakeMove(1));
             Assert.Equal("Draw.", gameOver.Arguments.Winner);
         }
 
@@ -148,7 +154,10 @@ namespace Connect4.Tests
         public void MakeMove_MoveNumber42_ShouldRaiseGameOverEventWithCorrectArgs(int column, string winner)
         {
             game.MoveCounter = 42;
-            var gameover = Assert.Raises<GameOverEventArgs>(x => game.GameOverEvent += x, x => game.GameOverEvent -= x, () => game.MakeMove(column));
+            var gameover = Assert.Raises<GameOverEventArgs>(
+                x => game.GameOverEvent += x,
+                x => game.GameOverEvent -= x,
+                () => game.MakeMove(column));
             Assert.Equal(winner, gameover.Arguments.Winner);
         }
 

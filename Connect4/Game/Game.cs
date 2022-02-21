@@ -3,6 +3,7 @@ using Connect4.Interfaces;
 using Connect4.Models;
 using Connect4.Network;
 using Connect4.Structs;
+using System.Diagnostics;
 
 namespace Connect4.Game
 {
@@ -26,6 +27,10 @@ namespace Connect4.Game
             PlayerTwo = Connect4Factory.GetPlayer("Player 2", Token.PlayerTwo);
             ActivePlayer = PlayerOne;
             InstanceId = goFirst ? Token.PlayerOne : Token.PlayerTwo;
+        }
+        ~Game()
+        {
+            if (network != null) network.Stop();
         }
 
         public void SetupNewGame()

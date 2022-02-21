@@ -95,8 +95,9 @@ namespace Connect4_ConsoleUI
                         break;
 
                     default:
-                        if (char.IsDigit(input.KeyChar))
+                        if (char.IsDigit(input.KeyChar) && input.KeyChar != '0')
                             highlightItem = StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
+                        if (highlightItem > MenuItems.Count - 1) highlightItem = MenuItems.Count - 1;
                         break;
                 }
             } while (userChoice?.Length == 0);

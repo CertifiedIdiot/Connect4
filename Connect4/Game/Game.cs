@@ -41,7 +41,7 @@ namespace Connect4.Game
         }
         public void Start()
         {
-            if (network != null! && ActivePlayer.PlayerNumber != InstanceId) RecieveGameState();
+            if (network != null! && ActivePlayer.PlayerNumber != InstanceId) ReceiveGameState();
         }
 
         public bool MakeMove(int column)
@@ -92,10 +92,10 @@ namespace Connect4.Game
                 MoveCounter = MoveCounter
             });
             network.Send(json);
-            if (gameWonBy == Token.None && MoveCounter != 43) RecieveGameState();
+            if (gameWonBy == Token.None && MoveCounter != 43) ReceiveGameState();
         }
 
-        private void RecieveGameState()
+        private void ReceiveGameState()
         {
             var json = network.Receive();
             var gameState = JsonHandler.Deserialize<GameState>(json);

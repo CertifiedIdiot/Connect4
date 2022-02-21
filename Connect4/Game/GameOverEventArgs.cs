@@ -5,9 +5,6 @@
     public class GameOverEventArgs:EventArgs
     {
         public string Winner { get; }
-        public GameOverEventArgs(string winner)
-        {
-            Winner = winner;
-        }
+        public GameOverEventArgs(string winner) => Winner = winner;
     }
 }

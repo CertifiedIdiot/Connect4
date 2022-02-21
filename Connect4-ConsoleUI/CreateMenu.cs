@@ -193,10 +193,10 @@ namespace Connect4_ConsoleUI
             Console.CursorLeft = menuPosX;
             Console.WriteLine(bottomLine);
             Console.CursorLeft = menuPosX;
-            WriteHelpText(HelpText);
+            CenterMenuItem(HelpText);
         }
 
-        private void WriteHelpText(string helptext)
+        private void CenterMenuItem(string helptext)
         {
             var maxStringLength = Console.WindowWidth;
             var consoleCenter = Console.WindowWidth / 2;

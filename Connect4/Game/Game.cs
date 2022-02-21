@@ -1,7 +1,6 @@
 ﻿using Connect4.Enums;
 using Connect4.Interfaces;
 using Connect4.Models;
-using Connect4.Network;
 using Connect4.Structs;
 using System.Diagnostics;
 
@@ -9,11 +8,29 @@ namespace Connect4.Game
 {
     public class Game
     {
+        /// <summary>
+        /// Indicates the winner of the game, defaults to <see cref="Token.None"/> before a game is won.
+        /// </summary>
         private Token gameWonBy;
 
+        /// <summary>
+        /// Network implementation, null if hotseat game.
+        /// </summary>
         private readonly INetwork network;
+        /// <summary>
+        /// Occurs when the board is changed and UI should update.
+        /// </summary>
         public event EventHandler<EventArgs>? BoardChangedEvent;
+        /// <summary>
+        /// Occurs when the game is over, either by a player winning or a draw by filling all the slots of the board.
+        /// </summary>
         public event EventHandler<GameOverEventArgs>? GameOverEvent;
+        /// <summary>
+        /// Gets or sets the counter for the move about to be made.
+        /// </summary>
+        /// <value>
+        /// The current move number.
+        /// </value>
         public int MoveCounter { get; set; } = 1;
         public Token InstanceId { get; }
         public IPlayer PlayerOne { get; set; }

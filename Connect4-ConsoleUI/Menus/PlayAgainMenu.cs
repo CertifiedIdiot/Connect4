@@ -4,7 +4,7 @@ namespace Connect4_ConsoleUI.Menus
 {
     public static class PlayAgainMenu
     {
-        internal static void Rematch(QuickTest qt)
+        internal static void Rematch(ConsoleConnect4 qt)
         {
             RenderGame.MenuHeader();
             var menuItems = new List<string>() {

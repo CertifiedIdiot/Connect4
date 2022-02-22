@@ -67,7 +67,7 @@ namespace Connect4.Game
         /// The active player, as in, the player who's turn it is to make a move.
         /// </value>
         public IPlayer ActivePlayer { get; set; }
-        public Game(INetwork network, bool goFirst)
+        public Game(INetwork network, bool isPlayerOne,bool singlePlayer=false)
         {
             this.singlePlayer = singlePlayer;
             this.network = network;
@@ -126,6 +126,7 @@ namespace Connect4.Game
             return false;
         }
 
+
         /// <summary>
         /// Method for checking that an attempted move is made in a valid, non-full column.
         /// </summary>
@@ -153,6 +154,19 @@ namespace Connect4.Game
             if (MoveCounter == 43 && gameWonBy == Token.None) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
             if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null!) SendGameState();
+        }
+
+        private void StupidAI()
+        {
+            if (MoveCounter > 1) BoardChangedEvent?.Invoke(this, EventArgs.Empty);
+            bool okMove = false;
+            var rng = new Random();
+            Thread.Sleep(rng.Next(1, 2000));
+            do
+            {
+                var column = rng.Next(0, 7);
+                okMove = MakeMove(column);
+            } while (!okMove);
         }
 
         private void PlaceToken(int column, int row)

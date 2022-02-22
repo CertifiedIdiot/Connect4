@@ -83,7 +83,7 @@
         /// <summary>
         /// Updates elements of the UI to reflect current information about board state, active player and move number.
         /// </summary>
-        private void UpdateUI() => RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", game.MoveCounter, game.ActivePlayer, game.Board);
+        private void UpdateUI() => RenderGame.RenderGameInfo($"        {game.ActivePlayer.Name} - Pick a column number from below.         ", game.MoveCounter, game.ActivePlayer, game.Board);
 
         /// <summary>
         /// Checks what key the player pressed.

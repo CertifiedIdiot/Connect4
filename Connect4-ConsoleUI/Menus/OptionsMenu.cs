@@ -6,7 +6,6 @@ namespace Connect4_ConsoleUI.Menus
     {
         internal static void Run()
         {
-            
             var menuItems = new List<string>() {
                 "[1] - Default Colour Scheme.",
                 "[2] - Retro à la Pong",
@@ -15,7 +14,7 @@ namespace Connect4_ConsoleUI.Menus
                 "[5] - Return to Main Menu"
             };
             var menu = new CreateMenu(menuItems, true, 0);
-            var choice = "";
+            string? choice;
             do
             {
                 RenderGame.MenuHeader();

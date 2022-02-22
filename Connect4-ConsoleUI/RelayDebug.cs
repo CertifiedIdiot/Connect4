@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Connect4.Network;
 using Connect4;
+using Microsoft.VisualStudio.Threading;
 
 // TODO: Remove me!
 namespace Connect4_ConsoleUI
@@ -13,37 +14,41 @@ namespace Connect4_ConsoleUI
     {
         static RelayServer relay = new("127.0.0.1");
         static Client client = new("127.0.0.1");
-        static public List<string> result { get; set; }
+        static public List<string> Result { get; set; } = default!;
 
         static void UpdateResult()
         {
             var dataIn = client.Receive();
-            result = JsonHandler.Deserialize<List<string>>(dataIn);
+            Result = JsonHandler.Deserialize<List<string>>(dataIn);
         }
 
-        static public void Start()
+        public static async void StartRelay()
         {
             relay.Start();
+        }
+
+        public static void StartClient()
+        {
             client.Start();
+            string username = string.Empty;
 
-            relay.Receive();
-            new Task(() => UpdateResult());
+            // Send over username
+            Console.WriteLine("Sending username...");
+            client.Send("Ankan1337");
+            while (client.Receive() == "rejected")
+            {
+                Console.WriteLine("Username: ");
+                username = Console.ReadLine();
+                client.Send(username!);
+                
+            }
+
             client.Send("SendActiveUsers");
-
-            foreach(var user in result)
+            UpdateResult();
+            foreach (var user in Result)
             {
                 Console.WriteLine(user);
             }
-            //switch (Console.Readkey())
-
-            //    case 1:
-            //    RelayServer relay = new("127.0.0.1");
-            //    break;
-            //case 2:
-            //    new Menu(, true).UseMenu()
-
-            //break;
-        }
-        
+        }        
     }
 }

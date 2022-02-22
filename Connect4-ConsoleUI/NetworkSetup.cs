@@ -27,8 +27,8 @@ using Connect4_ConsoleUI.GameUI;
             Console.WriteLine("Waiting for connection...");
             Console.WriteLine(network.Start());
             Console.ReadLine();
-            if (startAsServer) new QuickTest(network, true, false).Run();
-            else new QuickTest(network, false, false).Run();
+            if (startAsServer) new ConsoleConnect4(network, true).Run();
+            else new ConsoleConnect4(network, false).Run();
         }
 
         private string AskForIP()
@@ -37,7 +37,7 @@ using Connect4_ConsoleUI.GameUI;
             while (!ValidIP(input!))
             {
                 Console.Write("Please enter a valid IP: ");
-                input = Console.ReadLine();
+                input = Console.ReadLine()!.Trim();
             }
             return input!;
         }

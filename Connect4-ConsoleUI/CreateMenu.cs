@@ -96,12 +96,16 @@ namespace Connect4_ConsoleUI
                     default:
                         if (char.IsDigit(input.KeyChar) && input.KeyChar != '0')
                             highlightItem = StartSelected + int.Parse(input.KeyChar.ToString()) - 1;
-                        if (highlightItem > MenuItems.Count - 1) highlightItem = MenuItems.Count - 1;
+                        if (highlightItem > MenuItems.Count - 1)
+                        {
+                            highlightItem = MenuItems.Count - 1;
+                        }
                         else if (input.Key is ConsoleKey.Escape)
                         {
                             highlightItem = MenuItems.Count - 1;
                             userChoice = MenuItems[highlightItem];
                         }
+
                         break;
                 }
             } while (userChoice?.Length == 0);
@@ -139,7 +143,7 @@ namespace Connect4_ConsoleUI
 
         private void SetupPrintables()
         {
-            var padding = 10;
+            const int padding = 10;
             menuWidth = GetLongestMenuItem() + padding;
             foreach (var item in MenuItems.Where(item => item.Length > menuWidth))
             {
@@ -196,13 +200,15 @@ namespace Connect4_ConsoleUI
             CenterMenuItem(HelpText);
         }
 
-        private void CenterMenuItem(string helptext)
+        private static void CenterMenuItem(string helptext)
         {
             var maxStringLength = Console.WindowWidth;
             var consoleCenter = Console.WindowWidth / 2;
             var helpTextInHalf = helptext.Length / 2;
             if (helptext.Length >= maxStringLength - 2)
+            {
                 Console.WriteLine(helptext);
+            }
             else
             {
                 Console.CursorLeft = consoleCenter - helpTextInHalf;

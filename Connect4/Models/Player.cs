@@ -12,7 +12,7 @@
         /// Gets or sets the players name.
         /// </summary>
         /// <value>
-        /// The name.
+        /// The name of the player.
         /// </value>
         public string Name { get; set; } = "";
         /// <summary>

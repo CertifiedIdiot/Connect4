@@ -26,7 +26,7 @@ namespace Connect4_ConsoleUI
             relay.Start();
             client.Start();
 
-            relay.Receive();
+            //relay.Receive();
             new Task(() => UpdateResult());
             client.Send("SendActiveUsers");
 

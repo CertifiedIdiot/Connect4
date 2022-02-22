@@ -2,7 +2,6 @@
 using Connect4.Interfaces;
 using Connect4.Models;
 using Connect4.Structs;
-using System.Diagnostics;
 
 namespace Connect4.Game
 {
@@ -12,6 +11,7 @@ namespace Connect4.Game
         /// Indicates the winner of the game, defaults to <see cref="Token.None"/> before a game is won.
         /// </summary>
         private Token gameWonBy;
+        private bool singlePlayer;
 
         /// <summary>
         /// Network implementation, null if hotseat game.
@@ -72,14 +72,15 @@ namespace Connect4.Game
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
         /// <param name="network">The <see cref="INetwork"/> implementation passed in, null for a hotseat game.</param>
-        /// <param name="goFirst">if set to <c>true</c> this <see cref="Game"/> instance will be set to Player One and go first, otherwise it will be set to Player Two and wait.</param>
-        public Game(INetwork network, bool goFirst)
+        /// <param name="isPlayerOne">if set to <c>true</c> this <see cref="Game"/> instance will be set to Player One and go first, otherwise it will be set to Player Two and wait for its turn.</param>
+        public Game(INetwork network, bool isPlayerOne, bool singlePlayer = false)
         {
+            this.singlePlayer = singlePlayer;
             this.network = network;
             PlayerOne = Connect4Factory.GetPlayer("Player 1", Token.PlayerOne);
-            PlayerTwo = Connect4Factory.GetPlayer("Player 2", Token.PlayerTwo);
+            PlayerTwo = Connect4Factory.GetPlayer(singlePlayer ? "Deep Blue Mk. II" : "Player 2", Token.PlayerTwo);
             ActivePlayer = PlayerOne;
-            InstanceId = goFirst ? Token.PlayerOne : Token.PlayerTwo;
+            InstanceId = isPlayerOne ? Token.PlayerOne : Token.PlayerTwo;
         }
         /// <summary>
         /// Finalizes an instance of the <see cref="Game"/> class.
@@ -100,6 +101,7 @@ namespace Connect4.Game
             {
                 ActivePlayer = gameWonBy == Token.PlayerOne ? PlayerTwo : PlayerOne;
                 gameWonBy = Token.None;
+                if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             }
             BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
@@ -154,7 +156,21 @@ namespace Connect4.Game
             MoveCounter++;
             ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
             if (MoveCounter == 43 && gameWonBy == Token.None) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
+            if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null!) SendGameState();
+        }
+
+        private void StupidAI()
+        {
+            if (MoveCounter > 1) BoardChangedEvent?.Invoke(this, EventArgs.Empty);
+            bool okMove = false;
+            var rng = new Random();
+            Thread.Sleep(rng.Next(1, 2000));
+            do
+            {
+                var column = rng.Next(0, 7);
+                okMove = MakeMove(column);
+            } while (!okMove);
         }
 
         /// <summary>

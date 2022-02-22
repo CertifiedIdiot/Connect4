@@ -18,9 +18,9 @@
         /// </summary>
         /// <param name="network">Instance of a concrete class that implements <see cref="INetwork"/> or <see langword="null"/> for a hot seat game.</param>
         /// <param name="isPlayerOne"><see langword="true"/> if this instance should belong to Player One, <see langword="false"/> if not.</param>
-        public ConsoleConnect4(INetwork network, bool isPlayerOne)
+        public ConsoleConnect4(INetwork network, bool isPlayerOne, bool singlePlayer = false)
         {
-            game = Connect4Factory.GetGame(network, isPlayerOne);
+            game = Connect4Factory.GetGame(network, isPlayerOne, singlePlayer);
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameOverEvent += Game_GameWonEvent;
             RenderGame.StartRound();

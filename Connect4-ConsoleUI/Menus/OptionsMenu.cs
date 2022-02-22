@@ -6,7 +6,7 @@ namespace Connect4_ConsoleUI.Menus
     {
         internal static void Run()
         {
-            RenderGame.MenuHeader();
+            
             var menuItems = new List<string>() {
                 "[1] - Default Colour Scheme.",
                 "[2] - Retro à la Pong",
@@ -14,28 +14,34 @@ namespace Connect4_ConsoleUI.Menus
                 "[4] - Aurora Fourealis",
                 "[5] - Return to Main Menu"
             };
-            switch (new CreateMenu(menuItems, true, 0).UseMenu())
+            var menu = new CreateMenu(menuItems, true, 0);
+            var choice = "";
+            do
             {
-                case "[1] - Default Colour Scheme.":
-                    ChangeDisplaySettings(0);
-                    break;
-                case "[2] - Retro à la Pong":
-                    ChangeDisplaySettings(1);
-                    break;
-                case "[3] - Monochrome n' Chill":
-                    ChangeDisplaySettings(2);
-                    break;
-                case "[4] - Aurora Fourealis":
-                    ChangeDisplaySettings(3);
-                    break;
-                case "[5] - Return to Main Menu": MainMenu.Run(); break;
-            }
+                RenderGame.MenuHeader();
+                choice = menu.UseMenu();
+                switch (choice)
+                {
+                    case "[1] - Default Colour Scheme.":
+                        ChangeDisplaySettings(0);
+                        break;
+                    case "[2] - Retro à la Pong":
+                        ChangeDisplaySettings(1);
+                        break;
+                    case "[3] - Monochrome n' Chill":
+                        ChangeDisplaySettings(2);
+                        break;
+                    case "[4] - Aurora Fourealis":
+                        ChangeDisplaySettings(3);
+                        break;
+                    case "[5] - Return to Main Menu": MainMenu.Run(); break;
+                }
+            } while (choice != "[5] - Return to Main Menu");
         }
         private static void ChangeDisplaySettings(int schemeNumber)
         {
             UIProperties.UIColours.ChangeColourScheme(schemeNumber);
             RenderGame.SetConsoleSettings();
-            MainMenu.Run();
         }
     }
 }

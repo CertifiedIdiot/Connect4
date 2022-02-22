@@ -11,12 +11,15 @@ namespace Connect4.Game
         /// Indicates the winner of the game, defaults to <see cref="Token.None"/> before a game is won.
         /// </summary>
         private Token gameWonBy;
-        private bool singlePlayer;
-
+        /// <summary>
+        /// <see langword="true"/> if this instance is set to single player.
+        /// </summary>
+        private readonly bool singlePlayer;
         /// <summary>
         /// Network implementation, null if hotseat game.
         /// </summary>
         private readonly INetwork network;
+
         /// <summary>
         /// Occurs when the board is changed and UI should update.
         /// </summary>
@@ -67,11 +70,17 @@ namespace Connect4.Game
         /// The active player, as in, the player who's turn it is to make a move.
         /// </value>
         public IPlayer ActivePlayer { get; set; }
-        public Game(INetwork network, bool isPlayerOne,bool singlePlayer=false)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game"/> class.
+        /// </summary>
+        /// <param name="network">The <see cref="INetwork"/> implementation passed in, null for a hotseat game.</param>
+        /// <param name="isPlayerOne">if set to <c>true</c> this <see cref="Game"/> instance will be set to Player One and go first, otherwise it will be set to Player Two and wait for its turn.</param>
+        /// <param name="singlePlayer"><see langword="true"/> if this instance of <see cref="Game"/> should be single player mode.</param>
+        public Game(INetwork network, bool isPlayerOne, bool singlePlayer = false)
         {
             this.singlePlayer = singlePlayer;
             this.network = network;
-            this.singlePlayer = singlePlayer;
             PlayerOne = Connect4Factory.GetPlayer("Player 1", Token.PlayerOne);
             PlayerTwo = Connect4Factory.GetPlayer(singlePlayer ? "Deep Blue Mk. II" : "Player 2", Token.PlayerTwo);
             ActivePlayer = PlayerOne;
@@ -96,15 +105,15 @@ namespace Connect4.Game
             {
                 ActivePlayer = gameWonBy == Token.PlayerOne ? PlayerTwo : PlayerOne;
                 gameWonBy = Token.None;
-                if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             }
             BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
         /// <summary>
-        /// Makes sure that during a network game, the player who doesn't go first enters network receive state, otherwise, has no effect.
+        /// Makes sure to start the game in the correct way, has effect in single player and network games.
         /// </summary>
         public void Start()
         {
+            if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null! && ActivePlayer.PlayerNumber != InstanceId) ReceiveGameState();
         }
 
@@ -126,13 +135,12 @@ namespace Connect4.Game
             return false;
         }
 
-
         /// <summary>
         /// Method for checking that an attempted move is made in a valid, non-full column.
         /// </summary>
         /// <param name="column">The column the move is attempted in.</param>
         /// <param name="row">The out int parameter row "returned" for the correct row to place a token in on a valid move.</param>
-        /// <returns><see langword="true"/> if the move is determined to be valid, <see langword="fasle"/> if not.</returns>
+        /// <returns><see langword="true"/> if the move is determined to be valid, <see langword="false"/> if not.</returns>
         private bool ValidMove(int column, out int row)
         {
             row = -1;
@@ -145,7 +153,7 @@ namespace Connect4.Game
         }
 
         /// <summary>
-        /// Updates the state of the game after a valid move, and, if in a network game, calls <see cref="SendGameState"/> to send the game state to the opponent.
+        /// Updates the state of the game after a valid move, and, if in a network game, calls <see cref="SendGameState"/> to send the game state to the opponent. In a single player game, calls <see cref="StupidAI"/>.
         /// </summary>
         private void UpdateGameState()
         {
@@ -156,6 +164,9 @@ namespace Connect4.Game
             if (network != null!) SendGameState();
         }
 
+        /// <summary>
+        /// Very basic computer "opponent". Only used in single player mode.
+        /// </summary>
         private void StupidAI()
         {
             if (MoveCounter > 1) BoardChangedEvent?.Invoke(this, EventArgs.Empty);
@@ -169,6 +180,11 @@ namespace Connect4.Game
             } while (!okMove);
         }
 
+        /// <summary>
+        /// The method that actually places the correct <see cref="Token"/> on the <see cref="Board"/> in the given position.
+        /// </summary>
+        /// <param name="column">The column of the <see cref="Board"/> where the <see cref="Token"/> should be placed.</param>
+        /// <param name="row">The row of the <see cref="Board"/> where the <see cref="Token"/> should be placed.</param>
         private void PlaceToken(int column, int row)
         {
             Board[column, row].State = ActivePlayer.PlayerNumber;

@@ -8,6 +8,7 @@ using Xunit;
 using Moq;
 using System.Data.Common;
 using System.Reflection;
+using Xunit.Sdk;
 
 namespace Connect4.Tests
 {
@@ -211,6 +212,28 @@ namespace Connect4.Tests
 
             Assert.Equal(expectedBoard, game.Board);
             Assert.Equal(expectedMoveCounter, game.MoveCounter);
+        }
+
+        [Fact]
+        public void MakeMove_InASinglePlayerGame_ShouldTriggerAComputerMove()
+        {
+            var sut = new Game.Game(null!, true, true);
+            var expectedMoveCounter = 3;
+            sut.MakeMove(1);
+            var actual = sut.MoveCounter;
+            Assert.Equal(expectedMoveCounter,actual);
+        }
+        [Fact]
+        public void Start_InASinglePlayerGameWherePlayerTwoGoesFirst_ShouldTriggerAComputerMove()
+        {
+            var sut = new Game.Game(null!, true, true);
+            sut.ActivePlayer = sut.PlayerTwo;
+            var expectedMoveCounter = 2;
+            
+            sut.Start();
+            
+            var actual = sut.MoveCounter;
+            Assert.Equal(expectedMoveCounter,actual);
         }
     }
 }

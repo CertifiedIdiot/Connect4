@@ -6,11 +6,11 @@
     using Connect4_ConsoleUI.GameUI;
     using System;
 
-    internal class QuickTest
+    internal class ConsoleConnect4
     {
         readonly Game game;
 
-        public QuickTest(INetwork network, bool goFirst)
+        public ConsoleConnect4(INetwork network, bool goFirst)
         {
             game = Connect4Factory.GetGame(network, goFirst);
             game.BoardChangedEvent += Game_BoardChangedEvent;
@@ -18,14 +18,15 @@
             RenderGame.StartRound();
         }
 
-        ~QuickTest()
+        ~ConsoleConnect4()
         {
             game.BoardChangedEvent -= Game_BoardChangedEvent;
             game.GameOverEvent -= Game_GameWonEvent;
         }
+
         private void Game_GameWonEvent(object? sender, GameOverEventArgs e)
         {
-            if (e.Winner == "Draw.") RenderGame.WinSplashscreen($"             Draw!");
+            if (e.Winner == "Draw.") RenderGame.WinSplashscreen("             Draw!");
             else RenderGame.WinSplashscreen($"     {e.Winner} won!");
             Menus.PlayAgainMenu.Rematch(this);
         }

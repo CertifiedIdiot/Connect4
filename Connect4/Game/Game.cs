@@ -11,6 +11,7 @@ namespace Connect4.Game
         private Token gameWonBy;
 
         private readonly INetwork network;
+        private readonly bool singlePlayer;
         public event EventHandler<EventArgs>? BoardChangedEvent;
         public event EventHandler<GameOverEventArgs>? GameOverEvent;
         public int MoveCounter { get; set; } = 1;
@@ -19,11 +20,13 @@ namespace Connect4.Game
         public IPlayer PlayerTwo { get; set; }
         public Slot[,] Board { get; set; } = new Slot[7, 6];
         public IPlayer ActivePlayer { get; set; }
-        public Game(INetwork network, bool goFirst)
+
+        public Game(INetwork network, bool goFirst, bool singlePlayer = false)
         {
             this.network = network;
+            this.singlePlayer = singlePlayer;
             PlayerOne = Connect4Factory.GetPlayer("Player 1", Token.PlayerOne);
-            PlayerTwo = Connect4Factory.GetPlayer("Player 2", Token.PlayerTwo);
+            PlayerTwo = Connect4Factory.GetPlayer(singlePlayer ? "Deep Blue Mk. II" : "Player 2", Token.PlayerTwo);
             ActivePlayer = PlayerOne;
             InstanceId = goFirst ? Token.PlayerOne : Token.PlayerTwo;
         }
@@ -36,6 +39,7 @@ namespace Connect4.Game
             {
                 ActivePlayer = gameWonBy == Token.PlayerOne ? PlayerTwo : PlayerOne;
                 gameWonBy = Token.None;
+                if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             }
             BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
@@ -73,7 +77,21 @@ namespace Connect4.Game
             MoveCounter++;
             ActivePlayer = ActivePlayer == PlayerOne ? PlayerTwo : PlayerOne;
             if (MoveCounter == 43 && gameWonBy == Token.None) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
+            if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null!) SendGameState();
+        }
+
+        private void StupidAI()
+        {
+            if (MoveCounter>1) BoardChangedEvent?.Invoke(this, EventArgs.Empty);
+            bool okMove = false;
+            var rng = new Random();
+            Thread.Sleep(rng.Next(1, 2000));
+            do
+            {
+                var column = rng.Next(0, 7);
+                okMove = MakeMove(column);
+            } while (!okMove);
         }
 
         private void PlaceToken(int column, int row)

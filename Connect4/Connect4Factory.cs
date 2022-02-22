@@ -14,8 +14,8 @@
         /// Gets an instance of the Connect4 game class with concrete implementations of its dependencies.
         /// </summary>
         /// <returns>A Connect4 Game object.</returns>
-        public static Game.Game GetGame(INetwork network,bool goFirst) => new(network,goFirst);
-        public static IPlayer GetPlayer(string name="",Token number=Token.None) => new Player() { Name=name,PlayerNumber=number};
+        public static Game.Game GetGame(INetwork network, bool goFirst, bool singlePlayer=false) => new(network, goFirst, singlePlayer);
+        public static IPlayer GetPlayer(string name = "", Token number = Token.None) => new Player() { Name = name, PlayerNumber = number };
         public static INetwork GetServer() => new Server();
         public static INetwork GetClient() => new Client();
     }

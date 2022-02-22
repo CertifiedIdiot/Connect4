@@ -9,10 +9,10 @@
     internal class QuickTest
     {
         readonly Game game;
-
-        public QuickTest(INetwork network, bool goFirst)
+        
+        public QuickTest(INetwork network, bool goFirst, bool singlePlayer = false)
         {
-            game = Connect4Factory.GetGame(network, goFirst);
+            game = Connect4Factory.GetGame(network, goFirst, singlePlayer);
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameOverEvent += Game_GameWonEvent;
             RenderGame.StartRound();
@@ -44,18 +44,21 @@
                 game.MakeMove(GetChosenColumn() - 1);
             } while (game.MoveCounter < 43);
         }
+
         private void DrawUI()
         {
             RenderGame.RenderBasicGameElements();
             RenderGameElement.DisplayColumnNumbers();
             UpdateUI();
         }
-        private void UpdateUI() => RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", game.MoveCounter, game.ActivePlayer, game.Board);
+
+        private void UpdateUI() => RenderGame.RenderGameInfo($"           {game.ActivePlayer.Name} - Pick a column number from below.              ", game.MoveCounter, game.ActivePlayer, game.Board);
 
         private static int GetChosenColumn()
         {
             var input = Console.ReadKey(true);
             return char.IsDigit(input.KeyChar) ? int.Parse(input.KeyChar.ToString()) : 0;
         }
+
     }
 }

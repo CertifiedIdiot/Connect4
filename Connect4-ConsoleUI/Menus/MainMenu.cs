@@ -35,7 +35,7 @@ namespace Connect4_ConsoleUI.Menus
             Environment.Exit(0);
         }
 
-        private static void StartHotSeat() => new QuickTest(null!, true).Run();
+        private static void StartHotSeat() => new QuickTest(null!, true, true).Run();
 
         private static void StartNetWorkSetUp() => new NetworkSetup().Run();
 

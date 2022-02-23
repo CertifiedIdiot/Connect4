@@ -1,5 +1,6 @@
 ﻿namespace Connect4
 {
+    using Connect4.Crypto;
     using Connect4.Enums;
     using Connect4.Interfaces;
     using Connect4.Models;
@@ -14,7 +15,7 @@
         /// Gets an instance of the Connect4 <see cref="Game"/> class with concrete implementations of its dependencies.
         /// </summary>
         /// <returns>A Connect4 <see cref="Game"/> object.</returns>
-        public static Game.Game GetGame(INetwork network, bool isPlayerOne, bool singlePlayer = false) => new(network, isPlayerOne, singlePlayer);
+        public static Game.Game GetGame(INetwork network, bool isPlayerOne, bool singlePlayer = false) => new(network, GetCrypto(),isPlayerOne, singlePlayer);
         /// <summary>
         /// Gets a concrete class that implements the <see cref="IPlayer"/> interface.
         /// </summary>
@@ -32,5 +33,6 @@
         /// </summary>
         /// <returns></returns>
         public static INetwork GetClient() => new Client();
+        public static ICrypto GetCrypto() => new AesCrypto();
     }
 }

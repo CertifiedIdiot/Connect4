@@ -26,6 +26,7 @@ using Connect4_ConsoleUI.GameUI;
             network.IP = AskForIP();
             Console.WriteLine("Waiting for connection...");
             Console.WriteLine(network.Start());
+            Console.WriteLine("Press Enter to continue.");
             Console.ReadLine();
             if (startAsServer) new ConsoleConnect4(network, true).Run();
             else new ConsoleConnect4(network, false).Run();

@@ -1,4 +1,5 @@
-﻿using Connect4.Enums;
+﻿using Connect4.Crypto;
+using Connect4.Enums;
 using Connect4.Interfaces;
 using Connect4.Models;
 using Connect4.Structs;
@@ -15,10 +16,12 @@ namespace Connect4.Game
         /// <see langword="true"/> if this instance is set to single player.
         /// </summary>
         private readonly bool singlePlayer;
+        private bool cryptoIsSetup = false;
         /// <summary>
         /// Network implementation, null if hotseat game.
         /// </summary>
         private readonly INetwork network;
+        private readonly ICrypto crypto;
 
         /// <summary>
         /// Occurs when the board is changed and UI should update.
@@ -77,10 +80,11 @@ namespace Connect4.Game
         /// <param name="network">The <see cref="INetwork"/> implementation passed in, null for a hotseat game.</param>
         /// <param name="isPlayerOne">if set to <c>true</c> this <see cref="Game"/> instance will be set to Player One and go first, otherwise it will be set to Player Two and wait for its turn.</param>
         /// <param name="singlePlayer"><see langword="true"/> if this instance of <see cref="Game"/> should be single player mode.</param>
-        public Game(INetwork network, bool isPlayerOne, bool singlePlayer = false)
+        public Game(INetwork network, ICrypto crypto, bool isPlayerOne, bool singlePlayer = false)
         {
             this.singlePlayer = singlePlayer;
             this.network = network;
+            this.crypto = crypto;
             PlayerOne = Connect4Factory.GetPlayer("Player 1", Token.PlayerOne);
             PlayerTwo = Connect4Factory.GetPlayer(singlePlayer ? "Deep Blue Mk. II" : "Player 2", Token.PlayerTwo);
             ActivePlayer = PlayerOne;
@@ -113,6 +117,7 @@ namespace Connect4.Game
         /// </summary>
         public void Start()
         {
+            if (network != null && crypto != null && !cryptoIsSetup) SetupCrypto();
             if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null! && ActivePlayer.PlayerNumber != InstanceId) ReceiveGameState();
         }
@@ -170,7 +175,7 @@ namespace Connect4.Game
         private void StupidAI()
         {
             if (MoveCounter > 1) BoardChangedEvent?.Invoke(this, EventArgs.Empty);
-            bool okMove = false;
+            bool okMove;
             var rng = new Random();
             Thread.Sleep(rng.Next(1, 2000));
             do
@@ -197,15 +202,28 @@ namespace Connect4.Game
         /// </summary>
         private void SendGameState()
         {
-            var json = JsonHandler.Serialize(new GameState()
+            var json = JsonHandler.Serialize(GatherGameState());
+            if (cryptoIsSetup) CryptoSend(json);
+            else network.Send(json);
+            if (gameWonBy == Token.None && MoveCounter != 43) ReceiveGameState();
+        }
+        private void CryptoSend(string json)
+        {
+            var encrypted = crypto.Encrypt(json);
+            var cryptoJson = JsonHandler.Serialize(encrypted);
+            network.Send(cryptoJson);
+        }
+
+        private GameState GatherGameState()
+        {
+            var gameState = new GameState()
             {
                 PlayerOnesTurn = ActivePlayer == PlayerOne,
                 Board = Board,
                 GameWonBy = gameWonBy,
                 MoveCounter = MoveCounter
-            });
-            network.Send(json);
-            if (gameWonBy == Token.None && MoveCounter != 43) ReceiveGameState();
+            };
+            return gameState;
         }
 
         /// <summary>
@@ -213,15 +231,34 @@ namespace Connect4.Game
         /// </summary>
         private void ReceiveGameState()
         {
-            var json = network.Receive();
+            var json = cryptoIsSetup? CryptoReceive() : network.Receive();
             var gameState = JsonHandler.Deserialize<GameState>(json);
+            ApplyReceivedGameState(gameState);
+            RaiseEventsForReceivedGameState(gameState);
+        }
+
+        private void RaiseEventsForReceivedGameState(GameState gameState)
+        {
+            BoardChangedEvent?.Invoke(this, EventArgs.Empty);
+
+            if (gameState.GameWonBy != Token.None) GameOverEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? new GameOverEventArgs(PlayerOne.Name) : new GameOverEventArgs(PlayerTwo.Name));
+            else if (MoveCounter == 43) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
+        }
+
+        private void ApplyReceivedGameState(GameState gameState)
+        {
             ActivePlayer = gameState.PlayerOnesTurn ? PlayerOne : PlayerTwo;
             Board = gameState.Board;
             gameWonBy = gameState.GameWonBy;
             MoveCounter = gameState.MoveCounter;
-            BoardChangedEvent?.Invoke(this, EventArgs.Empty);
-            if (gameState.GameWonBy != Token.None) GameOverEvent?.Invoke(this, gameState.GameWonBy == PlayerOne.PlayerNumber ? new GameOverEventArgs(PlayerOne.Name) : new GameOverEventArgs(PlayerTwo.Name));
-            else if (MoveCounter == 43) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
+        }
+
+        private string CryptoReceive()
+        {
+            var cryptoJson = network.Receive();
+            var encrypted = JsonHandler.Deserialize<CryptoObj>(cryptoJson);
+            var decrypted = crypto.Decrypt(encrypted);
+            return decrypted;
         }
 
         /// <summary>
@@ -305,6 +342,22 @@ namespace Connect4.Game
                 if (Board[column, i].State == Token.None) return i;
             }
             return -1;
+        }
+        private void SetupCrypto()
+        {
+            if (InstanceId == Token.PlayerOne)
+            {
+                var settings = crypto.Init();
+                var json = JsonHandler.Serialize(settings);
+                network.Send(json);
+            }
+            else
+            {
+                var json = network.Receive();
+                var settings = JsonHandler.Deserialize<CryptoObj>(json);
+                crypto.SetUp(settings);
+            }
+            cryptoIsSetup = true;
         }
     }
 }

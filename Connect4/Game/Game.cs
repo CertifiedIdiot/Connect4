@@ -197,7 +197,7 @@ namespace Connect4.Game
         }
 
         /// <summary>
-        /// In a network game, will send collect and send the current game state to the opponent, and unless it's a draw game (42 moves made),
+        /// In a network game, will collect and send the current game state to the opponent, and unless it's a draw game (42 moves made),
         /// call <see cref="ReceiveGameState"/> to be ready to receive the game state after the opponents move.
         /// </summary>
         private void SendGameState()
@@ -207,6 +207,11 @@ namespace Connect4.Game
             else network.Send(json);
             if (gameWonBy == Token.None && MoveCounter != 43) ReceiveGameState();
         }
+
+        /// <summary>
+        /// If <see cref="crypto"/> is set up, will be called to encrypt and send over the <see cref="network"/> instead of passing through plaintext.
+        /// </summary>
+        /// <param name="json">The string to encrypt and send.</param>
         private void CryptoSend(string json)
         {
             var encrypted = crypto.Encrypt(json);
@@ -214,6 +219,10 @@ namespace Connect4.Game
             network.Send(cryptoJson);
         }
 
+        /// <summary>
+        /// Gathers the state of the game in preparation for sending to opponent in a network game.
+        /// </summary>
+        /// <returns><see cref="GameState"/> object containing the current game state.</returns>
         private GameState GatherGameState()
         {
             var gameState = new GameState()
@@ -237,6 +246,10 @@ namespace Connect4.Game
             RaiseEventsForReceivedGameState(gameState);
         }
 
+        /// <summary>
+        /// Checks the received <see cref="GameState"/> object and raises events as needed.
+        /// </summary>
+        /// <param name="gameState">The <see cref="GameState"/> object to be checked.</param>
         private void RaiseEventsForReceivedGameState(GameState gameState)
         {
             BoardChangedEvent?.Invoke(this, EventArgs.Empty);
@@ -245,6 +258,10 @@ namespace Connect4.Game
             else if (MoveCounter == 43) GameOverEvent?.Invoke(this, new GameOverEventArgs("Draw."));
         }
 
+        /// <summary>
+        /// Applies the received game state to this instance of <see cref="Game"/>.
+        /// </summary>
+        /// <param name="gameState"><see cref="GameState"/> object containing the states to be applied.</param>
         private void ApplyReceivedGameState(GameState gameState)
         {
             ActivePlayer = gameState.PlayerOnesTurn ? PlayerOne : PlayerTwo;
@@ -253,6 +270,10 @@ namespace Connect4.Game
             MoveCounter = gameState.MoveCounter;
         }
 
+        /// <summary>
+        /// If <see cref="crypto"/> is set up, will be called to decrypt and receive from the <see cref="network"/> instead of passing in plaintext.
+        /// </summary>
+        /// <returns><see cref="string"/> containing the received, decrypted <see cref="network"/> traffic.</returns>
         private string CryptoReceive()
         {
             var cryptoJson = network.Receive();

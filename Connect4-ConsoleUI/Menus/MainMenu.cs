@@ -2,6 +2,9 @@
 
 namespace Connect4_ConsoleUI.Menus
 {
+    /// <summary>
+    /// The main menu of the game, and also the entrypoint for the ConsoleUI project.
+    /// </summary>
     internal static class MainMenu
     {
         internal static void Start()

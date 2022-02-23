@@ -2,6 +2,9 @@
 
 namespace Connect4_ConsoleUI.Menus
 {
+    /// <summary>
+    /// Menu where the user can select different colour schemes.
+    /// </summary>
     internal static class OptionsMenu
     {
         internal static void Run()

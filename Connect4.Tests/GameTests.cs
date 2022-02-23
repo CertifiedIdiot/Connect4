@@ -223,6 +223,7 @@ namespace Connect4.Tests
         {
             var sut = new Game.Game(null!, null!, true, true);
             sut.ActivePlayer = sut.PlayerTwo;
+
             const int expectedMoveCounter = 2;
 
             sut.Start();

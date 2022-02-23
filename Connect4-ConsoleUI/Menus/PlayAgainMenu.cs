@@ -2,6 +2,9 @@
 
 namespace Connect4_ConsoleUI.Menus
 {
+    /// <summary>
+    /// Menu to be run when the player has won or lost a game. Gives the user choices relating to playing a new round.
+    /// </summary>
     public static class PlayAgainMenu
     {
         internal static void Rematch(ConsoleConnect4 qt)

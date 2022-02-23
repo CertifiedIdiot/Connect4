@@ -2,6 +2,9 @@
 
 namespace Connect4_ConsoleUI.Menus
 {
+    /// <summary>
+    /// The main menu of the game, and also the entrypoint for the ConsoleUI project.
+    /// </summary>
     internal static class MainMenu
     {
         internal static void Start()
@@ -15,16 +18,16 @@ namespace Connect4_ConsoleUI.Menus
             RenderGame.MenuHeader();
             var menuItems = new List<string>() {
                 "Main Menu",
-                "[1] - Hotseat Game.",
-                "[2] - Single Player Game.",
+                "[1] - Single Player Game.",
+                "[2] - Hotseat Game.",
                 "[3] - Multiplayer Setup.",
                 "[4] - Change Colour Scheme.",
                 "[5] - Quit Game."
             };
             switch (new CreateMenu(menuItems, true).UseMenu())
             {
-                case "[1] - Hotseat Game.": StartHotSeat(); break;
-                case "[2] - Single Player Game.": StartSinglePlayer(); break;
+                case "[1] - Single Player Game.": StartSinglePlayer(); break;
+                case "[2] - Hotseat Game.": StartHotSeat(); break;
                 case "[3] - Multiplayer Setup.": StartNetWorkSetUp(); break;
                 case "[4] - Change Colour Scheme.": StartOptionsMenu(); break;
                 case "[5] - Quit Game.": ExitTheGame(); break;

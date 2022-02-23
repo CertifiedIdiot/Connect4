@@ -229,9 +229,8 @@ namespace Connect4.Tests
             var sut = new Game.Game(null!, true, true);
             sut.ActivePlayer = sut.PlayerTwo;
             var expectedMoveCounter = 2;
-            
             sut.Start();
-            
+
             var actual = sut.MoveCounter;
             Assert.Equal(expectedMoveCounter,actual);
         }

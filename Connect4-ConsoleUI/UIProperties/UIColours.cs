@@ -7,7 +7,6 @@ namespace Connect4_ConsoleUI.UIProperties
     /// </summary>
     public static class UIColours
     {
-        
         /// <summary>
         /// <para> List containing different colour schemes for the game. Each colour scheme should have 6 colours. </para>
         ///

@@ -194,9 +194,7 @@ namespace Connect4_ConsoleUI.GameUI
             for (int i = 0; i < 4; i++)
             {
                 if (i % 2 == 0)
-                {
                     Print.AtPosition(ASCIIGraphics.playerIconArray, posX + xIncrease, posY, UIColours.PlayerTwoColour);
-                }
                 else
                     Print.AtPosition(ASCIIGraphics.playerIconArray, posX + xIncrease, posY, UIColours.PlayerOneColour);
                 xIncrease += 10;

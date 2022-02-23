@@ -2,10 +2,11 @@
 
 namespace Connect4_ConsoleUI.UIProperties
 {
+    /// <summary>
+    /// Simple class to keep track of all the colour schemes and colours in the game.
+    /// </summary>
     public static class UIColours
     {
-        // TODO: Feel free to try out other colours to create a nice looking colour scheme
-
         /// <summary>
         /// <para> List containing different colour schemes for the game. Each colour scheme should have 6 colours. </para>
         ///
@@ -16,10 +17,10 @@ namespace Connect4_ConsoleUI.UIProperties
         private static readonly List<List<string>> ColourSchemes = new()
         {
         // Colour order - PlayerOneColour, PlayerTwoColour, GameboardColour, TableColour, BackgroundColour, Textcolour
-            new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"}, //default
-            new List<string> {"White", "DimGray", "White", "DimGray", "Black", "White" }, // "pong"
-            new List<string> {"White", "Black", "White", "Black", "DarkSlateGray", "White" }, //"mono"
-            new List<string> { "AquaMarine", "Orchid", "LightBlue", "MediumSlateBlue", "MidnightBlue", "White"}, // "Aurora"            
+            new List<string> { "DodgerBlue", "OrangeRed", "CadetBlue", "SaddleBrown", "Bisque", "DarkCyan"},         //default
+            new List<string> {"White", "DimGray", "White", "DimGray", "Black", "White" },                           // "pong"
+            new List<string> {"White", "Black", "White", "Black", "DarkSlateGray", "White" },                      //"mono"
+            new List<string> { "AquaMarine", "Orchid", "LightBlue", "MediumSlateBlue", "MidnightBlue", "White"},  // "Aurora"            
         };
 
         /// <summary> Gets or sets the player one colour See also <seealso cref="ColourSchemes"/> for more info. </summary>

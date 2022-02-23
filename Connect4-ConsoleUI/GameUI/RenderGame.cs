@@ -75,12 +75,17 @@ namespace Connect4_ConsoleUI.GameUI
             RenderGameElement.PlayerPositions(gameboard);
         }
 
+        /// <summary>
+        /// Clears the screen and displays the top menu header ASCII.
+        /// </summary>
         internal static void MenuHeader()
         {
             Console.Clear();
             RenderGameElement.MenuHeader();
         }
-
+        /// <summary>
+        /// Clears the screen, displays header, displays exit message.
+        /// </summary>
         internal static void ExitScreen()
         {
             MenuHeader();

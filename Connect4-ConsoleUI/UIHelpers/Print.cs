@@ -17,7 +17,9 @@ namespace Connect4_ConsoleUI.UIHelpers
             var consoleCenter = Console.WindowWidth / 2;
             var textInHalf = text.Length / 2;
             if (text.Length >= maxStringLength - 2)
+            {
                 StringAtPosition(text, posY, colour);
+            }
             else
             {
                 Console.CursorLeft = consoleCenter - textInHalf;
@@ -30,7 +32,9 @@ namespace Connect4_ConsoleUI.UIHelpers
             var consoleCenter = Console.WindowWidth / 2;
             var textInHalf = text.Length / 2;
             if (text.Length >= maxStringLength - 2)
+            {
                 StringAtPosition(text, posY);
+            }
             else
             {
                 Console.CursorLeft = consoleCenter - textInHalf;

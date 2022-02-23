@@ -42,8 +42,8 @@
         /// <param name="e">The <see cref="GameOverEventArgs"/> instance containing the event data.</param>
         private void Game_GameWonEvent(object? sender, GameOverEventArgs e)
         {
-            if (e.Winner == "Draw.") RenderGame.WinSplashscreen("             Draw!");
-            else RenderGame.WinSplashscreen($"     {e.Winner} won!");
+            if (e.Winner == "Draw.") RenderGame.WinSplashscreen("                                 Draw!");
+            else RenderGame.WinSplashscreen($"{e.Winner} won!");
             Menus.PlayAgainMenu.Rematch(this);
         }
 
@@ -83,7 +83,7 @@
         /// <summary>
         /// Updates elements of the UI to reflect current information about board state, active player and move number.
         /// </summary>
-        private void UpdateUI() => RenderGame.RenderGameInfo($"{game.ActivePlayer.Name} - Pick a column number from below.", game.MoveCounter, game.ActivePlayer, game.Board);
+        private void UpdateUI() => RenderGame.RenderGameInfo($"        {game.ActivePlayer.Name} - Pick a column number from below.         ", game.MoveCounter, game.ActivePlayer, game.Board);
 
         /// <summary>
         /// Checks what key the player pressed.

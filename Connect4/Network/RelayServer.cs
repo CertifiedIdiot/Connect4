@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Microsoft.VisualStudio.Threading;
 
 namespace Connect4.Network
 {
@@ -12,6 +13,9 @@ namespace Connect4.Network
 
         public RelayServer(string IP = "") => this.IP = IP;
 
+        /// <summary>
+        /// Will freeze thread upon being called.
+        /// </summary>
         public void Start()
         {
             StartConnectionPool();
@@ -39,7 +43,7 @@ namespace Connect4.Network
 
             while (!accepted)
             {
-                string? username = Receive(user);
+                string username = Receive(user);
                 if (IsNameDupe(username))
                 {
                     Send(user, "rejected");
@@ -47,6 +51,7 @@ namespace Connect4.Network
                 else
                 {
                     accepted = true;
+                    Send(user, "accepted");
                 }
             }
 
@@ -111,26 +116,25 @@ namespace Connect4.Network
         }
 
         public void StartConnectionPool()
-        {
+        {           
+            Socket newClientSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            newClientSocket.Bind(new IPEndPoint(IPAddress.Parse(IP), 9050));
+
             while (PoolConnections)
             {
-                IPEndPoint IPep = new(IPAddress.Parse(IP), 9050);
                 RelayUser user = new();
-                user.ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-                user.ClientSocket.Bind(IPep);
-                user.ClientSocket.Listen(10);
+                newClientSocket.Listen(10);
                 // Will not continue from this point until a client connects
-                user.ClientSocket = user.ClientSocket.Accept();
+                user.ClientSocket = newClientSocket.Accept();
 
-                new Task(() => AddUserToPool(user)).Start();
+                Task.Run(() => AddUserToPool(user)).Forget();
             }
         }
 
         public void Stop()
         {
             PoolConnections = false;
-            foreach (RelayUser? user in ConnectionPool)
+            foreach (RelayUser user in ConnectionPool)
             {
                 user.ClientSocket.Close();
             }

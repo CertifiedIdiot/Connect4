@@ -12,6 +12,7 @@
         /// The instance of the <see cref="Game"/> class used for this session.
         /// </summary>
         readonly Game game;
+        readonly bool isHotSeatGame;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleConnect4"/> class.
@@ -21,6 +22,7 @@
         public ConsoleConnect4(INetwork network, bool isPlayerOne, bool singlePlayer = false)
         {
             game = Connect4Factory.GetGame(network, isPlayerOne, singlePlayer);
+            if (network is null && !singlePlayer) isHotSeatGame = true;
             game.BoardChangedEvent += Game_BoardChangedEvent;
             game.GameOverEvent += Game_GameWonEvent;
             RenderGame.StartRound();
@@ -83,7 +85,17 @@
         /// <summary>
         /// Updates elements of the UI to reflect current information about board state, active player and move number.
         /// </summary>
-        private void UpdateUI() => RenderGame.RenderGameInfo($"        {game.ActivePlayer.Name} - Pick a column number from below.         ", game.MoveCounter, game.ActivePlayer, game.Board);
+        private void UpdateUI()
+        {
+            if(!isHotSeatGame && game.ActivePlayer.PlayerNumber != game.InstanceId)
+            {
+                RenderGame.RenderGameInfo($"           Waiting for {game.ActivePlayer.Name} to make a move...           ", game.MoveCounter, game.ActivePlayer, game.Board);
+            }
+            else
+            {
+                RenderGame.RenderGameInfo($"        {game.ActivePlayer.Name} - Pick a column number from below.         ", game.MoveCounter, game.ActivePlayer, game.Board);
+            }
+        }
 
         /// <summary>
         /// Checks what key the player pressed.

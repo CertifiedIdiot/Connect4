@@ -87,7 +87,7 @@
         /// </summary>
         private void UpdateUI()
         {
-            if(!isHotSeatGame && game.ActivePlayer.PlayerNumber != game.InstanceId)
+            if (!isHotSeatGame && game.ActivePlayer.PlayerNumber != game.InstanceId)
             {
                 RenderGame.RenderGameInfo($"           Waiting for {game.ActivePlayer.Name} to make a move...           ", game.MoveCounter, game.ActivePlayer, game.Board);
             }
@@ -101,8 +101,10 @@
         /// Checks what key the player pressed.
         /// </summary>
         /// <returns>The number of the column the player wants to place a token in or 0 if the key pressed does not correspond to a column number.</returns>
-        private static int GetChosenColumn()
+        private int GetChosenColumn()
         {
+            do Console.ReadKey(true);
+            while (Console.KeyAvailable);
             var input = Console.ReadKey(true);
             return char.IsDigit(input.KeyChar) ? int.Parse(input.KeyChar.ToString()) : 0;
         }

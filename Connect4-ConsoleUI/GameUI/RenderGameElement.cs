@@ -139,7 +139,10 @@ namespace Connect4_ConsoleUI.GameUI
         internal static void WinSplashscreenDisplayWinnerName(string winnerName)
         {
             Print.StringAtPosition("                ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
-            Print.GradientAtPosition(FiggleFonts.Standard.Render("                " + winnerName), 12, UIColours.GameboardColour);
+            if (winnerName.Length > 14)
+                Print.GradientAtPosition(FiggleFonts.Standard.Render("            " + winnerName), 12, UIColours.GameboardColour);
+            else
+                Print.GradientAtPosition(FiggleFonts.Standard.Render("                            " + winnerName), 12, UIColours.GameboardColour);
         }
         /// <summary>
         /// Prints a semi animated ASCII art.

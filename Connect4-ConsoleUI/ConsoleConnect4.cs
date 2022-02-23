@@ -43,7 +43,7 @@
         private void Game_GameWonEvent(object? sender, GameOverEventArgs e)
         {
             if (e.Winner == "Draw.") RenderGame.WinSplashscreen("             Draw!");
-            else RenderGame.WinSplashscreen($"     {e.Winner} won!");
+            else RenderGame.WinSplashscreen($"{e.Winner} won!");
             Menus.PlayAgainMenu.Rematch(this);
         }
 

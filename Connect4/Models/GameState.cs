@@ -17,11 +17,11 @@
         /// </summary>
         public bool PlayerOnesTurn { get; set; }
         /// <summary>
-        /// If a game is won, the winners Token will be sent here,otherwise, the value will be Token.None.
+        /// If a game is won, the winners Token will be sent here, otherwise, the value will be Token.None.
         /// </summary>
         public Token GameWonBy { get; set; }
         /// <summary>
-        /// Counter for number of moves made in current match.
+        /// Counter for indicating the number of the move about to be made in current match.
         /// </summary>
         public int MoveCounter { get; set; }
     }

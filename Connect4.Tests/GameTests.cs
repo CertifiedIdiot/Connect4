@@ -1,14 +1,11 @@
 using Connect4.Enums;
 using Connect4.Game;
-using Connect4.Structs;
-using System;
 using Connect4.Interfaces;
 using Connect4.Models;
-using Xunit;
+using Connect4.Structs;
 using Moq;
-using System.Data.Common;
-using System.Reflection;
-using Xunit.Sdk;
+using System;
+using Xunit;
 
 namespace Connect4.Tests
 {
@@ -16,26 +13,34 @@ namespace Connect4.Tests
     {
         readonly Game.Game game;
         readonly private Slot[,] testBoard;
+        readonly Mock<INetwork> mock;
+        readonly INetwork moqNet;
+        readonly Game.Game gameWithMockNet;
 
         public GameTests()
         {
-            game = new Game.Game(null!, true);
+            game = new Game.Game(null!, null!, true);
             var c = new Slot { State = Token.None };
             var X = new Slot { State = Token.PlayerOne };
             var O = new Slot { State = Token.PlayerTwo };
             testBoard = new Slot[,]
             {
                 //left side, rows
-               //0,1,2,3,4,5
-                {c,c,c,c,c,c},//0
-                {c,c,c,c,c,c},//1
-                {O,O,O,X,X,X},//2 columns
-                {c,c,c,X,X,X},//3 bottom
-                {c,c,c,c,c,c},//4
-                {c,c,c,c,c,c},//5
-                {c,c,c,c,c,c},//6
+                //0,1,2,3,4,5
+                {c, c, c, c, c, c}, //0
+                {c, c, c, c, c, c}, //1
+                {O, O, O, X, X, X}, //2 columns
+                {c, c, c, X, X, X}, //3 bottom
+                {c, c, c, c, c, c}, //4
+                {c, c, c, c, c, c}, //5
+                {c, c, c, c, c, c}, //6
             };
             game.Board = testBoard;
+            var mockINetwork = new Mock<INetwork>();
+            mockINetwork.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState()));
+            this.mock = mockINetwork;
+            moqNet = mock.Object;
+            gameWithMockNet = new Game.Game(moqNet, null!, true) { Board = testBoard };
         }
 
         [Fact]
@@ -50,6 +55,7 @@ namespace Connect4.Tests
             actual = game.ActivePlayer;
             Assert.Equal(expected, actual);
         }
+
         [Fact]
         public void MakeMove_AttemptInFullColumn_ShouldReturnFalse() => Assert.False(game.MakeMove(2));
 
@@ -69,6 +75,7 @@ namespace Connect4.Tests
                 handler => game.BoardChangedEvent -= handler,
                 () => game.MakeMove(1));
         }
+
         [Fact]
         public void MakeMove_InWinningPosition_ShouldRaiseGameOverEvent()
         {
@@ -82,26 +89,20 @@ namespace Connect4.Tests
         [Theory]
         [InlineData(true, 0)]
         [InlineData(false, 1)]
-        public void Start_DiffrentValuesOfGoFirst_ShouldCallNetworkRecieveAccordingly(bool goFirst, int times)
+        public void Start_WithNetWorkDiffrentValuesOfIsPlayerOne_ShouldCallNetworkRecieveAccordingly(bool isPlayerOne, int times)
         {
-            var mock = new Mock<INetwork>();
-            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState()));
-            var moqNet = mock.Object;
-            var sut = new Game.Game(moqNet, goFirst);
+            var sut = new Game.Game(moqNet, null!, isPlayerOne);
 
             sut.Start();
+
             mock.Verify(x => x.Receive(), Times.Exactly(times));
         }
 
         [Fact]
         public void MakeMove_WithNetwork_ShouldCallNetworkMethods()
         {
-            var mock = new Mock<INetwork>();
-            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState()));
-            var moqNet = mock.Object;
-            var sut = new Game.Game(moqNet, true);
+            gameWithMockNet.MakeMove(1);
 
-            sut.MakeMove(1);
             mock.Verify(x => x.Send(It.IsAny<string>()), Times.Exactly(1));
             mock.Verify(x => x.Receive(), Times.Exactly(1));
         }
@@ -109,12 +110,8 @@ namespace Connect4.Tests
         [Fact]
         public void MakeMove_GameWonWithNetwork_ShouldNotEnterRecieveState()
         {
-            var mock = new Mock<INetwork>();
-            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState()));
-            var moqNet = mock.Object;
-            var sut = new Game.Game(moqNet, true) { Board = testBoard };
+            gameWithMockNet.MakeMove(3);
 
-            sut.MakeMove(3);
             mock.Verify(x => x.Send(It.IsAny<string>()), Times.AtLeastOnce);
             mock.Verify(x => x.Receive(), Times.Never());
         }
@@ -122,30 +119,24 @@ namespace Connect4.Tests
         [Fact]
         public void Receiving_GameWon_ShouldTriggerGameOverEvent()
         {
-            var mock = new Mock<INetwork>();
             mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState() { GameWonBy = Token.PlayerTwo }));
-            var moqNet = mock.Object;
-            var sut = new Game.Game(moqNet, true) { Board = testBoard };
 
             var gameOver = Assert.Raises<GameOverEventArgs>(
-                x => sut.GameOverEvent += x,
-                x => sut.GameOverEvent -= x,
-                () => sut.MakeMove(1));
+                x => gameWithMockNet.GameOverEvent += x,
+                x => gameWithMockNet.GameOverEvent -= x,
+                () => gameWithMockNet.MakeMove(1));
             Assert.Equal("Player 2", gameOver.Arguments.Winner);
         }
 
         [Fact]
         public void Receiving_MoveCounter43_ShouldTriggerGameOverEvent()
         {
-            var mock = new Mock<INetwork>();
-            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState() { MoveCounter = 43}));
-            var moqNet = mock.Object;
-            var sut = new Game.Game(moqNet, true) { Board = testBoard };
+            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState() { MoveCounter = 43 }));
 
             var gameOver = Assert.Raises<GameOverEventArgs>(
-                x => sut.GameOverEvent += x,
-                x => sut.GameOverEvent -= x,
-                () => sut.MakeMove(1));
+                x => gameWithMockNet.GameOverEvent += x,
+                x => gameWithMockNet.GameOverEvent -= x,
+                () => gameWithMockNet.MakeMove(1));
             Assert.Equal("Draw.", gameOver.Arguments.Winner);
         }
 
@@ -165,22 +156,17 @@ namespace Connect4.Tests
         [Fact]
         public void MakeMove_WithNetwork_ShouldSendExpectedData()
         {
-            var mock = new Mock<INetwork>();
-            mock.Setup(x => x.Receive()).Returns(JsonHandler.Serialize(new GameState()));
-            var moqNet = mock.Object;
-            var sut = new Game.Game(moqNet, true);
-
-            sut.Board[1, 5].State = Token.PlayerOne;
+            gameWithMockNet.Board[1, 5].State = Token.PlayerOne;
             var expected = JsonHandler.Serialize(new GameState()
             {
                 PlayerOnesTurn = false,
-                Board = sut.Board,
+                Board = gameWithMockNet.Board,
                 GameWonBy = Token.None,
                 MoveCounter = 2
             });
-            sut.Board[1, 5].State = Token.None;
+            gameWithMockNet.Board[1, 5].State = Token.None;
 
-            sut.MakeMove(1);
+            gameWithMockNet.MakeMove(1);
 
             mock.Verify(x => x.Send(expected), Times.Exactly(1));
         }
@@ -193,6 +179,7 @@ namespace Connect4.Tests
                 handler => game.BoardChangedEvent -= handler,
                 () => game.SetupNewGame());
         }
+
         [Fact]
         public void SetupNewGame_ShouldLetLooserGoFirst()
         {
@@ -202,6 +189,7 @@ namespace Connect4.Tests
 
             Assert.Equal(expected, game.ActivePlayer);
         }
+
         [Fact]
         public void SetupNewGame_ShouldResetBoardAndMoveCounter()
         {
@@ -217,22 +205,39 @@ namespace Connect4.Tests
         [Fact]
         public void MakeMove_InASinglePlayerGame_ShouldTriggerAComputerMove()
         {
-            var sut = new Game.Game(null!, true, true);
-            var expectedMoveCounter = 3;
+            var sut = new Game.Game(null!, null!, true, true);
+            const int expectedMoveCounter = 3;
             sut.MakeMove(1);
             var actual = sut.MoveCounter;
-            Assert.Equal(expectedMoveCounter,actual);
+            var playerTwoTokensFound = 0;
+            foreach (var slot in sut.Board)
+            {
+                if (slot.State == Token.PlayerTwo) playerTwoTokensFound++;
+            }
+            Assert.Equal(1, playerTwoTokensFound);
+            Assert.Equal(expectedMoveCounter, actual);
         }
+
         [Fact]
         public void Start_InASinglePlayerGameWherePlayerTwoGoesFirst_ShouldTriggerAComputerMove()
         {
-            var sut = new Game.Game(null!, true, true);
+            var sut = new Game.Game(null!, null!, true, true);
             sut.ActivePlayer = sut.PlayerTwo;
-            var expectedMoveCounter = 2;
+
+            const int expectedMoveCounter = 2;
+
             sut.Start();
 
+            var playerTwoTokensFound = 0;
+            foreach (var slot in sut.Board)
+            {
+                if (slot.State == Token.PlayerTwo) playerTwoTokensFound++;
+            }
+
             var actual = sut.MoveCounter;
-            Assert.Equal(expectedMoveCounter,actual);
+
+            Assert.Equal(1, playerTwoTokensFound);
+            Assert.Equal(expectedMoveCounter, actual);
         }
     }
 }

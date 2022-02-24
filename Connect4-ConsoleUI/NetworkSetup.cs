@@ -5,9 +5,9 @@ using Connect4_ConsoleUI.GameUI;
     using System;
     using System.Text.RegularExpressions;
 
-    internal class NetworkSetup
+    internal static class NetworkSetup
     {
-        public void Run()
+        public static void Run()
         {
             RenderGame.MenuHeader();
             var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Return to Main Menu" };
@@ -19,7 +19,7 @@ using Connect4_ConsoleUI.GameUI;
             }
         }
 
-        private void StartNetwork(bool startAsServer)
+        private static void StartNetwork(bool startAsServer)
         {
             var network = startAsServer ? Connect4.Connect4Factory.GetServer() : Connect4.Connect4Factory.GetClient();
             Console.Write(startAsServer ? "Enter IP you want to host on: " : "Enter IP you want to connect on: ");
@@ -32,7 +32,7 @@ using Connect4_ConsoleUI.GameUI;
             else new ConsoleConnect4(network, false).Run();
         }
 
-        private string AskForIP()
+        private static string AskForIP()
         {
             var input = Console.ReadLine();
             while (!ValidIP(input!))
@@ -43,7 +43,7 @@ using Connect4_ConsoleUI.GameUI;
             return input!;
         }
 
-        private bool ValidIP(string ip)
+        private static bool ValidIP(string ip)
         {
             var regex = new Regex(@"^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$");
             if (!regex.IsMatch(ip)) return false;

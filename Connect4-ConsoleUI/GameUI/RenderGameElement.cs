@@ -6,6 +6,7 @@ using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
 using Figgle;
 using System.Drawing;
+using System.Text;
 
 namespace Connect4_ConsoleUI.GameUI
 {
@@ -100,20 +101,21 @@ namespace Connect4_ConsoleUI.GameUI
             Print.StringAtPositionCentered(text, yOffset, UIColours.TextColour);
         }
 
+        //todo: remove unused ClearNumber method?
         /// <summary>
         /// Clears whatever is on the DisplayTopMessage row, for example leftover "Console input"-numbers.
         /// </summary>
         /// <param name="text">The text.</param>
         internal static void ClearNumber(string text)
         {
-            string eraser = "";
+            var eraser = new StringBuilder();
             int xOffset = UIPositions.GameBoardXPos + 1;
             int yOffset = UIPositions.GameBoardYPos - 8;
             for (int i = 0; i < text.Length; i++)
             {
-                eraser += " ";
+                eraser.Append(' ');
             }
-            Print.StringAtPosition(eraser, xOffset + 38, yOffset);
+            Print.StringAtPosition(eraser.ToString(), xOffset + 38, yOffset);
         }
         #endregion
 
@@ -187,8 +189,8 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         internal static void MenuHeader()
         {
-            var posX = 42;
-            var posY = 10;
+            const int posX = 42;
+            const int posY = 10;
             var xIncrease = 0;
             Print.StringAtPosition(ASCIIGraphics.connect4stringHeader, 1);
             for (int i = 0; i < 4; i++)

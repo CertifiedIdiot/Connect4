@@ -87,7 +87,7 @@
         /// </summary>
         private void UpdateUI()
         {
-            if(!isHotSeatGame && game.ActivePlayer.PlayerNumber != game.InstanceId)
+            if (!isHotSeatGame && game.ActivePlayer.PlayerNumber != game.InstanceId)
             {
                 RenderGame.RenderGameInfo($"           Waiting for {game.ActivePlayer.Name} to make a move...           ", game.MoveCounter, game.ActivePlayer, game.Board);
             }

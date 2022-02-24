@@ -171,8 +171,8 @@ namespace Connect4_ConsoleUI.GameUI
         /// </summary>
         internal static void MenuHeader()
         {
-            var posX = 42;
-            var posY = 10;
+            const int posX = 42;
+            const int posY = 10;
             var xIncrease = 0;
             Print.StringAtPosition(ASCIIGraphics.connect4stringHeader, 1);
             for (int i = 0; i < 4; i++)

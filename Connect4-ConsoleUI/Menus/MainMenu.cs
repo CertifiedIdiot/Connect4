@@ -2,6 +2,9 @@
 
 namespace Connect4_ConsoleUI.Menus
 {
+    /// <summary>
+    /// The main menu of the game, and also the entrypoint for the ConsoleUI project.
+    /// </summary>
     internal static class MainMenu
     {
         internal static void Start()
@@ -15,19 +18,23 @@ namespace Connect4_ConsoleUI.Menus
             RenderGame.MenuHeader();
             var menuItems = new List<string>() {
                 "Main Menu",
-                "[1] - Hotseat Game.",
-                "[2] - Multiplayer Setup.",
-                "[3] - Display Settings.",
-                "[4] - Quit Game."
+                "[1] - Single Player Game.",
+                "[2] - Hotseat Game.",
+                "[3] - Multiplayer Setup.",
+                "[4] - Change Colour Scheme.",
+                "[5] - Quit Game."
             };
             switch (new CreateMenu(menuItems, true).UseMenu())
             {
-                case "[1] - Hotseat Game.": StartHotSeat(); break;
-                case "[2] - Multiplayer Setup.": StartNetWorkSetUp(); break;
-                case "[3] - Display Settings.": StartOptionsMenu(); break;
-                case "[4] - Quit Game.": ExitTheGame(); break; // TODO - "exiting game"-screen before close
+                case "[1] - Single Player Game.": StartSinglePlayer(); break;
+                case "[2] - Hotseat Game.": StartHotSeat(); break;
+                case "[3] - Multiplayer Setup.": StartNetWorkSetUp(); break;
+                case "[4] - Change Colour Scheme.": StartOptionsMenu(); break;
+                case "[5] - Quit Game.": ExitTheGame(); break;
             }
         }
+
+        private static void StartSinglePlayer() => new ConsoleConnect4(null!, true, true).Run();
 
         private static void ExitTheGame()
         {
@@ -35,11 +42,10 @@ namespace Connect4_ConsoleUI.Menus
             Environment.Exit(0);
         }
 
-        private static void StartHotSeat() => new QuickTest(null!, true).Run();
+        private static void StartHotSeat() => new ConsoleConnect4(null!, true).Run();
 
         private static void StartNetWorkSetUp() => new NetworkSetup().Run();
 
         private static void StartOptionsMenu() => OptionsMenu.Run();
-
     }
 }

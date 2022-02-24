@@ -28,30 +28,11 @@ namespace Connect4_ConsoleUI.GameUI
         internal static void GameBoard(int posX, int posY, Color gameboardColour) => Print.AtPosition(ASCIIGraphics.gameboardArray, posX, posY, gameboardColour);
 
         #region Player positions
-        /// <summary>
-        /// Prints out the possible "drop positions" at the chosen position. The drop positions are relative to the position of the gameboard.
-        /// </summary>
-        /// <param name="playerDropPositions"></param>
-        /// <param name="playerColour"></param>
-        internal static void PlayerDropPositions(bool[] playerDropPositions, Color playerColour)
-        {
-            var xOffsetPosition = UIPositions.GameBoardXPos + 3;
-            var yOffsetPosition = UIPositions.GameBoardYPos - 5;
-            var playerIconPositionXIncrease = 0;
-            for (int i = 0; i < playerDropPositions.Length; i++)
-            {
-                if (playerDropPositions[i])
-                    Print.AtPosition(ASCIIGraphics.playerIconArray, xOffsetPosition + playerIconPositionXIncrease, yOffsetPosition, playerColour);
-                else
-                    Print.AtPosition("", 33 + playerIconPositionXIncrease, 5);
-                playerIconPositionXIncrease += 7;
-            }
-        }
 
         /// <summary>
         /// Prints out the coloured player positions inside of the gameboard. The positions are relative to the gameboard.
         /// </summary>
-        /// <param name="boardPositions"></param>
+        /// <param name="boardPositions">The current state of the board slots</param>
         internal static void PlayerPositions(Slot[,] boardPositions)
         {
             const int rows = 6;
@@ -150,32 +131,43 @@ namespace Connect4_ConsoleUI.GameUI
 
         #endregion
 
-        #region SplashScreens
+        #region SplashScreens        
+        /// <summary>
+        /// Prints the name of the winner in ASCII-font in the top-middle position of the console.
+        /// </summary>
+        /// <param name="winnerName">Name of the winner.</param>
         internal static void WinSplashscreenDisplayWinnerName(string winnerName)
         {
-            Print.StringAtPosition("                     ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
-            Print.GradientAtPosition(FiggleFonts.Standard.Render("                     " + winnerName), 12, UIColours.PlayerOneColour, UIColours.PlayerTwoColour, 3);
+            Print.StringAtPosition("                ", 12); // Need to set console in correct position before FiggleFonts prints its first row.
+            if (winnerName.Length > 14)
+                Print.GradientAtPosition(FiggleFonts.Standard.Render("            " + winnerName), 12, UIColours.GameboardColour);
+            else
+                Print.GradientAtPosition(FiggleFonts.Standard.Render("                            " + winnerName), 12, UIColours.GameboardColour);
         }
-
+        /// <summary>
+        /// Prints a semi animated ASCII art.
+        /// </summary>
         internal static void WinSplashscreenBackground()
         {
             for (int i = 0; i < 5; i++)
             {
-                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworksAlt, 0, UIColours.PlayerOneColour, UIColours.PlayerTwoColour);
+                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworksAlt, 0, UIColours.PlayerOneColour);
                 System.Threading.Thread.Sleep(50);
-                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworksAlt, 0, UIColours.PlayerTwoColour, UIColours.PlayerOneColour);
+                Print.GradientAtPosition(ASCIIGraphics.splashscreenFireworksAlt, 0, UIColours.PlayerTwoColour);
                 System.Threading.Thread.Sleep(50);
             }
         }
-
+        /// <summary>
+        /// Splashscreens the start screen.
+        /// </summary>
         internal static void SplashscreenStartScreen()
         {
             while (!Console.KeyAvailable)
             {
                 Console.CursorVisible = false;
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerOneColour);
                 System.Threading.Thread.Sleep(100);
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerTwoColour);
             }
             Console.ReadKey(true);
         }
@@ -184,13 +176,15 @@ namespace Connect4_ConsoleUI.GameUI
             Console.CursorVisible = false;
             for (int i = 0; i < 3; i++)
             {
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.Blue, Color.Orange);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerOneColour);
                 System.Threading.Thread.Sleep(100);
-                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, Color.RebeccaPurple, Color.Orange);
+                Print.GradientAtPosition(ASCIIGraphics.connect4string, 10, UIColours.PlayerTwoColour);
             }
         }
-        #endregion
-
+        #endregion        
+        /// <summary>
+        /// Prints the game ASCII header, to be used in all Menus.
+        /// </summary>
         internal static void MenuHeader()
         {
             var posX = 42;
@@ -200,9 +194,7 @@ namespace Connect4_ConsoleUI.GameUI
             for (int i = 0; i < 4; i++)
             {
                 if (i % 2 == 0)
-                {
                     Print.AtPosition(ASCIIGraphics.playerIconArray, posX + xIncrease, posY, UIColours.PlayerTwoColour);
-                }
                 else
                     Print.AtPosition(ASCIIGraphics.playerIconArray, posX + xIncrease, posY, UIColours.PlayerOneColour);
                 xIncrease += 10;

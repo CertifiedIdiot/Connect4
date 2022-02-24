@@ -18,7 +18,7 @@ public interface IPlayer
     /// Gets or sets the players name.
     /// </summary>
     /// <value>
-    /// The name.
+    /// The name of the player.
     /// </value>
     string Name { get; set; }
 }

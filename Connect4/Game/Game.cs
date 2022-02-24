@@ -16,11 +16,17 @@ namespace Connect4.Game
         /// <see langword="true"/> if this instance is set to single player.
         /// </summary>
         private readonly bool singlePlayer;
+        /// <summary>
+        /// <see langword="true"/> if encryption is set up.
+        /// </summary>
         private bool cryptoIsSetup = false;
         /// <summary>
         /// Network implementation, null if hotseat game.
         /// </summary>
         private readonly INetwork network;
+        /// <summary>
+        /// Encryption implementation.
+        /// </summary>
         private readonly ICrypto crypto;
 
         /// <summary>
@@ -90,6 +96,7 @@ namespace Connect4.Game
             ActivePlayer = PlayerOne;
             InstanceId = isPlayerOne ? Token.PlayerOne : Token.PlayerTwo;
         }
+
         /// <summary>
         /// Finalizes an instance of the <see cref="Game"/> class.
         /// </summary>
@@ -112,6 +119,7 @@ namespace Connect4.Game
             }
             BoardChangedEvent?.Invoke(this, EventArgs.Empty);
         }
+
         /// <summary>
         /// Makes sure to start the game in the correct way, has effect in single player and network games.
         /// </summary>
@@ -121,6 +129,7 @@ namespace Connect4.Game
             if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null! && ActivePlayer.PlayerNumber != InstanceId) ReceiveGameState();
         }
+
         /// <summary>
         /// Stops the open network connection if any.
         /// </summary>
@@ -368,6 +377,11 @@ namespace Connect4.Game
             }
             return -1;
         }
+
+        /// <summary>
+        /// Makes the needed synchronization for cryptographic operations between this <see cref="Game"/> instance and the network opponent.
+        /// </summary>
+        /// <remarks>Sets <see cref="cryptoIsSetup"/> to true when done.</remarks>
         private void SetupCrypto()
         {
             if (InstanceId == Token.PlayerOne)

@@ -103,8 +103,11 @@
         /// <returns>The number of the column the player wants to place a token in or 0 if the key pressed does not correspond to a column number.</returns>
         private int GetChosenColumn()
         {
-            do Console.ReadKey(true);
-            while (Console.KeyAvailable);
+            if (Console.KeyAvailable)
+            {
+                do Console.ReadKey(true);
+                while (Console.KeyAvailable);
+            }
             var input = Console.ReadKey(true);
             return char.IsDigit(input.KeyChar) ? int.Parse(input.KeyChar.ToString()) : 0;
         }

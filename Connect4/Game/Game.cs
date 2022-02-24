@@ -121,6 +121,10 @@ namespace Connect4.Game
             if (network == null && singlePlayer && ActivePlayer == PlayerTwo) StupidAI();
             if (network != null! && ActivePlayer.PlayerNumber != InstanceId) ReceiveGameState();
         }
+        /// <summary>
+        /// Stops the open network connection if any.
+        /// </summary>
+        public void Stop() => network?.Stop();
 
         /// <summary>
         /// Attempts to place active players token in the given column. Will raise a <see cref="BoardChangedEvent"/> on a succesful move and a <see cref="GameOverEvent"/> on a winning or draw (full board) move.

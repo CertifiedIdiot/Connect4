@@ -44,7 +44,7 @@ namespace Connect4_ConsoleUI.Menus
 
         private static void StartHotSeat() => new ConsoleConnect4(null!, true).Run();
 
-        private static void StartNetWorkSetUp() => new NetworkSetup().Run();
+        private static void StartNetWorkSetUp() => NetworkSetup.Run();
 
         private static void StartOptionsMenu() => OptionsMenu.Run();
     }

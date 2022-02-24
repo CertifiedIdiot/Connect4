@@ -6,6 +6,7 @@ using Connect4_ConsoleUI.UIHelpers;
 using Connect4_ConsoleUI.UIProperties;
 using Figgle;
 using System.Drawing;
+using System.Text;
 
 namespace Connect4_ConsoleUI.GameUI
 {

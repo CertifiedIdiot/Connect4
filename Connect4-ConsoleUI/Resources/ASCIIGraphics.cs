@@ -1,6 +1,8 @@
 ﻿namespace Connect4_ConsoleUI.Resources
 {
+#pragma warning disable S101 // Types should be named in PascalCase
     public static class ASCIIGraphics
+#pragma warning restore S101 // Types should be named in PascalCase
     {
         // vertical line
         // █ 
@@ -21,13 +23,13 @@
         //   (░░░░) 
         //    '~~'  
 
-        internal static string[] playerIconArray = {
+        internal static readonly string[] playerIconArray = {
                 " ,~~, ",
                 "(▒▒▒▒)",
                 " '~~' ",
         };
 
-        internal static string[] tableArray = {
+        internal static readonly string[] tableArray = {
         "         ___________________________________________________________________________",
         "       /░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\\",
         "      /░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\\",
@@ -41,7 +43,7 @@
         "└──────────────────────────────────────────────────────────────────────────────────────────┘",
         };
 
-        internal static string[] gameboardArray = {
+        internal static readonly string[] gameboardArray = {
             "░████████████████████████████████████████████████████",
             "░██     ░█     ░█     ░█     ░█     ░█     ░█     ░██",
             "░██     ░█     ░█     ░█     ░█     ░█     ░█     ░██",
@@ -71,7 +73,7 @@
 
         // Fireworks ASCII inspired by https://www.shutterstock.com/image-vector/colorful-fireworks-icon-black-style-isolated-530385244
 
-        internal static string splashscreenFireworksAlt = @"
+        internal const string splashscreenFireworksAlt = @"
                     .       ,       ',      .¨´       :;        ;        ,´
 ,           .                        ld.    ;l       ,oc.      :l      ,        ,   
                                   'do. ..      .xl    :d.    .ld,   ','. 
@@ -110,7 +112,7 @@
                                 ,                 ;Ok'         ,o.   :d.           ,                        . 
                                         .            ,d;       ;;   ,;                           . ";
 
-        internal static string connect4string = @"
+        internal const string connect4string = @"
          ________      ________      ________       ________       _______       ________      _________   
         |\   ____\    |\   __  \    |\   ___  \    |\   ___  \    |\  ___ \     |\   ____\    |\___   ___\ 
         \ \  \___|    \ \  \|\  \   \ \  \\ \  \   \ \  \\ \  \   \ \   __/|    \ \  \___|    \|___ \  \_| 
@@ -129,7 +131,7 @@
                                                                  \ \__\                                    
                                                                   \|__|                                    
                                                                           ";
-        internal static string connect4stringHeader = @"
+        internal const string connect4stringHeader = @"
          ________      ________      ________       ________       _______       ________      _________   
         |\   ____\    |\   __  \    |\   ___  \    |\   ___  \    |\  ___ \     |\   ____\    |\___   ___\ 
         \ \  \___|    \ \  \|\  \   \ \  \\ \  \   \ \  \\ \  \   \ \   __/|    \ \  \___|    \|___ \  \_| 
@@ -140,7 +142,7 @@
 
 ";
 
-        internal static string columnNumbers = @"  _     ___    ____   _ _    ___     __    ____ 
+        internal const string columnNumbers = @"  _     ___    ____   _ _    ___     __    ____ 
                                      / |   |_  )  |__ /  | | |  | __|   / /   |__  |
                                      | |    / /    |_ \  |_  _| |__ \  / _ \    / / 
                                      |_|   /___|  |___/    |_|  |___/  \___/   /_/ ";

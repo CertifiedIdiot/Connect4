@@ -99,22 +99,6 @@ namespace Connect4_ConsoleUI.GameUI
             int yOffset = UIPositions.GameBoardYPos - 8;
             Print.StringAtPositionCentered(text, yOffset, UIColours.TextColour);
         }
-
-        /// <summary>
-        /// Clears whatever is on the DisplayTopMessage row, for example leftover "Console input"-numbers.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        internal static void ClearNumber(string text)
-        {
-            string eraser = "";
-            int xOffset = UIPositions.GameBoardXPos + 1;
-            int yOffset = UIPositions.GameBoardYPos - 8;
-            for (int i = 0; i < text.Length; i++)
-            {
-                eraser += " ";
-            }
-            Print.StringAtPosition(eraser, xOffset + 38, yOffset);
-        }
         #endregion
 
         #region Column numbers        

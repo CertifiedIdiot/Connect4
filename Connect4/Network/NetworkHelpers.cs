@@ -1,5 +1,6 @@
 ﻿using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Linq;
 
 namespace Connect4.Network
 {
@@ -21,12 +22,9 @@ namespace Connect4.Network
                     (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
                     net.OperationalStatus == OperationalStatus.Up))
                 {
-                    foreach (UnicastIPAddressInformation _IP in net.GetIPProperties().UnicastAddresses)
+                    foreach (var IP in net.GetIPProperties().UnicastAddresses.Where(IP => IP.Address.AddressFamily == AddressFamily.InterNetwork))
                     {
-                        if (_IP.Address.AddressFamily == AddressFamily.InterNetwork)
-                        {
-                            output = _IP.Address.ToString();
-                        }
+                        output = IP.Address.ToString();
                     }
                 }
             }

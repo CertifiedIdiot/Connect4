@@ -12,4 +12,7 @@ switch (Console.ReadLine())
     case "2":
         RelayDebug.StartClient();
         break;
+    case "3":
+        MainMenu.Start();
+        break;
 }

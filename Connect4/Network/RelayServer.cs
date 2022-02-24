@@ -5,22 +5,28 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Connect4.Network
 {
+
+    //TODO: cleanup relay class and make use of a helper class
     public class RelayServer
     {
         public string IP { get; set; }
-        private bool PoolConnections = true;
+        private bool ServerIsRunning = true;
         private readonly List<RelayUser> ConnectionPool = new();
 
         public RelayServer(string IP = "") => this.IP = IP;
 
         /// <summary>
-        /// Will freeze thread upon being called.
+        /// Will freeze calling thread.
         /// </summary>
         public void Start()
         {
             StartConnectionPool();
         }
 
+        /// <summary>
+        /// Sends all RelayUsers in the connection pool that has LobbyIsOpen set to true.
+        /// </summary>
+        /// <param name="user">The user.</param>
         private void SendActConnPoolUsers(RelayUser user)
         {
             List<string> users = new();
@@ -37,6 +43,20 @@ namespace Connect4.Network
             Send(user, jsonUsers);
         }
 
+        /// <summary>
+        /// Gets the index of the connection pool user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
+        private int GetConnPoolUserIndex(RelayUser user)
+        {
+            return ConnectionPool.FindIndex(u => u.Username == user.Username);
+        }
+
+        /// <summary>
+        /// Adds the user to connection pool.
+        /// </summary>
+        /// <param name="user">The user.</param>
         private void AddUserToPool(RelayUser user)
         {
             bool accepted = false;
@@ -44,7 +64,7 @@ namespace Connect4.Network
             while (!accepted)
             {
                 string username = Receive(user);
-                if (IsNameDupe(username))
+                if (CheckValidUsername(username))
                 {
                     Send(user, "rejected");
                 }
@@ -52,52 +72,120 @@ namespace Connect4.Network
                 {
                     accepted = true;
                     Send(user, "accepted");
+                    user.Username = username;
                 }
             }
 
             ConnectionPool.Add(user);
-            Send(user, "accepted");
+            Task.Run(() => AddListener(user)).Forget();
         }
 
-        private bool IsNameDupe(string username)
+        /// <summary>
+        /// Adds a listener to the specified RelayUser.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
+        private void AddListener(RelayUser user)
         {
-            if (ConnectionPool.Exists(u => u.Username.Equals(username)))
+            string dataIn = string.Empty;
+            while (ServerIsRunning)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                dataIn = Receive(user);
+
+                if (dataIn == "invalid")
+                {
+                    var index = GetConnPoolUserIndex(user);
+                    ConnectionPool.RemoveAt(index);
+                    return;
+                }
+                if (dataIn == "sendActiveUsers")
+                {
+                    SendActConnPoolUsers(user);
+                }
+                if(dataIn == "openLobby")
+                {
+                    OpenUserLobby(user);
+                    return;
+                }
+                if (dataIn.StartsWith("connect: "))
+                {
+                    Task.Run(() => ConnectClient(user, dataIn.Remove(0, 8))).Forget();
+                    return;
+                }
             }
         }
 
+        //TODO: Cleanup method, split into multiple
+        private void ConnectClient(RelayUser user, string username)
+        {           
+            while (ServerIsRunning)
+            {
+                string userData;
+
+                userData = Receive(user);
+                if (userData == "invalid")
+                {
+                    var index = GetConnPoolUserIndex(user);
+                    ConnectionPool.RemoveAt(index);
+
+                    index = GetConnPoolUserIndex(GetConnPoolUser(username));
+                    ConnectionPool.RemoveAt(index);
+
+                    return;
+                }
+                Send(username, userData);
+                userData = Receive(username);
+                if (userData == "invalid")
+                {
+                    var index = GetConnPoolUserIndex(user);
+                    ConnectionPool.RemoveAt(index);
+
+                    index = GetConnPoolUserIndex(GetConnPoolUser(username));
+                    ConnectionPool.RemoveAt(index);
+
+                    return;
+                }
+                
+                Send(user, Receive(username));
+            }
+        }
+
+        /// <summary>
+        /// Receives a incoming message from the specified RelayUser.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>The message.</returns>
         public string Receive(RelayUser user)
         {
-            int DataByteCount;
+            int DataByteCount = default!;
             byte[] DataBuffer = new byte[1024];
             string output;
-
-            DataByteCount = user.ClientSocket.Receive(DataBuffer);
-            output = Encoding.UTF8.GetString(DataBuffer, 0, DataByteCount);
-
-            if (output == "sendActiveUsers")
+            // HACK: Prevents force closed connections crashing the relay
+            try
             {
-                SendActConnPoolUsers(user);
-                return "";
+                DataByteCount = user.ClientSocket.Receive(DataBuffer);
+                output = Encoding.UTF8.GetString(DataBuffer, 0, DataByteCount);
             }
-            if (output == "ping")
+            catch
             {
-                return "pong";
+                output = "invalid";
             }
+            
 
             return output;
         }
 
+        /// <summary>
+        /// Receives a incoming message from the specified username.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns>Message from user, "invalid" if message empty or "rejected" if user doesnt exist.</returns>
         public string Receive(string username)
         {
-            if (ValidUsername(username))
+            if (CheckValidUsername(username))
             {
-                return Receive(ConnectionPool.Find(u => u.Username.Equals(username)));
+                var dataIn = Receive(GetConnPoolUser(username));
+                return string.IsNullOrEmpty(dataIn) ? "invalid" : dataIn;
             }
             else
             {
@@ -105,22 +193,55 @@ namespace Connect4.Network
             }
         }
 
-        private bool ValidUsername(string username)
+        /// <summary>
+        /// Gets the connection pool user with given username.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>RelayUser</returns>
+        private RelayUser GetConnPoolUser(string username)
+        {
+            return ConnectionPool.Find(u => u.Username.Equals(username))!;
+        }
+
+        /// <summary>
+        /// Checks the if the username exists in the ConnectionPool.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns>True is user exists else False.</returns>
+        private bool CheckValidUsername(string username)
         {
             return ConnectionPool.Exists(u => u.Username.Equals(username));
         }
 
-        public static void Send(RelayUser user, string message)
+        /// <summary>
+        /// Sends a message to the specifed user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        public void Send(RelayUser user, string message)
         {
             user.ClientSocket.Send(Encoding.UTF8.GetBytes(message));
         }
 
-        public void StartConnectionPool()
+        private void Send(string username, string message)
+        {
+            if (CheckValidUsername(username))
+            {
+                GetConnPoolUser(username).ClientSocket.Send(Encoding.UTF8.GetBytes(message));
+            }
+        }
+
+        /// <summary>
+        /// Starts the connection pool.
+        /// </summary>
+        /// <returns></returns>
+        private void StartConnectionPool()
         {           
             Socket newClientSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             newClientSocket.Bind(new IPEndPoint(IPAddress.Parse(IP), 9050));
 
-            while (PoolConnections)
+            while (ServerIsRunning)
             {
                 RelayUser user = new();
                 newClientSocket.Listen(10);
@@ -131,9 +252,19 @@ namespace Connect4.Network
             }
         }
 
+        private void OpenUserLobby(RelayUser user)
+        {
+            var index = GetConnPoolUserIndex(user);
+            ConnectionPool[index].LobbyIsOpen = true;
+        }
+
+        /// <summary>
+        /// Closes all active sockets and shutsdown the <see cref="RelayServer"/>.
+        /// </summary>
+        /// <returns></returns>
         public void Stop()
         {
-            PoolConnections = false;
+            ServerIsRunning = false;
             foreach (RelayUser user in ConnectionPool)
             {
                 user.ClientSocket.Close();

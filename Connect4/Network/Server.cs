@@ -90,7 +90,5 @@ namespace Connect4.Network
 
             return DataIn;
         }
-
-        
     }
 }

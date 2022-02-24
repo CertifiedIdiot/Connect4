@@ -34,21 +34,25 @@ namespace Connect4_ConsoleUI
 
             // Send over username
             Console.WriteLine("Sending username...");
-            client.Send("Ankan1337");
-            while (client.Receive() == "rejected")
+            bool accepted = false;
+            while (!accepted)
             {
                 Console.WriteLine("Username: ");
                 username = Console.ReadLine();
                 client.Send(username!);
-                
+                if(client.Receive() == "accepted")
+                {
+                    accepted = true;
+                }
             }
-
-            client.Send("SendActiveUsers");
+            client.Send("openLobby");
+            client.Send("sendActiveUsers");
             UpdateResult();
             foreach (var user in Result)
             {
                 Console.WriteLine(user);
             }
+            Console.WriteLine("Done");
         }        
     }
 }

@@ -12,6 +12,6 @@ namespace Connect4.Network
     {
         public string Username { get; set; } = "";
         public Socket ClientSocket { get; set; } = default!;
-        public bool LobbyIsOpen { get; set; } = false;
+        public bool LobbyIsOpen { get; set; }
     }
 }

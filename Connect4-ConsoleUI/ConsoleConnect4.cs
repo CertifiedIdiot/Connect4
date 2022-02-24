@@ -38,6 +38,11 @@
         }
 
         /// <summary>
+        /// Method for relaying stop signal to attached <see cref="Game"/> class.
+        /// </summary>
+        internal void Stop() => game.Stop();
+
+        /// <summary>
         /// Event handler method for the <see cref="Game.GameOverEvent"/>.
         /// </summary>
         /// <param name="sender">The <see cref="Game"/> that sent the event.</param>

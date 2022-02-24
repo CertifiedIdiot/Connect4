@@ -368,6 +368,11 @@ namespace Connect4.Game
             }
             return -1;
         }
+
+        /// <summary>
+        /// Makes the needed synchronization for cryptographic operations between this <see cref="Game"/> instance and the network opponent.
+        /// </summary>
+        /// <remarks>Sets <see cref="cryptoIsSetup"/> to true when done.</remarks>
         private void SetupCrypto()
         {
             if (InstanceId == Token.PlayerOne)

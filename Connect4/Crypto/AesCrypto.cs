@@ -24,6 +24,7 @@ public class AesCrypto : ICrypto
         {
             _key = aes.Key;
             _iv = aes.IV;
+            aes.Clear();
         }
         var output = _key.Concat(_iv).ToArray();
         setupDone = true;

@@ -1,5 +1,5 @@
 ﻿using Connect4_ConsoleUI.Menus;
-
+using Connect4_ConsoleUI;
 //MainMenu.Start();
 Console.WriteLine("1) Relay\n" +
     "2) Client");

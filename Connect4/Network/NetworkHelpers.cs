@@ -1,6 +1,7 @@
 ﻿using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Connect4.Network
 {
@@ -14,21 +15,34 @@ namespace Connect4.Network
         public static string GetIPV4()
         {
             string output = string.Empty;
-            foreach (NetworkInterface net in NetworkInterface.GetAllNetworkInterfaces())
+            foreach (NetworkInterface NetIF in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if ((net.NetworkInterfaceType == NetworkInterfaceType.Ethernet &&
-                    net.OperationalStatus == OperationalStatus.Up)
+                if ((NetIF.NetworkInterfaceType == NetworkInterfaceType.Ethernet &&
+                    NetIF.OperationalStatus == OperationalStatus.Up)
                     ||
-                    (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
-                    net.OperationalStatus == OperationalStatus.Up))
+                    (NetIF.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
+                    NetIF.OperationalStatus == OperationalStatus.Up))
                 {
-                    foreach (var IP in net.GetIPProperties().UnicastAddresses.Where(IP => IP.Address.AddressFamily == AddressFamily.InterNetwork))
+                    foreach (var IP in NetIF.GetIPProperties().UnicastAddresses.Where(IP => IP.Address.AddressFamily == AddressFamily.InterNetwork))
                     {
                         output = IP.Address.ToString();
                     }
                 }
             }
             return output;
+        }
+
+        public static bool ValidIP(string ip)
+        {
+            var regex = new Regex(@"^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$");
+            if (!regex.IsMatch(ip)) return false;
+            var numbers = ip.Split('.');
+            foreach (var number in numbers)
+            {
+                _ = int.TryParse(number, out int num);
+                if (num < 0 || num > 255) return false;
+            }
+            return true;
         }
     }
 }

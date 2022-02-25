@@ -35,7 +35,7 @@ namespace Connect4.Network
         public Server(string IP = "") => this.IP = IP;
 
         /// <summary>
-        /// Starts this instance waits for a <see cref="Client"/> connection attempt.
+        /// Starts this instance and waits for a <see cref="Client"/> connection attempt.
         /// </summary>
         /// <remarks>Will NOT continue until a <see cref="Client"/> connects.</remarks>
         /// <returns>string connection message with IP and port from the <see cref="Client"/> </returns>
@@ -89,34 +89,6 @@ namespace Connect4.Network
             DataBuffer = new byte[1024]; // Resetting databuffer
 
             return DataIn;
-        }
-
-        /// <summary>
-        /// Gets the most likely IPV4 address in use for internet connection.
-        /// </summary>
-        /// <remarks>Can and will fail you.</remarks>
-        /// <returns>string IPV4 address.</returns>
-        public static string GetIPV4()
-        {
-            string output = string.Empty;
-            foreach (NetworkInterface net in NetworkInterface.GetAllNetworkInterfaces())
-            {
-                if ((net.NetworkInterfaceType == NetworkInterfaceType.Ethernet &&
-                    net.OperationalStatus == OperationalStatus.Up)
-                    ||
-                    (net.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 &&
-                    net.OperationalStatus == OperationalStatus.Up))
-                {
-                    foreach (UnicastIPAddressInformation _IP in net.GetIPProperties().UnicastAddresses)
-                    {
-                        if (_IP.Address.AddressFamily == AddressFamily.InterNetwork)
-                        {
-                            output = _IP.Address.ToString();
-                        }
-                    }
-                }
-            }
-            return output;
         }
     }
 }

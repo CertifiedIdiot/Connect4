@@ -28,7 +28,7 @@ namespace Connect4.Network
         public Client(string IP = "") => this.IP = IP;
 
         /// <summary>
-        /// Starts this instance and attempts to contact and connect to a <see cref="Server"/> on
+        /// Starts this instance and attempts to contact and connect to a <see cref="Server"/> on IP
         /// <see cref="IP"/> with port 9050.
         /// </summary>
         /// <remarks>Will return an error message upon unsuccessful connection attempt.</remarks>

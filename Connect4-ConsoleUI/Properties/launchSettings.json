@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Connect4-ConsoleUI": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

@@ -5,7 +5,7 @@ using Connect4.Structs;
 
 namespace Connect4_ConsoleUI.GameUI
 {
-    internal static class RenderGame
+    public static class RenderGame
     {
         /// <summary>
         /// Renders the basic game elements. The gameboard, the table, and adjusts the console.
@@ -86,7 +86,7 @@ namespace Connect4_ConsoleUI.GameUI
         /// <summary>
         /// Clears the screen, displays header, displays exit message.
         /// </summary>
-        internal static void ExitScreen()
+        public static void ExitScreen()
         {
             MenuHeader();
             RenderGameElement.ExitMessage();

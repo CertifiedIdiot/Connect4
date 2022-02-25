@@ -1,17 +1,20 @@
 ﻿using Connect4_ConsoleUI.Menus;
 using Connect4_ConsoleUI;
-//MainMenu.Start();
-Console.WriteLine("1) Relay\n" +
-    "2) Client");
+using Connect4.Network;
+//TODO: fix quick and dirty debug
+Console.WriteLine("1) Game.\n" +
+    "2) Act as relay.");
 switch (Console.ReadLine())
 {
     case "1":
-        RelayDebug.StartRelay();
+        MainMenu.Start();
         break;
+
     case "2":
-        RelayDebug.StartClient();
+        new RelayServer(MenuHelpers.AskForIP()).Start();
         break;
-    case "3":
+
+    default:
         MainMenu.Start();
         break;
 }

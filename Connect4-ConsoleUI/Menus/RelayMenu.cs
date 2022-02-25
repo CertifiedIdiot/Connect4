@@ -16,8 +16,8 @@ namespace Connect4_ConsoleUI.Menus
             };
             switch (new CreateMenu(menuItems, true).UseMenu())
             {
-                case "[1] - Open Lobby.": break;
-                case "[2] - Connect to lobby.": break;
+                case "[1] - Open lobby on relay server.": MenuHelpers.StartLobby(); break;
+                case "[2] - Connect to lobby on relay server.": MenuHelpers.ConnectToLobby(); break;
                 case "[3] - Return to Main Menu.": MainMenu.Run(); break;
             }
         }

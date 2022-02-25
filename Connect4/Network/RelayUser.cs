@@ -10,8 +10,9 @@ namespace Connect4.Network
 {
     public class RelayUser
     {
-        public string Username { get; set; } = "";
+        public string Username { get; set; } = string.Empty;
         public Socket ClientSocket { get; set; } = default!;
         public bool LobbyIsOpen { get; set; }
+        public string Key { get; set; } = string.Empty;
     }
 }

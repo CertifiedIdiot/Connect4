@@ -1,22 +1,29 @@
-﻿using System.Net;
+﻿using Microsoft.VisualStudio.Threading;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Microsoft.VisualStudio.Threading;
 
 namespace Connect4.Network
 {
 
-    //TODO: cleanup relay class and make use of a helper class
+    //TODO: No time to cleanup class, too bad! (send help)
+    /*
+     * Not all parts of the RelayClass use "safe connections".
+     * A client may accidentally crash the relay if they disconnect at the wrong time.
+    */
     public class RelayServer
     {
         public string IP { get; set; }
         private bool ServerIsRunning = true;
         private readonly List<RelayUser> ConnectionPool = new();
 
-        public RelayServer(string IP = "") => this.IP = IP;
+        public RelayServer(string IP = "")
+        {
+            this.IP = IP;
+        }
 
         /// <summary>
-        /// Will freeze calling thread.
+        /// Will freeze calling thread and start the relay.
         /// </summary>
         public void Start()
         {
@@ -33,7 +40,7 @@ namespace Connect4.Network
 
             foreach (RelayUser u in ConnectionPool)
             {
-                if (user.LobbyIsOpen)
+                if (u.LobbyIsOpen)
                 {
                     users.Add(u.Username);
                 }
@@ -63,16 +70,17 @@ namespace Connect4.Network
 
             while (!accepted)
             {
-                string username = Receive(user);
-                if (CheckValidUsername(username))
-                {
-                    Send(user, "rejected");
-                }
-                else
+                string? username = Receive(user);
+
+                if (!CheckValidUsername(username))
                 {
                     accepted = true;
                     Send(user, "accepted");
                     user.Username = username;
+                }
+                else
+                {
+                    Send(user, "rejected");
                 }
             }
 
@@ -88,13 +96,14 @@ namespace Connect4.Network
         private void AddListener(RelayUser user)
         {
             string dataIn = string.Empty;
+
             while (ServerIsRunning)
             {
                 dataIn = Receive(user);
 
                 if (dataIn == "invalid")
                 {
-                    var index = GetConnPoolUserIndex(user);
+                    int index = GetConnPoolUserIndex(user);
                     ConnectionPool.RemoveAt(index);
                     return;
                 }
@@ -102,52 +111,71 @@ namespace Connect4.Network
                 {
                     SendActConnPoolUsers(user);
                 }
-                if(dataIn == "openLobby")
+                if (dataIn == "openLobby")
                 {
                     OpenUserLobby(user);
                     return;
                 }
                 if (dataIn.StartsWith("connect: "))
                 {
-                    Task.Run(() => ConnectClient(user, dataIn.Remove(0, 8))).Forget();
-                    return;
+                    string? remoteUser = dataIn.Remove(0, 9);
+                    if (CheckValidUsername(remoteUser))
+                    {
+                        int index = GetConnPoolUserIndex(GetConnPoolUser(remoteUser));
+                        ConnectionPool[index].LobbyIsOpen = false;
+                        Send(user, "accepted");
+                        Task.Run(() => RelayToUser1FromUser2(user, GetConnPoolUser(remoteUser))).Forget();
+                        Task.Run(() => RelayToUser1FromUser2(GetConnPoolUser(remoteUser), user)).Forget();
+                        return;
+                    }
+                    else
+                    {
+                        Send(user, "rejected");
+                    }
                 }
             }
         }
 
-        //TODO: Cleanup method, split into multiple
-        private void ConnectClient(RelayUser user, string username)
-        {           
+
+
+        private void RelayToUser1FromUser2(RelayUser user1, RelayUser user2)
+        {
+            string data;
             while (ServerIsRunning)
             {
-                string userData;
-
-                userData = Receive(user);
-                if (userData == "invalid")
+                data = Receive(user2);
+                if(CheckUserDataInvalid(user1, user2, data))
                 {
-                    var index = GetConnPoolUserIndex(user);
-                    ConnectionPool.RemoveAt(index);
-
-                    index = GetConnPoolUserIndex(GetConnPoolUser(username));
-                    ConnectionPool.RemoveAt(index);
-
                     return;
                 }
-                Send(username, userData);
-                userData = Receive(username);
-                if (userData == "invalid")
-                {
-                    var index = GetConnPoolUserIndex(user);
-                    ConnectionPool.RemoveAt(index);
-
-                    index = GetConnPoolUserIndex(GetConnPoolUser(username));
-                    ConnectionPool.RemoveAt(index);
-
-                    return;
-                }
-                
-                Send(user, Receive(username));
+                Send(user1, data);
             }
+        }
+
+        private bool CheckUserDataInvalid(RelayUser user1, RelayUser user2, string userData)
+        {
+            bool status = false;
+            if (userData == "invalid")
+            {
+                try
+                {
+                    int index = GetConnPoolUserIndex(user1);
+                    ConnectionPool.RemoveAt(index);
+
+                    index = GetConnPoolUserIndex(user2);
+                    ConnectionPool.RemoveAt(index);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("User already removed bla bla");
+                }
+                finally
+                {
+                    status = true;
+                }
+            }
+
+            return status;
         }
 
         /// <summary>
@@ -170,7 +198,7 @@ namespace Connect4.Network
             {
                 output = "invalid";
             }
-            
+
 
             return output;
         }
@@ -182,15 +210,7 @@ namespace Connect4.Network
         /// <returns>Message from user, "invalid" if message empty or "rejected" if user doesnt exist.</returns>
         public string Receive(string username)
         {
-            if (CheckValidUsername(username))
-            {
-                var dataIn = Receive(GetConnPoolUser(username));
-                return string.IsNullOrEmpty(dataIn) ? "invalid" : dataIn;
-            }
-            else
-            {
-                return "rejected";
-            }
+            return Receive(GetConnPoolUser(username));
         }
 
         /// <summary>
@@ -210,7 +230,7 @@ namespace Connect4.Network
         /// <returns>True is user exists else False.</returns>
         private bool CheckValidUsername(string username)
         {
-            return ConnectionPool.Exists(u => u.Username.Equals(username));
+            return ConnectionPool.Exists(u => u.Username == username);
         }
 
         /// <summary>
@@ -226,9 +246,13 @@ namespace Connect4.Network
 
         private void Send(string username, string message)
         {
-            if (CheckValidUsername(username))
+            try
             {
                 GetConnPoolUser(username).ClientSocket.Send(Encoding.UTF8.GetBytes(message));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Send failed oh noes..");
             }
         }
 
@@ -237,7 +261,7 @@ namespace Connect4.Network
         /// </summary>
         /// <returns></returns>
         private void StartConnectionPool()
-        {           
+        {
             Socket newClientSocket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             newClientSocket.Bind(new IPEndPoint(IPAddress.Parse(IP), 9050));
 
@@ -254,7 +278,7 @@ namespace Connect4.Network
 
         private void OpenUserLobby(RelayUser user)
         {
-            var index = GetConnPoolUserIndex(user);
+            int index = GetConnPoolUserIndex(user);
             ConnectionPool[index].LobbyIsOpen = true;
         }
 

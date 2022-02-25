@@ -5,7 +5,7 @@ using Connect4_ConsoleUI.GameUI;
 
 namespace Connect4_ConsoleUI.Menus
 {
-    internal static class MenuHelpers
+    public static class MenuHelpers
     {
         public static string AskForIP()
         {

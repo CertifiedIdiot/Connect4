@@ -27,6 +27,7 @@ namespace Connect4.Network
         /// </summary>
         public void Start()
         {
+            Console.WriteLine("Relay Running...");
             StartConnectionPool();
         }
 
@@ -70,7 +71,7 @@ namespace Connect4.Network
 
             while (!accepted)
             {
-                string? username = Receive(user);
+                string username = Receive(user);
 
                 if (!CheckValidUsername(username))
                 {
@@ -118,7 +119,7 @@ namespace Connect4.Network
                 }
                 if (dataIn.StartsWith("connect: "))
                 {
-                    string? remoteUser = dataIn.Remove(0, 9);
+                    string remoteUser = dataIn.Remove(0, 9);
                     if (CheckValidUsername(remoteUser))
                     {
                         int index = GetConnPoolUserIndex(GetConnPoolUser(remoteUser));
@@ -135,8 +136,6 @@ namespace Connect4.Network
                 }
             }
         }
-
-
 
         private void RelayToUser1FromUser2(RelayUser user1, RelayUser user2)
         {
@@ -250,9 +249,9 @@ namespace Connect4.Network
             {
                 GetConnPoolUser(username).ClientSocket.Send(Encoding.UTF8.GetBytes(message));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Send failed oh noes..");
+                Console.WriteLine("Error: " + ex.ToString);
             }
         }
 

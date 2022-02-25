@@ -10,7 +10,7 @@ namespace Connect4_ConsoleUI
     using UIProperties;
     using Console = Colorful.Console;
 
-    internal class CreateMenu
+    public class CreateMenu
     {
         #region Private Fields
 
@@ -28,7 +28,7 @@ namespace Connect4_ConsoleUI
 
         #region internal Constructors
 
-        internal CreateMenu(IList<string> menuItems, bool center = false, int headerLines = 1, int infoLines = 0)
+        public CreateMenu(IList<string> menuItems, bool center = false, int headerLines = 1, int infoLines = 0)
         {
             if (menuItems == null || menuItems.Count == 0)
             {
@@ -61,7 +61,7 @@ namespace Connect4_ConsoleUI
         /// <summary>
         /// Draws the menu. Send in true to print menu in the center of the screen.
         /// </summary>
-        internal string UseMenu() => DoMenu();
+        public string UseMenu() => DoMenu();
 
         #endregion internal Methods
 

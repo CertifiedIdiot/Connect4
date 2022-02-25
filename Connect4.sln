@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connect4", "Connect4\Connec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connect4-ConsoleUI", "Connect4-ConsoleUI\Connect4-ConsoleUI.csproj", "{795F56FF-123E-41BA-9FB0-493DD4982E03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4.Tests", "Connect4.Tests\Connect4.Tests.csproj", "{27E6E4C2-9458-4A60-8245-B7725EE5285A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connect4.Tests", "Connect4.Tests\Connect4.Tests.csproj", "{27E6E4C2-9458-4A60-8245-B7725EE5285A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4.Relay", "Connect4.Relay\Connect4.Relay.csproj", "{63A00586-CAD6-43B4-87E8-3FE3D5F4F540}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{27E6E4C2-9458-4A60-8245-B7725EE5285A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27E6E4C2-9458-4A60-8245-B7725EE5285A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27E6E4C2-9458-4A60-8245-B7725EE5285A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A00586-CAD6-43B4-87E8-3FE3D5F4F540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A00586-CAD6-43B4-87E8-3FE3D5F4F540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A00586-CAD6-43B4-87E8-3FE3D5F4F540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A00586-CAD6-43B4-87E8-3FE3D5F4F540}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -240,7 +240,14 @@ namespace Connect4.Network
         /// <returns></returns>
         public void Send(RelayUser user, string message)
         {
-            user.ClientSocket.Send(Encoding.UTF8.GetBytes(message));
+            try
+            {
+                user.ClientSocket.Send(Encoding.UTF8.GetBytes(message));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.ToString());
+            }            
         }
 
         private void Send(string username, string message)

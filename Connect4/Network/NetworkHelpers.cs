@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Connect4.Network
 {
-    public class NetworkHelpers
+    public static class NetworkHelpers
     {
         /// <summary>
         /// Gets the most likely IPV4 address in use for internet connection.

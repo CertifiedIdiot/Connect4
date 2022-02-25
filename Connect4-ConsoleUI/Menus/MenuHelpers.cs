@@ -23,10 +23,11 @@ namespace Connect4_ConsoleUI.Menus
             bool accepted = false;
 
             INetwork network = Connect4.Connect4Factory.GetClient();
+            Console.WriteLine("Enter IP: ");
             network.IP = AskForIP();
             network.Start();
 
-            Console.WriteLine("Username must not be taken, you will be asked to enter another if so username.");
+            Console.WriteLine("Username must not be taken, you will be asked to enter another if username taken.");
             while (!accepted)
             {
                 Console.WriteLine("Please enter a username: ");

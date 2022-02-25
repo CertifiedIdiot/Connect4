@@ -251,7 +251,7 @@ namespace Connect4.Network
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.ToString);
+                Console.WriteLine("Error: " + ex.ToString());
             }
         }
 

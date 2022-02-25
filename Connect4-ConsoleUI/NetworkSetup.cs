@@ -6,9 +6,9 @@ using Connect4_ConsoleUI.GameUI;
     using Connect4.Network;
     using System.Text.RegularExpressions;
 
-    internal class NetworkSetup
+    internal static class NetworkSetup
     {
-        public void Run()
+        public static void Run()
         {
             RenderGame.MenuHeader();
             var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client.", "Use a relay server.", "Return to Main Menu." };

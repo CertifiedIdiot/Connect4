@@ -23,7 +23,8 @@ namespace Connect4_ConsoleUI.Menus
             bool accepted = false;
 
             INetwork network = Connect4.Connect4Factory.GetClient();
-            Console.WriteLine("Enter IP: ");
+            Console.WriteLine("Enter relay server IP: ");
+            Console.CursorVisible = true;
             network.IP = AskForIP();
             network.Start();
 
@@ -38,7 +39,8 @@ namespace Connect4_ConsoleUI.Menus
                     accepted = true;
                 }
             }
-
+            Console.CursorVisible = false;
+            
             return network;
         }
 

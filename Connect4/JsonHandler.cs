@@ -13,7 +13,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static string Serialize<T>(T data) where T : class, new()
+        public static string Serialize<T>(T data) where T : new()
         {
             var json = JsonConvert.SerializeObject(data) ?? "";
             return json;
@@ -25,7 +25,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="json">The json string.</param>
         /// <returns></returns>
-        public static T Deserialize<T>(string json) where T : class, new()
+        public static T Deserialize<T>(string json) where T : new()
         {
             T output = JsonConvert.DeserializeObject<T>(json) ?? new();
             return output;

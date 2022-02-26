@@ -13,12 +13,12 @@ public interface IPlayer
     /// <value>
     /// The player number of the player.
     /// </value>
-    Owner PlayerNumber { get; set; }
+    Token PlayerNumber { get; set; }
     /// <summary>
     /// Gets or sets the players name.
     /// </summary>
     /// <value>
-    /// The name.
+    /// The name of the player.
     /// </value>
     string Name { get; set; }
 }

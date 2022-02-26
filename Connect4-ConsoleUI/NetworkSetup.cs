@@ -1,61 +1,24 @@
 ﻿namespace Connect4_ConsoleUI
 {
+using Connect4_ConsoleUI.GameUI;
+    using Connect4_ConsoleUI.Menus;
     using System;
+    using Connect4.Network;
     using System.Text.RegularExpressions;
 
-    internal class NetworkSetup
+    internal static class NetworkSetup
     {
-        public void Run()
-        { 
-            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client", "Start hot seat game.", "Exit." };
-            var input = new Menu(menuItems).UseMenu();
-
-            switch (input)
-            {
-                case "Start as server.": StartNetwork(true); break;
-                case "Start as client": StartNetwork(false); break;
-                case "Start hot seat game.": StartHotSeat(); break;
-                case "Exit.": Environment.Exit(0); break;
-                default:
-                    break;
-            }
-        }
-
-        private void StartHotSeat() => new QuickTest(null!, true).Run();
-        private void StartNetwork(bool startAsServer)
+        public static void Run()
         {
-            var network = startAsServer ? Connect4.Connect4Factory.GetServer() : Connect4.Connect4Factory.GetClient();
-            Console.Write(startAsServer ? "Enter IP you want to host on: " : "Enter IP you want to connect on: ");
-            network.IP = AskForIP();
-            Console.WriteLine("Waiting for connection...");
-            Console.WriteLine(network.Start());
-            Console.ReadLine();
-            if (startAsServer) new QuickTest(network, true).Run();
-            else new QuickTest(network, false).Run();
-        }
-
-        private string AskForIP()
-        {
-            var input = Console.ReadLine();
-            while (!ValidIP(input!))
+            RenderGame.MenuHeader();
+            var menuItems = new List<string>() { "Network setup", "Start as server.", "Start as client.", "Use a relay server.", "Return to Main Menu." };
+            switch (new CreateMenu(menuItems, true).UseMenu())
             {
-                Console.Write("Please enter a valid IP: ");
-                input = Console.ReadLine();
+                case "Start as server.": MenuHelpers.StartNetwork(true); break;
+                case "Start as client.": MenuHelpers.StartNetwork(false); break;
+                case "Use a relay server.": RelayMenu.Run(); break;
+                case "Return to Main Menu.": MainMenu.Run(); break;
             }
-            return input!;
-        }
-
-        private bool ValidIP(string ip)
-        {
-            var regex = new Regex(@"^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$");
-            if (!regex.IsMatch(ip)) return false;
-            var numbers = ip.Split('.');
-            foreach (var number in numbers)
-            {
-                _ = int.TryParse(number, out int num);
-                if (num < 0 || num > 255) return false;
-            }
-            return true;
         }
     }
 }

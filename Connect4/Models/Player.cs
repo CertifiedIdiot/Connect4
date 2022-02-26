@@ -12,7 +12,7 @@
         /// Gets or sets the players name.
         /// </summary>
         /// <value>
-        /// The name.
+        /// The name of the player.
         /// </value>
         public string Name { get; set; } = "";
         /// <summary>
@@ -21,7 +21,6 @@
         /// <value>
         /// The player number of the player.
         /// </value>
-        public Owner PlayerNumber { get; set; }
-        public bool PlayerOneStarts { get; set; }
+        public Token PlayerNumber { get; set; }
     }
 }

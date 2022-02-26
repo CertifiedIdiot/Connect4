@@ -4,14 +4,19 @@
     using Xunit;
     using System;
     using System.Security.Cryptography;
+    using Moq;
+    using Connect4.Interfaces;
 
-    public class CryptoTests
+    public class AesCryptoTests
     {
         readonly AesCrypto sut;
-        public CryptoTests()
+        readonly INetwork moqNet;
+        public AesCryptoTests()
         {
-            sut = new AesCrypto();
-            sut.Init();
+            var mockINetwork = new Mock<INetwork>();
+            moqNet = mockINetwork.Object;
+            sut = new Crypto.AesCrypto();
+            sut.Init(moqNet);
         }
 
         [Fact]
@@ -31,7 +36,7 @@
         [Fact]
         public void Encrypt_SutNotInitialized_ShouldThrowCryptographicException()
         {
-            var sutNoInit = new AesCrypto();
+            var sutNoInit = new Crypto.AesCrypto();
 
             Assert.Throws<CryptographicException>(() => sutNoInit.Encrypt("hello world"));
         }
@@ -41,7 +46,7 @@
         [Fact]
         public void Decrypt_SutNotInitialized_ShouldThrowCryptographicException()
         {
-            var sutNoInit = new AesCrypto();
+            var sutNoInit = new Crypto.AesCrypto();
 
             Assert.Throws<CryptographicException>(() => sutNoInit.Decrypt(new CryptoObj()));
         }

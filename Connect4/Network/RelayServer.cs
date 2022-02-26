@@ -5,12 +5,6 @@ using System.Text;
 
 namespace Connect4.Network
 {
-
-    //TODO: No time to cleanup class, too bad! (send help)
-    /*
-     * Not all parts of the RelayClass use "safe connections".
-     * A client may accidentally crash the relay if they disconnect at the wrong time.
-    */
     public class RelayServer
     {
         public string IP { get; set; }
@@ -125,8 +119,8 @@ namespace Connect4.Network
                         int index = GetConnPoolUserIndex(GetConnPoolUser(remoteUser));
                         ConnectionPool[index].LobbyIsOpen = false;
                         Send(user, "accepted");
-                        Task.Run(() => RelayToUser1FromUser2(user, GetConnPoolUser(remoteUser))).Forget();
-                        Task.Run(() => RelayToUser1FromUser2(GetConnPoolUser(remoteUser), user)).Forget();
+                        Task.Run(() => RelayToUser(user, GetConnPoolUser(remoteUser))).Forget();
+                        Task.Run(() => RelayToUser(GetConnPoolUser(remoteUser), user)).Forget();
                         return;
                     }
                     else
@@ -137,7 +131,12 @@ namespace Connect4.Network
             }
         }
 
-        private void RelayToUser1FromUser2(RelayUser user1, RelayUser user2)
+        /// <summary>
+        /// Relays to user1 from user2.
+        /// </summary>
+        /// <param name="user1">The user1.</param>
+        /// <param name="user2">The user2.</param>
+        private void RelayToUser(RelayUser user1, RelayUser user2)
         {
             string data;
             while (ServerIsRunning)
@@ -151,6 +150,13 @@ namespace Connect4.Network
             }
         }
 
+        /// <summary>
+        /// Checks if the user data is invalid. If so removes the specified users from the connection pool.
+        /// </summary>
+        /// <param name="user1">The user1.</param>
+        /// <param name="user2">The user2.</param>
+        /// <param name="userData">The user data.</param>
+        /// <returns></returns>
         private bool CheckUserDataInvalid(RelayUser user1, RelayUser user2, string userData)
         {
             bool status = false;
@@ -166,7 +172,7 @@ namespace Connect4.Network
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("User already removed bla bla");
+                    Console.WriteLine("Error: " + ex.ToString());
                 }
                 finally
                 {
@@ -178,16 +184,15 @@ namespace Connect4.Network
         }
 
         /// <summary>
-        /// Receives a incoming message from the specified RelayUser.
+        /// Receives an incoming message from the specified RelayUser.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The message.</returns>
-        public string Receive(RelayUser user)
+        public static string Receive(RelayUser user)
         {
-            int DataByteCount = default!;
+            int DataByteCount;
             byte[] DataBuffer = new byte[1024];
             string output;
-            // HACK: Prevents force closed connections crashing the relay
             try
             {
                 DataByteCount = user.ClientSocket.Receive(DataBuffer);
@@ -197,7 +202,6 @@ namespace Connect4.Network
             {
                 output = "invalid";
             }
-
 
             return output;
         }
@@ -238,25 +242,13 @@ namespace Connect4.Network
         /// <param name="user">The user.</param>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        public void Send(RelayUser user, string message)
+        public static void Send(RelayUser user, string message)
         {
             try
             {
                 user.ClientSocket.Send(Encoding.UTF8.GetBytes(message));
             }
             catch(Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.ToString());
-            }            
-        }
-
-        private void Send(string username, string message)
-        {
-            try
-            {
-                GetConnPoolUser(username).ClientSocket.Send(Encoding.UTF8.GetBytes(message));
-            }
-            catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.ToString());
             }

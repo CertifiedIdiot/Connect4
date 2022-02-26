@@ -41,7 +41,7 @@ namespace Connect4.Network
         /// <returns>string connection message with IP and port from the <see cref="Client"/> </returns>
         public string Start()
         {
-            IPEndPoint IPep = new IPEndPoint(IPAddress.Parse(IP), 9050);
+            IPEndPoint IPep = new(IPAddress.Parse(IP), 9050);
             newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             newSocket.Bind(IPep);
@@ -51,12 +51,6 @@ namespace Connect4.Network
             ClientIPep = (IPEndPoint)ClientSocket.RemoteEndPoint!;
 
             return string.Format("Now connected to {0} on port {1}.", ClientIPep.Address, ClientIPep.Port);
-        }
-
-        // TODO: Implement UPnP
-        public void StartUPnP()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

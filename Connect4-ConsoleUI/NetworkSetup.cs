@@ -19,6 +19,6 @@ using Connect4_ConsoleUI.GameUI;
                 case "Use a relay server.": RelayMenu.Run(); break;
                 case "Return to Main Menu.": MainMenu.Run(); break;
             }
-        }        
+        }
     }
 }

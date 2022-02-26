@@ -18,6 +18,10 @@ namespace Connect4_ConsoleUI.Menus
             return input!;
         }
 
+        /// <summary>
+        /// Setups up a <see cref="INetwork"/> <see cref="Client"/>.
+        /// </summary>
+        /// <returns></returns>
         public static INetwork ClientSetup()
         {
             bool accepted = false;
@@ -40,10 +44,13 @@ namespace Connect4_ConsoleUI.Menus
                 }
             }
             Console.CursorVisible = false;
-            
+
             return network;
         }
 
+        /// <summary>
+        /// Runs <see cref="ClientSetup"/> and starts a lobby on a <see cref="RelayServer"/>.
+        /// </summary>
         public static void StartLobby()
         {
             INetwork network = ClientSetup();
@@ -52,6 +59,9 @@ namespace Connect4_ConsoleUI.Menus
             new ConsoleConnect4(network, false).Run();
         }
 
+        /// <summary>
+        /// Connects to a <see cref="RelayServer"/> lobby.
+        /// </summary>
         public static void ConnectToLobby()
         {
             INetwork network = ClientSetup();
@@ -71,6 +81,10 @@ namespace Connect4_ConsoleUI.Menus
             }
         }
 
+        /// <summary>
+        /// Sets up the network for <see cref="Client"/> or <see cref="Server"/>.
+        /// </summary>
+        /// <param name="startAsServer">if set to <c>true</c> [start as server].</param>
         public static void StartNetwork(bool startAsServer)
         {
             INetwork? network = startAsServer ? Connect4.Connect4Factory.GetServer() : Connect4.Connect4Factory.GetClient();

@@ -10,21 +10,20 @@ var menuItems = new List<string>()
     "Please enter an IP you want to host on.",
     "[1] - " + IP,
     "[2] - Enter IP manually.",
-    "[3] - Exit game."
+    "[3] - Exit relay."
 };
 
 switch (new CreateMenu(menuItems, true).UseMenu())
-{    
-    case "[2] - Enter IP manually.": 
-        Console.WriteLine("IP: "); new RelayServer(MenuHelpers.AskForIP()).Start(); 
+{
+    case "[2] - Enter IP manually.":
+        Console.WriteLine("IP: "); new RelayServer(MenuHelpers.AskForIP()).Start();
         break;
 
-    case "[3] - Exit relay.": 
-        RenderGame.ExitScreen(); Environment.Exit(1337); 
+    case "[3] - Exit relay.":
+        RenderGame.ExitScreen(); Environment.Exit(1337);
         break;
 
     default:
-        new RelayServer(IP).Start(); 
+        new RelayServer(IP).Start();
         break;
 }
-

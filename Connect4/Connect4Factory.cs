@@ -33,6 +33,6 @@
         /// </summary>
         /// <returns></returns>
         public static INetwork GetClient() => new Client();
-        public static ICrypto GetCrypto() => new AesCrypto();
+        public static ICrypto GetCrypto() => new AesRsaCrypto();
     }
 }

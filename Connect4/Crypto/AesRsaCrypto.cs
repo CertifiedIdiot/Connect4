@@ -2,56 +2,70 @@
 
 using Connect4.Interfaces;
 using System.Security.Cryptography;
-//This code/class based on: https://docs.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-6.0
 
 /// <summary>
-/// Class for AES ancryption of strings.
+/// Class for AES (set up with RSA) encryption of strings.
 /// </summary>
-/// <seealso cref="Connect4.Crypto.ICrypto" />
-public class AesCrypto : ICrypto
+/// <seealso cref="ICrypto" />
+public class AesRsaCrypto : ICrypto
 {
     private byte[] _key = new byte[32];
     private byte[] _iv = new byte[16];
     private bool setupDone = false;
 
     /// <summary>
-    /// Initializes this instance of <see cref="AesCrypto"/> with key and initialization vector.
+    /// Initializes this instance of <see cref="AesRsaCrypto"/> with key and initialization vector.
     /// </summary>
-    /// <remarks>This is the method to use if this instance of <see cref="AesCrypto"/> is the one that initializes the crypto session.</remarks>
+    /// <remarks>This is the method to use if this instance of <see cref="AesRsaCrypto"/> is the one that initializes the crypto session.</remarks>
     /// <param name="network">The network used for initial exchange of keys.</param>
     public void Init(INetwork network)
     {
-        using (Aes aes = Aes.Create())
+        var rsaPublic = JsonHandler.Deserialize<RSAParameters>(network.Receive());
+        byte[] rsaEncrypted;
+        using (var rsa = new RSACryptoServiceProvider(4096))
         {
-            _key = aes.Key;
-            _iv = aes.IV;
-            aes.Clear();
+            rsa.ImportParameters(rsaPublic);
+            using (Aes aes = Aes.Create())
+            {
+                _key = aes.Key;
+                _iv = aes.IV;
+                aes.Clear();
+            }
+            var output = _key.Concat(_iv).ToArray();
+            rsaEncrypted = rsa.Encrypt(output,true);
+            rsa.Clear();
         }
-        var output = _key.Concat(_iv).ToArray();
-        setupDone = true;
-        var json = JsonHandler.Serialize(new CryptoObj() { Bytes = output });
         Thread.Sleep(500);
-        network.Send(json);
+        network.Send(JsonHandler.Serialize(new CryptoObj() { Bytes = rsaEncrypted }));
+
+        setupDone = true;
     }
 
     /// <summary>
-    /// Sets up this instance of <see cref="AesCrypto"/> with key and IV values received in the passed in <see cref="CryptoObj"/> object.
+    /// Sets up this instance of <see cref="AesRsaCrypto"/> with key and IV values received in the passed in <see cref="CryptoObj"/> object.
     /// </summary>
     /// <remarks>This is the method to use if this instance of <see cref="AesCrypto"/> is not the one that initializes the crypto session, but rather receives the needed data from somewhere else.</remarks>
     /// <param name="network">The network used for initial exchange of keys.</param>
     public void SetUp(INetwork network)
     {
-        var json = network.Receive();
-        var setup = JsonHandler.Deserialize<CryptoObj>(json);
-        _key = setup.Bytes[..32];
-        _iv = setup.Bytes[32..];
+        byte[] setup;
+        using (var rsa = new RSACryptoServiceProvider(4096))
+        {
+            Thread.Sleep(500);
+            network.Send(JsonHandler.Serialize<RSAParameters>(rsa.ExportParameters(false)));
+            var rsaEncrypted = JsonHandler.Deserialize<CryptoObj>(network.Receive());
+            setup = rsa.Decrypt(rsaEncrypted.Bytes, true);
+            rsa.Clear();
+        }
+        _key = setup[..32];
+        _iv = setup[32..];
         setupDone = true;
     }
 
     /// <summary>
     /// Encrypts the incoming <see cref="string"/>.
     /// </summary>
-    /// <remarks>Make sure that this <see cref="AesCrypto"/> is setup through either <see cref="Init"/> or <see cref="SetUp(CryptoObj)"/> methods before trying to encrypt.</remarks>
+    /// <remarks>Make sure that this <see cref="AesRsaCrypto"/> is setup through either <see cref="Init"/> or <see cref="SetUp(INetwork)"/> methods before trying to encrypt.</remarks>
     /// <param name="text">The <see cref="string"/> to be encrypted.</param>
     /// <returns>A <see cref="CryptoObj"/> containing the encrypted <see cref="byte"/> array.</returns>
     /// <exception cref="CryptographicException"></exception>
@@ -84,7 +98,7 @@ public class AesCrypto : ICrypto
     /// <summary>
     /// Decrypts the incoming <see cref="CryptoObj"/>.
     /// </summary>
-    /// /// <remarks>Make sure that this <see cref="AesCrypto"/> is setup through either <see cref="Init"/> or <see cref="SetUp(CryptoObj)"/> methods before trying to decrypt.</remarks>
+    /// /// <remarks>Make sure that this <see cref="AesRsaCrypto"/> is setup through either <see cref="Init"/> or <see cref="SetUp(INetwork)"/> methods before trying to decrypt.</remarks>
     /// <param name="encrypted">The incoming <see cref="CryptoObj"/> to be decrypted.</param>
     /// <returns>The decrypted <see cref="string"/>.</returns>
     /// <exception cref="CryptographicException"></exception>

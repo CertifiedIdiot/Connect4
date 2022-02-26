@@ -386,15 +386,11 @@ namespace Connect4.Game
         {
             if (InstanceId == Token.PlayerOne)
             {
-                var settings = crypto.Init();
-                var json = JsonHandler.Serialize(settings);
-                network.Send(json);
+                crypto.Init(network);
             }
             else
             {
-                var json = network.Receive();
-                var settings = JsonHandler.Deserialize<CryptoObj>(json);
-                crypto.SetUp(settings);
+                crypto.SetUp(network);
             }
             cryptoIsSetup = true;
         }
